@@ -1,0 +1,23 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": false,
+            "globalReturn": false,
+            "experimentalObjectRestSpread": false
+        }
+    },
+    "env": {
+        "browser": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "google"
+    ],
+    "rules": {
+        "max-len": 0,
+        "brace-style": 0,
+        "no-invalid-this": 1
+    }
+}
