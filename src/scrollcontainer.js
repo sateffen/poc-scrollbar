@@ -4,7 +4,7 @@
  * struct, just ask.
  */
 
-import {ScrollView} from './scrollview';
+import { ScrollView } from './scrollview';
 
 /**
  * The scroll container represents the main element, which contains too long
@@ -49,8 +49,11 @@ export default class ScrollContainer {
                 this.scrollLeft(this._container.scrollLeft + aEvent.deltaX);
 
                 // and if something actually changed
-                if (currentScrollTop !== this._container.scrollTop || currentScrollLeft !== this._container.scrollLeft) {
-                    // we call prevent default, so the browser and other scrollbars won't do anything
+                if (currentScrollTop !== this._container.scrollTop ||
+                    currentScrollLeft !== this._container.scrollLeft
+                ) {
+                    // we call prevent default, so the browser and other scrollbars won't
+                    // do anything
                     aEvent.preventDefault();
                 }
             },
@@ -111,7 +114,8 @@ export default class ScrollContainer {
 
         // then setup an interval, that executes the interval handler and checks the container
         // for changes
-        this._intervalPointer = window.setInterval(this._createIntervalHandler(), aOptions.checkInterval || 300);
+        this._intervalPointer = window.setInterval(
+            this._createIntervalHandler(), aOptions.checkInterval || 300);
 
         // then go and set the style for the container element. It's important to disable overflow
         // and set the container to some style, that acts as container for absolute elements
@@ -149,7 +153,10 @@ export default class ScrollContainer {
         return () => {
             // search for the root element of this element
             let potentialRootElement = this._container.parentElement;
-            while (potentialRootElement != undefined && potentialRootElement !== document.body) {
+            while (potentialRootElement !== null &&
+                potentialRootElement !== undefined &&
+                potentialRootElement !== document.body
+            ) {
                 potentialRootElement = potentialRootElement.parentElement;
             }
 
@@ -160,9 +167,10 @@ export default class ScrollContainer {
             this._scrollView.scrollLeftUpdated(0);
 
             // if there is no root element
-            if (potentialRootElement == undefined) {
+            if (potentialRootElement === null || potentialRootElement === undefined) {
                 // simply destroy everything, because we are detached from DOM
-                return this.destroy();
+                this.destroy();
+                return;
             }
             // else check if something has changed
             else if (
@@ -183,13 +191,15 @@ export default class ScrollContainer {
 
             if (this._scrollTop !== this._container.scrollTop) {
                 this.scrollTop(this._container.scrollTop);
-            } else if (oldScrollTop < scrollHeight) {
+            }
+            else if (oldScrollTop < scrollHeight) {
                 this._scrollView.scrollTopUpdated(oldScrollTop);
             }
 
             if (this._scrollLeft !== this._container.scrollLeft) {
                 this.scrollLeft(this._container.scrollLeft);
-            } else if (oldScrollLeft < scrollWidth) {
+            }
+            else if (oldScrollLeft < scrollWidth) {
                 this._scrollView.scrollLeftUpdated(oldScrollLeft);
             }
         };
@@ -208,23 +218,25 @@ export default class ScrollContainer {
             return this._container.scrollTop;
         }
 
-        // then validate the scrollTop value
-        if (aScrollTop < 0) {
-            aScrollTop = 0;
-        } else if (aScrollTop > this._container.scrollHeight - this._container.clientHeight) {
-            aScrollTop = this._container.scrollHeight - this._container.clientHeight;
+        let newScrollTop = aScrollTop;
+        // then validate the newScrollTop value
+        if (newScrollTop < 0) {
+            newScrollTop = 0;
+        }
+        else if (newScrollTop > this._container.scrollHeight - this._container.clientHeight) {
+            newScrollTop = this._container.scrollHeight - this._container.clientHeight;
         }
 
         // if the scroll top has changed
-        if (this._scrollTop !== aScrollTop) {
+        if (this._scrollTop !== newScrollTop) {
             // call the update trigger and save the scroll top value
-            this._scrollView.scrollTopUpdated(aScrollTop);
-            this._container.scrollTop = aScrollTop;
-            this._scrollTop = aScrollTop;
+            this._scrollView.scrollTopUpdated(newScrollTop);
+            this._container.scrollTop = newScrollTop;
+            this._scrollTop = newScrollTop;
         }
 
         // finally simply return the scrollTop value
-        return aScrollTop;
+        return newScrollTop;
     }
 
     /**
@@ -240,23 +252,25 @@ export default class ScrollContainer {
             return this._container.scrollLeft;
         }
 
+        let newScrollLeft = aScrollLeft;
         // now validate the scrollLeft value
-        if (aScrollLeft < 0) {
-            aScrollLeft = 0;
-        } else if (aScrollLeft > this._container.scrollWidth - this._container.clientWidth) {
-            aScrollLeft = this._container.scrollWidth - this._container.clientWidth;
+        if (newScrollLeft < 0) {
+            newScrollLeft = 0;
+        }
+        else if (newScrollLeft > this._container.scrollWidth - this._container.clientWidth) {
+            newScrollLeft = this._container.scrollWidth - this._container.clientWidth;
         }
 
         // if scrollLeft has changed
-        if (this._scrollLeft !== aScrollLeft) {
+        if (this._scrollLeft !== newScrollLeft) {
             // call the update trigger and save set the scrollLeft value
-            this._scrollView.scrollLeftUpdated(aScrollLeft);
-            this._container.scrollLeft = aScrollLeft;
-            this._scrollLeft = aScrollLeft;
+            this._scrollView.scrollLeftUpdated(newScrollLeft);
+            this._container.scrollLeft = newScrollLeft;
+            this._scrollLeft = newScrollLeft;
         }
 
         // finally return the scrollLeft value
-        return aScrollLeft;
+        return newScrollLeft;
     }
 
     /**

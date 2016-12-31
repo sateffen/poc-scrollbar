@@ -1,6 +1,6 @@
 
 
-import {generateEventHandlerForElement, applyOptionsToScollBarElement} from './helper';
+import { generateEventHandlerForElement, applyOptionsToScollBarElement } from './helper';
 
 /**
  * The scrollView is the visual representation of the current scroll state. While the scroll
@@ -33,9 +33,12 @@ export class ScrollView {
 
         // create the event handler for the scroll elements if it's not disabled
         if (!aOptions.disableInteractionWithScrollbars) {
-            this._xEventListener = generateEventHandlerForElement.call(this, 'pageX', '_scrollWidthFactor', 'scrollLeft');
-            this._yEventListener = generateEventHandlerForElement.call(this, 'pageY', '_scrollHeightFactor', 'scrollTop');
-        } else {
+            this._xEventListener = generateEventHandlerForElement
+                .call(this, 'pageX', '_scrollWidthFactor', 'scrollLeft');
+            this._yEventListener = generateEventHandlerForElement
+                .call(this, 'pageY', '_scrollHeightFactor', 'scrollTop');
+        }
+        else {
             this._xEventListener = {};
             this._yEventListener = {};
         }
@@ -85,11 +88,11 @@ export class ScrollView {
     scrollTopUpdated(aScrollTop) {
         if (this._parentScrollHeight > this._parentHeight) {
             let partSize = aScrollTop / (this._parentScrollHeight - this._parentHeight);
-            partSize = partSize * (this._parentHeight - this._elementHeight);
-            this._yElement.style.top = aScrollTop + partSize + 'px';
+            partSize *= (this._parentHeight - this._elementHeight);
+            this._yElement.style.top = `${aScrollTop + partSize}px`;
         }
 
-        this._xElement.style.top = Math.floor(aScrollTop + this._parentHeight) + 'px';
+        this._xElement.style.top = `${Math.floor(aScrollTop + this._parentHeight)}px`;
     }
 
     /**
@@ -101,11 +104,11 @@ export class ScrollView {
     scrollLeftUpdated(aScrollLeft) {
         if (this._parentScrollWidth > this._parentWidth) {
             let partSize = aScrollLeft / (this._parentScrollWidth - this._parentWidth);
-            partSize = partSize * (this._parentWidth - this._elementWidth);
-            this._xElement.style.left = aScrollLeft + partSize + 'px';
+            partSize *= (this._parentWidth - this._elementWidth);
+            this._xElement.style.left = `${aScrollLeft + partSize}px`;
         }
 
-        this._yElement.style.left = Math.floor(aScrollLeft + this._parentWidth) + 'px';
+        this._yElement.style.left = `${Math.floor(aScrollLeft + this._parentWidth)}px`;
     }
 
     /**
@@ -116,10 +119,10 @@ export class ScrollView {
         // read and recalculate all needed data
         this._parentWidth = this._parent.clientWidth;
         this._parentScrollWidth = this._parent.scrollWidth;
-        this._elementWidth = this._parentWidth * this._parentWidth / this._parentScrollWidth;
+        this._elementWidth = (this._parentWidth * this._parentWidth) / this._parentScrollWidth;
         this._parentHeight = this._parent.clientHeight;
         this._parentScrollHeight = this._parent.scrollHeight;
-        this._elementHeight = this._parentHeight * this._parentHeight / this._parentScrollHeight;
+        this._elementHeight = (this._parentHeight * this._parentHeight) / this._parentScrollHeight;
         this._scrollHeightFactor = this._parent.scrollHeight / this._parent.clientHeight;
         this._scrollWidthFactor = this._parent.scrollWidth / this._parent.clientWidth;
 
@@ -132,8 +135,9 @@ export class ScrollView {
 
             this.scrollTopUpdated(this._parent.scrollTop);
             this._xElement.style.display = 'block';
-            this._xElement.style.width = this._elementWidth + 'px';
-        } else {
+            this._xElement.style.width = `${this._elementWidth}px`;
+        }
+        else {
             this._xElement.style.display = 'none';
         }
 
@@ -146,8 +150,9 @@ export class ScrollView {
 
             this.scrollLeftUpdated(this._parent.scrollLeft);
             this._yElement.style.display = 'block';
-            this._yElement.style.height = this._elementHeight + 'px';
-        } else {
+            this._yElement.style.height = `${this._elementHeight}px`;
+        }
+        else {
             this._yElement.style.display = 'none';
         }
     }

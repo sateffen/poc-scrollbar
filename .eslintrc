@@ -9,15 +9,20 @@
         }
     },
     "env": {
-        "browser": true
+        "browser": true,
+        "jasmine": true
     },
     "extends": [
         "eslint:recommended",
-        "google"
+        "airbnb-base"
     ],
     "rules": {
-        "max-len": 0,
-        "brace-style": 0,
-        "no-invalid-this": 1
+        "no-invalid-this": "warn",
+        "no-underscore-dangle": "off",
+        "indent": ["warn", 4],
+        "brace-style": ["error", "stroustrup"],
+        "max-len": ["error", 120],
+        "import/prefer-default-export": "off",
+        "line-break-style": "off"
     }
 }

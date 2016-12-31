@@ -11,11 +11,11 @@ module.exports = {
             presets: [
                 [
                     'es2015',
-                    { modules: false },
-                ],
+                    { modules: false }
+                ]
             ],
             plugins: [
-                'external-helpers',
+                'external-helpers'
             ]
         })
     ]
