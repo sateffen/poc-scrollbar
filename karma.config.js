@@ -2,14 +2,14 @@ const babel = require('rollup-plugin-babel');
 
 module.exports = (config) => {
     config.set({
-        browsers: ['PhantomJS'],
+        browsers: ['Chrome'],
         frameworks: ['jasmine'],
         reporters: ['progress'],
         files: [
-            'test/**/*.test.js',
+            'test/**/*.spec.js',
         ],
         preprocessors: {
-            'test/**/*.test.js': ['rollup'],
+            'test/**/*.spec.js': ['rollup'],
         },
         rollupPreprocessor: {
             plugins: [
