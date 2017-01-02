@@ -1,4 +1,4 @@
-const babel = require('rollup-plugin-babel');
+const buble = require('rollup-plugin-buble');
 
 module.exports = (config) => {
     config.set({
@@ -13,15 +13,7 @@ module.exports = (config) => {
         },
         rollupPreprocessor: {
             plugins: [
-                babel({
-                    exclude: 'node_modules/**',
-                    presets: [
-                        ['es2015', { modules: false }],
-                    ],
-                    plugins: [
-                        'external-helpers',
-                    ]
-                })
+                buble(),
             ],
             format: 'iife',
             sourceMap: 'inline',

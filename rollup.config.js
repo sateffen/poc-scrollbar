@@ -1,5 +1,5 @@
 /* global require, module*/
-const babel = require('rollup-plugin-babel');
+const buble = require('rollup-plugin-buble');
 
 module.exports = {
     entry: 'src/scrollcontainer.js',
@@ -7,16 +7,6 @@ module.exports = {
     moduleName: 'pocScrollbar',
     dest: 'dist/pocscrollbar.js',
     plugins: [
-        babel({
-            presets: [
-                [
-                    'es2015',
-                    { modules: false }
-                ]
-            ],
-            plugins: [
-                'external-helpers'
-            ]
-        })
+        buble(),
     ]
 };
