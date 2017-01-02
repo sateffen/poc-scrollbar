@@ -67,22 +67,22 @@ export default class ScrollContainer {
                 // save a pointer to the touch to track. This should help to support multitouch
                 const touchToTrack = aEvent.which || 0;
                 // and save temporary variables for the move calculation
-                let tmpMoverX = aEvent.touches[touchToTrack].pageX;
-                let tmpMoverY = aEvent.touches[touchToTrack].pageY;
+                let tmpMoverX = aEvent.touches[touchToTrack].clientX;
+                let tmpMoverY = aEvent.touches[touchToTrack].clientY;
 
                 // then setup a move function pointer
-                let tmpMovePointer = (e) => {
+                let tmpMovePointer = (aaEvent) => {
                     // which only tracks the correct touch
-                    if (e.which !== touchToTrack) {
+                    if (aaEvent.which !== touchToTrack) {
                         return;
                     }
 
                     // calculates the distance
-                    const distanceX = tmpMoverX - e.touches[touchToTrack].pageX;
-                    const distanceY = tmpMoverY - e.touches[touchToTrack].pageY;
+                    const distanceX = tmpMoverX - aaEvent.touches[touchToTrack].clientX;
+                    const distanceY = tmpMoverY - aaEvent.touches[touchToTrack].clientY;
 
-                    tmpMoverX = e.touches[touchToTrack].pageX;
-                    tmpMoverY = e.touches[touchToTrack].pageY;
+                    tmpMoverX = aaEvent.touches[touchToTrack].clientX;
+                    tmpMoverY = aaEvent.touches[touchToTrack].clientY;
 
                     // and triggers an update for scrollTop and scrollLeft
                     this.scrollTop(this._container.scrollTop + distanceY);
@@ -90,9 +90,9 @@ export default class ScrollContainer {
                 };
 
                 // finally setup a pointer to a touchend function handler
-                let tmpEndPointer = (e) => {
+                let tmpEndPointer = (aaEvent) => {
                     // which only reacts to the correct touch
-                    if (e.which !== touchToTrack) {
+                    if (aaEvent.which !== touchToTrack) {
                         return;
                     }
                     // deregisters the event handlers

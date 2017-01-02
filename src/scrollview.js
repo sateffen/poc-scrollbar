@@ -32,15 +32,15 @@ export class ScrollView {
         this._yElement = document.createElement('div');
 
         // create the event handler for the scroll elements if it's not disabled
-        if (!aOptions.disableInteractionWithScrollbars) {
-            this._xEventListener = generateEventHandlerForElement
-                .call(this, 'pageX', '_scrollWidthFactor', 'scrollLeft');
-            this._yEventListener = generateEventHandlerForElement
-                .call(this, 'pageY', '_scrollHeightFactor', 'scrollTop');
-        }
-        else {
+        if (aOptions.disableInteractionWithScrollbars) {
             this._xEventListener = {};
             this._yEventListener = {};
+        }
+        else {
+            this._xEventListener = generateEventHandlerForElement
+                .call(this, 'clientX', '_scrollWidthFactor', 'scrollLeft');
+            this._yEventListener = generateEventHandlerForElement
+                .call(this, 'clientY', '_scrollHeightFactor', 'scrollTop');
         }
 
         // style some x specific things

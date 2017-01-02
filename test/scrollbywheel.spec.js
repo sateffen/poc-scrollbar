@@ -1,6 +1,6 @@
 import ScrollContainer from '../src/scrollcontainer';
 
-describe('Scrollbar Wheel', () => {
+describe('Scroll by wheel', () => {
     let instance = null;
     let parent = null;
     let child = null;
@@ -26,8 +26,8 @@ describe('Scrollbar Wheel', () => {
         });
         jasmine.clock().tick(301);
 
-        verticalScrollbar = document.querySelector('.scrollbar.vertical');
-        horizontalScrollbar = document.querySelector('.scrollbar.horizontal');
+        verticalScrollbar = parent.querySelector('.scrollbar.vertical');
+        horizontalScrollbar = parent.querySelector('.scrollbar.horizontal');
     });
 
     afterEach(() => {

@@ -26,8 +26,8 @@ describe('Scrollbar Setup', () => {
         });
         jasmine.clock().tick(301);
 
-        verticalScrollbar = document.querySelector('.scrollbar.vertical');
-        horizontalScrollbar = document.querySelector('.scrollbar.horizontal');
+        verticalScrollbar = parent.querySelector('.scrollbar.vertical');
+        horizontalScrollbar = parent.querySelector('.scrollbar.horizontal');
     });
 
     afterEach(() => {
@@ -64,5 +64,27 @@ describe('Scrollbar Setup', () => {
         // we can't expect the horizontalScrollbar width, because it's uninitialized at this point
         expect(verticalScrollbar.style.width).toBe('0px');
         expect(verticalScrollbar.style.height).toBe('50px');
+    });
+
+    it('should not add a X scrollbar if disableXScrolling is true', () => {
+        instance.destroy();
+        instance = new ScrollContainer(parent, {
+            xElementClass: ['scrollbar', 'horizontal'],
+            yElementClass: ['scrollbar', 'vertical'],
+            disableXScrolling: true,
+        });
+
+        expect(parent.querySelector('.scrollbar.horizontal')).toBeNull();
+    });
+
+    it('should not add a Y scrollbar if disableYScrolling is true', () => {
+        instance.destroy();
+        instance = new ScrollContainer(parent, {
+            xElementClass: ['scrollbar', 'horizontal'],
+            yElementClass: ['scrollbar', 'vertical'],
+            disableYScrolling: true,
+        });
+
+        expect(parent.querySelector('.scrollbar.vertical')).toBeNull();
     });
 });
