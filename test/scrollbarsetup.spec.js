@@ -22,7 +22,8 @@ describe('Scrollbar Setup', () => {
         jasmine.clock().install();
         instance = new ScrollContainer(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
-            yElementClass: ['scrollbar', 'vertical']
+            yElementClass: ['scrollbar', 'vertical'],
+            useInterval: true,
         });
         jasmine.clock().tick(301);
 
@@ -72,6 +73,7 @@ describe('Scrollbar Setup', () => {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
             disableXScrolling: true,
+            useInterval: true,
         });
 
         expect(parent.querySelector('.scrollbar.horizontal')).toBeNull();
@@ -83,6 +85,7 @@ describe('Scrollbar Setup', () => {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
             disableYScrolling: true,
+            useInterval: true,
         });
 
         expect(parent.querySelector('.scrollbar.vertical')).toBeNull();

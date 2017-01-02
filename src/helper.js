@@ -1,5 +1,4 @@
 
-
 /**
  * This function generates event handlers for a scrollbar element, based on given data.
  * Warning: You need to set the this context of this function to the scrollView instance you're working with!
@@ -7,7 +6,7 @@
  * @param {string} aAttribute The attribute to use from the event for calculation
  * @param {string} aPropertyFactor The factor for scroll top and left to compensate for normal distances
  * @param {string} aParentWriteCallback The name for the callback where to write to
- * @return {Object} An object containing event handlers for the scrollbar
+ * @return {object} An object containing event handlers for the scrollbar
  */
 export function generateEventHandlerForElement(aAttribute, aPropertyFactor, aParentWriteCallback) {
     return {
@@ -103,7 +102,7 @@ export function generateEventHandlerForElement(aAttribute, aPropertyFactor, aPar
  *
  * @param {HTMLElement} aElement The scrollbar element to apply the options to
  * @param {string} aElementName The element name (xElement and yElement) to create the options read propertys from
- * @param {Object} aOptions The options to read from
+ * @param {object} aOptions The options to read from
  */
 export function applyOptionsToScollBarElement(aElement, aElementName, aOptions) {
     // frist create the option keys, that should get read
@@ -129,4 +128,22 @@ export function applyOptionsToScollBarElement(aElement, aElementName, aOptions) 
             aElement.classList.add(aClass);
         });
     }
+}
+
+/**
+ * Debounces given callback by given waittime
+ *
+ * @param {function} aCallback The callback to call debounced
+ * @param {number} aWaitTime The time to wait till calling the callback
+ * @return {function} The replacment function
+ */
+export function debounce(aCallback, aWaitTime) {
+    let pointer = null;
+
+    return () => {
+        window.clearTimeout(pointer);
+        pointer = window.setTimeout(() => {
+            aCallback();
+        }, aWaitTime);
+    };
 }

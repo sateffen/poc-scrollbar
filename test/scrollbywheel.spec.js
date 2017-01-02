@@ -22,7 +22,8 @@ describe('Scroll by wheel', () => {
         jasmine.clock().install();
         instance = new ScrollContainer(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
-            yElementClass: ['scrollbar', 'vertical']
+            yElementClass: ['scrollbar', 'vertical'],
+            useInterval: true,
         });
         jasmine.clock().tick(301);
 

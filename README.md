@@ -1,8 +1,12 @@
 # poc-scroller ![codeship status](https://codeship.com/projects/caec9210-ade5-0134-3cb2-36e7a5ec89be/status?branch=master)
 
-This is a rework of the scroller project, which I want to publish to NPM.
-The problem with the scroller is, that the name is taken, and I want to make some changes under the hood
-(development process and so on).
+This is a proof-of-concept scrollbar (poc-scrollbar), that just works.
+
+## Requirements
+
+This scrollbar uses the MutationObserver, so your browser has to support the MutationObserver. You can tell
+the library to use an interval checker instead, by using the option *useInterval* (see further down), but it's
+recommended to use the MutationObserver.
 
 ## Basic API
 
@@ -44,11 +48,16 @@ There are some options, you can use:
     * Description: This option tells the scrollbars not to interact with mouse and touch. This way you can disable
     scrolling with holding the scrollbars, so it's just an indicator, nothing interactive.
     * Default: false
+* useInterval
+    * Type: Boolean
+    * Description: Tells the observer to use an interval to check the container for changes regulary. This option
+    disables the MutationObserver, and should help you if you experience a huge load with the MutationObserver.
+    * Default: false
 * checkInterval
     * Type: Number
-    * Description: This option will tell, in what interval the container should be checked. The interval will check
-    the size of the container itself, and whether the container is in the DOM tree or not. If the container is not
-    in the DOM tree anymore, the destroy method is invoked automatically. The unit is ms.
+    * Description: This option depends on *useInterval*. If *useInterval* is false (default), this tells the debounce
+    time for the mutation observer to wait, after the last DOM update has happend. If *useInterval* is true, this tells
+    the time for the interval to check for updates to the DOM.
     * Default: 300
 * disableXScrolling
     * Type: Boolean

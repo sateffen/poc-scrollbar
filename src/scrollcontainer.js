@@ -5,6 +5,7 @@
  */
 
 import { ScrollView } from './scrollview';
+import { debounce } from './helper';
 
 /**
  * The scroll container represents the main element, which contains too long
@@ -112,10 +113,17 @@ export default class ScrollContainer {
             },
         };
 
-        // then setup an interval, that executes the interval handler and checks the container
-        // for changes
-        this._intervalPointer = window.setInterval(
-            this._createIntervalHandler(), aOptions.checkInterval || 300);
+        const mutationHandler = this._getMutationHandler();
+        const checkInterval = typeof aOptions.checkInterval === 'number' ? aOptions.checkInterval : 300;
+        if (aOptions.useInterval) {
+            this._mutationObserver = window.setInterval(mutationHandler, checkInterval);
+        }
+        else {
+            this._mutationObserver = new MutationObserver(debounce(mutationHandler, checkInterval));
+            this._mutationObserver.observe(this._container, {
+                attributes: true, childList: true, characterData: true, subtree: true,
+            });
+        }
 
         // then go and set the style for the container element. It's important to disable overflow
         // and set the container to some style, that acts as container for absolute elements
@@ -142,7 +150,7 @@ export default class ScrollContainer {
      * @private
      * @return {function} An interval handler to call at each tick
      */
-    _createIntervalHandler() {
+    _getMutationHandler() {
         // setup some variables, that serve as cache for the closure
         let containerHeight = this._container.clientHeight;
         let containerWidth = this._container.clientWidth;
@@ -160,6 +168,8 @@ export default class ScrollContainer {
                 potentialRootElement = potentialRootElement.parentElement;
             }
 
+            // then we reset the scrollbars to 0, because we want the INNER elements
+            // to determine the position, not the outer ones
             const oldScrollTop = this._scrollTop;
             const oldScrollLeft = this._scrollLeft;
 
@@ -278,8 +288,14 @@ export default class ScrollContainer {
      * event listeners and so on get removed and destroyed.
      */
     destroy() {
-        // first clear the interval
-        window.clearInterval(this._intervalPointer);
+        // clear the mutation observer
+        if (this._options.useInterval) {
+            window.clearInterval(this._mutationObserver);
+        }
+        else {
+            this._mutationObserver.disconnect();
+            this._mutationObserver = null;
+        }
 
         // then clean up the event listeners
         Object.keys(this._eventListener).forEach((aKey) => {

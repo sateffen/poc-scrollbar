@@ -26,6 +26,7 @@ describe('Scroll by scrollbar', () => {
                     xElementClass: ['scrollbar', 'horizontal'],
                     yElementClass: ['scrollbar', 'vertical'],
                     disableInteractionWithScrollbars: !canScroll,
+                    useInterval: true,
                 });
                 jasmine.clock().tick(301);
 

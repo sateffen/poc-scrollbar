@@ -4,8 +4,6 @@ describe('Scroll by touch', () => {
     let instance = null;
     let parent = null;
     let child = null;
-    let verticalScrollbar = null;
-    let horizontalScrollbar = null;
 
     beforeEach(() => {
         instance = null;
@@ -22,12 +20,10 @@ describe('Scroll by touch', () => {
         jasmine.clock().install();
         instance = new ScrollContainer(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
-            yElementClass: ['scrollbar', 'vertical']
+            yElementClass: ['scrollbar', 'vertical'],
+            useInterval: true,
         });
         jasmine.clock().tick(301);
-
-        verticalScrollbar = parent.querySelector('.scrollbar.vertical');
-        horizontalScrollbar = parent.querySelector('.scrollbar.horizontal');
     });
 
     afterEach(() => {
@@ -91,6 +87,7 @@ describe('Scroll by touch', () => {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
             disableTouchScrollingOnContainer: true,
+            useInterval: true,
         });
         const startEvent = new TouchEvent('touchstart', {
             touches: [
