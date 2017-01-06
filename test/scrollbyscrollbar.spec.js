@@ -21,14 +21,11 @@ describe('Scroll by scrollbar', () => {
 
                 parent.appendChild(child);
                 document.body.appendChild(parent);
-                jasmine.clock().install();
                 instance = new ScrollContainer(parent, {
                     xElementClass: ['scrollbar', 'horizontal'],
                     yElementClass: ['scrollbar', 'vertical'],
                     disableInteractionWithScrollbars: !canScroll,
-                    useInterval: true,
                 });
-                jasmine.clock().tick(301);
 
                 verticalScrollbar = parent.querySelector('.scrollbar.vertical');
                 horizontalScrollbar = parent.querySelector('.scrollbar.horizontal');
@@ -43,7 +40,6 @@ describe('Scroll by scrollbar', () => {
                     instance.destroy();
                     instance = null;
                 }
-                jasmine.clock().uninstall();
             });
 
             it('should scroll vertically if the vertical scrollbar is moved with the mouse', () => {

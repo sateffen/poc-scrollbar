@@ -17,13 +17,10 @@ describe('Scroll by touch', () => {
 
         parent.appendChild(child);
         document.body.appendChild(parent);
-        jasmine.clock().install();
         instance = new ScrollContainer(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
-            useInterval: true,
         });
-        jasmine.clock().tick(301);
     });
 
     afterEach(() => {
@@ -35,7 +32,6 @@ describe('Scroll by touch', () => {
             instance.destroy();
             instance = null;
         }
-        jasmine.clock().uninstall();
     });
 
     it('should scroll correctly when using touch events', () => {

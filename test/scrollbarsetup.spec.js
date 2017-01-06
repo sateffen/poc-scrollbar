@@ -19,13 +19,10 @@ describe('Scrollbar Setup', () => {
 
         parent.appendChild(child);
         document.body.appendChild(parent);
-        jasmine.clock().install();
         instance = new ScrollContainer(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
-            useInterval: true,
         });
-        jasmine.clock().tick(301);
 
         verticalScrollbar = parent.querySelector('.scrollbar.vertical');
         horizontalScrollbar = parent.querySelector('.scrollbar.horizontal');
@@ -40,7 +37,6 @@ describe('Scrollbar Setup', () => {
             instance.destroy();
             instance = null;
         }
-        jasmine.clock().uninstall();
     });
 
     it('should not change a height initializing the scrollbar', () => {
