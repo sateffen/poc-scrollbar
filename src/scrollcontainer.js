@@ -113,8 +113,12 @@ export default class ScrollContainer {
             },
         };
 
+        // first we generate the needed data for mutation handling
         const mutationHandler = this._getMutationHandler();
         const checkInterval = typeof aOptions.checkInterval === 'number' ? aOptions.checkInterval : 300;
+        // then we validate the useInterval option
+        this._options.useInterval = MutationObserver ? this._options.useInterval : true;
+        // and then we setup the corresponding mutation handler
         if (aOptions.useInterval) {
             this._mutationObserver = window.setInterval(mutationHandler, checkInterval);
         }
