@@ -20,10 +20,10 @@ export class ScrollView {
         this._scrollerParent = aParentInstance;
         this._options = aOptions;
 
-        // then calculate a scroll factor, that is used for scrolling with the scrollbars itself.
-        // The problem is, that if the user grabs the vertical scrollbar, and drags it 10px down
-        // the scrollTop changed not only by ten, but 10*scrollheight/height. This is because of
-        // the absolute positioning relative to the parent
+        // then calculate a initial scroll factor, that is used for scrolling with the scrollbars
+        // itself. The problem is, that if the user grabs the vertical scrollbar, and drags it
+        // 10px down the scrollTop changed not only by ten, but 10*scrollheight/height. This is
+        // because of the absolute positioning relative to the parent
         this._scrollHeightFactor = this._parent.scrollHeight / this._parent.clientHeight;
         this._scrollWidthFactor = this._parent.scrollWidth / this._parent.clientWidth;
 

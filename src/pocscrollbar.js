@@ -24,111 +24,17 @@ export default class PocScrollbar {
      * @param {Object} [aOptions = {}] The provided options. For details see README.md
      */
     constructor(aElement, aOptions = {}) {
-        // first save the given values
+        // first we initialize all member properties
         this._container = aElement;
         this._options = aOptions;
-        // then create a new scrollView, based on the PocScrollbars static property
-        this._scrollView = new ScrollView(this, aOptions);
+        this._scrollTop = 0;
+        this._scrollLeft = 0;
+        this._scrollView = new ScrollView(this, this._options);
+        this._destroyCallbacks = [
+            () => this._scrollView.destroy(),
+        ];
 
-        // Then setup the event listeners, that help scrolling in the container. This is
-        // done in a saved object, not as methods, so we can easily add and remove the
-        // eventlisteners
-        this._eventListener = {
-            // on scroll just add the scroll delta to behave naturally
-            wheel: (aEvent) => {
-                // if the default is prevented, we ignore this event
-                if (aEvent.defaultPrevented) {
-                    return;
-                }
-
-                // else we store the old values
-                const currentScrollTop = this._container.scrollTop;
-                const currentScrollLeft = this._container.scrollLeft;
-
-                // trigger the changing
-                this.scrollTop(this._container.scrollTop + aEvent.deltaY);
-                this.scrollLeft(this._container.scrollLeft + aEvent.deltaX);
-
-                // and if something actually changed
-                if (currentScrollTop !== this._container.scrollTop ||
-                    currentScrollLeft !== this._container.scrollLeft
-                ) {
-                    // we call prevent default, so the browser and other scrollbars won't
-                    // do anything
-                    aEvent.preventDefault();
-                }
-            },
-            // on touch see, if there is touch disabled, and if not, handle scroll like
-            // most people know it
-            touchstart: (aEvent) => {
-                if (aEvent.defaultPrevented || aOptions.disableTouchScrollingOnContainer) {
-                    return;
-                }
-
-                // save a pointer to the touch to track. This should help to support multitouch
-                const touchToTrack = aEvent.which || 0;
-                // and save temporary variables for the move calculation
-                let tmpMoverX = aEvent.touches[touchToTrack].clientX;
-                let tmpMoverY = aEvent.touches[touchToTrack].clientY;
-
-                // then setup a move function pointer
-                let tmpMovePointer = (aaEvent) => {
-                    // which only tracks the correct touch
-                    if (aaEvent.which !== touchToTrack) {
-                        return;
-                    }
-
-                    // calculates the distance
-                    const distanceX = tmpMoverX - aaEvent.touches[touchToTrack].clientX;
-                    const distanceY = tmpMoverY - aaEvent.touches[touchToTrack].clientY;
-
-                    tmpMoverX = aaEvent.touches[touchToTrack].clientX;
-                    tmpMoverY = aaEvent.touches[touchToTrack].clientY;
-
-                    // and triggers an update for scrollTop and scrollLeft
-                    this.scrollTop(this._container.scrollTop + distanceY);
-                    this.scrollLeft(this._container.scrollLeft + distanceX);
-                };
-
-                // finally setup a pointer to a touchend function handler
-                let tmpEndPointer = (aaEvent) => {
-                    // which only reacts to the correct touch
-                    if (aaEvent.which !== touchToTrack) {
-                        return;
-                    }
-                    // deregisters the event handlers
-                    document.body.removeEventListener('touchmove', tmpMovePointer);
-                    document.body.removeEventListener('touchend', tmpEndPointer);
-                    document.body.removeEventListener('touchleave', tmpEndPointer);
-
-                    // and nulls the pointer for freeing memory
-                    tmpMovePointer = null;
-                    tmpEndPointer = null;
-                };
-
-                // and finally add the event handlers, so this will actually work correctly
-                document.body.addEventListener('touchmove', tmpMovePointer);
-                document.body.addEventListener('touchend', tmpEndPointer);
-                document.body.addEventListener('touchleave', tmpEndPointer);
-            },
-        };
-
-        // first we generate the needed data for mutation handling
-        const mutationHandler = this._getMutationHandler();
-        const checkInterval = typeof aOptions.checkInterval === 'number' ? aOptions.checkInterval : 300;
-        // then we validate the useMutationObserver option
-        this._options.useMutationObserver = MutationObserver ? this._options.useMutationObserver : false;
-        // and then we setup the corresponding mutation handler
-        if (aOptions.useMutationObserver) {
-            this._mutationObserver = new MutationObserver(debounce(mutationHandler, checkInterval));
-            this._mutationObserver.observe(this._container, {
-                attributes: true, childList: true, characterData: true, subtree: true,
-            });
-        }
-        else {
-            this._mutationObserver = window.setInterval(mutationHandler, checkInterval);
-        }
-
+        // SETUP STYLE
         // then go and set the style for the container element. It's important to disable overflow
         // and set the container to some style, that acts as container for absolute elements
         this._container.style.overflow = 'hidden';
@@ -137,15 +43,131 @@ export default class PocScrollbar {
             this._container.style.position = 'relative';
         }
 
-        // then attach all event handlers to the container
-        Object.keys(this._eventListener).forEach((aKey) => {
-            this._container.addEventListener(aKey, this._eventListener[aKey]);
+        // SETUP MUTATION HANDLING
+        // first we generate the data for the observers, and validate the options
+        const checkInterval = typeof this._options.checkInterval === 'number' ? this._options.checkInterval : 300;
+        const mutationHandler = this._getMutationHandler();
+        const debouncedMutationHandler = debounce(mutationHandler, checkInterval);
+        // then we validate the useMutationObserver option
+        this._options.useMutationObserver = MutationObserver ? this._options.useMutationObserver : false;
+
+        // and then we setup the corresponding mutation handler and its destroy callback
+        if (this._options.useMutationObserver) {
+            const mutationObserver = new MutationObserver(debouncedMutationHandler);
+            mutationObserver.observe(this._container, {
+                attributes: true, childList: true, characterData: true, subtree: true,
+            });
+
+            this._destroyCallbacks.push(mutationObserver.disconnect);
+        }
+        else {
+            const intervalPointer = window.setInterval(mutationHandler, checkInterval);
+
+            this._destroyCallbacks.push(() => window.clearInterval(intervalPointer));
+        }
+
+        // SETUP EVENT LISTENING
+        // first we setup the event listeners, that we want to register to the container
+        const eventListener = {
+            wheel: aEvent => this._wheelHandler(aEvent),
+            touchstart: aEvent => this._touchHandler(aEvent),
+        };
+
+        // then we attach all event handlers to the container
+        this._container.addEventListener('wheel', eventListener.wheel);
+        if (!this._options.disableTouchScrollingOnContainer) {
+            this._container.addEventListener('touchstart', eventListener.touchstart);
+        }
+        // and the window
+        window.addEventListener('resize', debouncedMutationHandler);
+
+        // and we generate a destroy callback for cleanup
+        this._destroyCallbacks.push(() => {
+            this._container.removeEventListener('wheel', eventListener.wheel);
+            if (!this._options.disableTouchScrollingOnContainer) {
+                this._container.removeEventListener('touchstart', eventListener.touchstart);
+            }
+            window.removeEventListener('resize', debouncedMutationHandler);
         });
 
-        this._scrollTop = 0;
-        this._scrollLeft = 0;
         // and tell the scrollView to execute a parentUpdated
         this._scrollView.parentUpdated();
+    }
+
+    _wheelHandler(aEvent) {
+        // if the default is prevented, we ignore this event
+        if (aEvent.defaultPrevented) {
+            return;
+        }
+
+        // else we store the old values
+        const currentScrollTop = this._container.scrollTop;
+        const currentScrollLeft = this._container.scrollLeft;
+
+        // trigger the changing
+        this.scrollTop(this._container.scrollTop + aEvent.deltaY);
+        this.scrollLeft(this._container.scrollLeft + aEvent.deltaX);
+
+        // and if something actually changed
+        if (currentScrollTop !== this._container.scrollTop ||
+            currentScrollLeft !== this._container.scrollLeft
+        ) {
+            // we call prevent default, so the browser and other scrollbars won't
+            // do anything
+            aEvent.preventDefault();
+        }
+    }
+
+    _touchHandler(aEvent) {
+        if (aEvent.defaultPrevented) {
+            return;
+        }
+
+        // save a pointer to the touch to track. This should help to support multitouch
+        const touchToTrack = aEvent.which || 0;
+        // and save temporary variables for the move calculation
+        let tmpMoverX = aEvent.touches[touchToTrack].clientX;
+        let tmpMoverY = aEvent.touches[touchToTrack].clientY;
+
+        // then setup a move function pointer
+        let tmpMovePointer = (aaEvent) => {
+            // which only tracks the correct touch
+            if (aaEvent.which !== touchToTrack) {
+                return;
+            }
+
+            // calculates the distance
+            const distanceX = tmpMoverX - aaEvent.touches[touchToTrack].clientX;
+            const distanceY = tmpMoverY - aaEvent.touches[touchToTrack].clientY;
+
+            tmpMoverX = aaEvent.touches[touchToTrack].clientX;
+            tmpMoverY = aaEvent.touches[touchToTrack].clientY;
+
+            // and triggers an update for scrollTop and scrollLeft
+            this.scrollTop(this._container.scrollTop + distanceY);
+            this.scrollLeft(this._container.scrollLeft + distanceX);
+        };
+
+        // finally setup a pointer to a touchend function handler
+        let tmpEndPointer = (aaEvent) => {
+            // which only reacts to the correct touch
+            if (aaEvent.which !== touchToTrack) {
+                return;
+            }
+            // deregisters the event handlers
+            document.body.removeEventListener('touchmove', tmpMovePointer);
+            document.body.removeEventListener('touchend', tmpEndPointer);
+            document.body.removeEventListener('touchleave', tmpEndPointer);
+
+            // and nulls the pointer for freeing memory
+            tmpMovePointer = null;
+            tmpEndPointer = null;
+        };
+
+        // and finally add the event handlers, so this will actually work correctly
+        document.body.addEventListener('touchmove', tmpMovePointer);
+        document.body.addEventListener('touchend', tmpEndPointer);
+        document.body.addEventListener('touchleave', tmpEndPointer);
     }
 
     /**
@@ -292,25 +314,12 @@ export default class PocScrollbar {
      * event listeners and so on get removed and destroyed.
      */
     destroy() {
-        // clear the mutation observer
-        if (this._options.useMutationObserver) {
-            this._mutationObserver.disconnect();
-            this._mutationObserver = null;
-        }
-        else {
-            window.clearInterval(this._mutationObserver);
-        }
-
-        // then clean up the event listeners
-        Object.keys(this._eventListener).forEach((aKey) => {
-            this._container.removeEventListener(aKey, this._eventListener[aKey]);
-        });
-
-        // destroy the scrollView
-        this._scrollView.destroy();
+        // execute all destroy callbacks
+        this._destroyCallbacks.forEach(aCallback => aCallback());
 
         // and null the pointers to the GC can clean up, even if this object isn't cleaned up
         this._scrollView = null;
         this._container = null;
+        this._destroyCallbacks = [];
     }
 }
