@@ -292,7 +292,6 @@ export default class PocScrollbar {
      * event listeners and so on get removed and destroyed.
      */
     destroy() {
-        debugger;
         // clear the mutation observer
         if (this._options.useMutationObserver) {
             this._mutationObserver.disconnect();
