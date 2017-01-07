@@ -34,7 +34,6 @@ export default class PocScrollbar {
             () => this._scrollView.destroy()
         ];
 
-        // SETUP STYLE
         // then go and set the style for the container element. It's important to disable overflow
         // and set the container to some style, that acts as container for absolute elements
         this._container.style.overflow = 'hidden';
@@ -43,7 +42,14 @@ export default class PocScrollbar {
             this._container.style.position = 'relative';
         }
 
-        // SETUP MUTATION HANDLING
+        this._setupMutationHandler();
+        this._setupEventListeners();
+
+        // and tell the scrollView to execute a parentUpdated
+        this._scrollView.parentUpdated();
+    }
+
+    _setupMutationHandler() {
         // first we generate the data for the observers, and validate the options
         const checkInterval = typeof this._options.checkInterval === 'number' ? this._options.checkInterval : 300;
         const mutationHandler = this._getMutationHandler();
@@ -62,11 +68,16 @@ export default class PocScrollbar {
         }
         else {
             const intervalPointer = window.setInterval(mutationHandler, checkInterval);
+            window.addEventListener('resize', debouncedMutationHandler);
 
-            this._destroyCallbacks.push(() => window.clearInterval(intervalPointer));
+            this._destroyCallbacks.push(() => {
+                window.clearInterval(intervalPointer);
+                window.removeEventListener('resize', debouncedMutationHandler);
+            });
         }
+    }
 
-        // SETUP EVENT LISTENING
+    _setupEventListeners() {
         // first we setup the event listeners, that we want to register to the container
         const eventListener = {
             wheel: aEvent => this._wheelHandler(aEvent),
@@ -78,8 +89,6 @@ export default class PocScrollbar {
         if (!this._options.disableTouchScrollingOnContainer) {
             this._container.addEventListener('touchstart', eventListener.touchstart);
         }
-        // and the window
-        window.addEventListener('resize', debouncedMutationHandler);
 
         // and we generate a destroy callback for cleanup
         this._destroyCallbacks.push(() => {
@@ -87,11 +96,7 @@ export default class PocScrollbar {
             if (!this._options.disableTouchScrollingOnContainer) {
                 this._container.removeEventListener('touchstart', eventListener.touchstart);
             }
-            window.removeEventListener('resize', debouncedMutationHandler);
         });
-
-        // and tell the scrollView to execute a parentUpdated
-        this._scrollView.parentUpdated();
     }
 
     _wheelHandler(aEvent) {
