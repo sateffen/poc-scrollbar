@@ -6,17 +6,17 @@ module.exports = (config) => {
         frameworks: ['jasmine'],
         reporters: ['progress'],
         files: [
-            'test/**/*.spec.js',
+            'test/**/*.spec.js'
         ],
         preprocessors: {
-            'test/**/*.spec.js': ['rollup'],
+            'test/**/*.spec.js': ['rollup']
         },
         rollupPreprocessor: {
             plugins: [
-                buble(),
+                buble()
             ],
             format: 'iife',
-            sourceMap: 'inline',
-        },
+            sourceMap: 'inline'
+        }
     });
 };

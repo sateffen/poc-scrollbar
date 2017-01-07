@@ -31,7 +31,7 @@ export default class PocScrollbar {
         this._scrollLeft = 0;
         this._scrollView = new ScrollView(this, this._options);
         this._destroyCallbacks = [
-            () => this._scrollView.destroy(),
+            () => this._scrollView.destroy()
         ];
 
         // SETUP STYLE
@@ -55,7 +55,7 @@ export default class PocScrollbar {
         if (this._options.useMutationObserver) {
             const mutationObserver = new MutationObserver(debouncedMutationHandler);
             mutationObserver.observe(this._container, {
-                attributes: true, childList: true, characterData: true, subtree: true,
+                attributes: true, childList: true, characterData: true, subtree: true
             });
 
             this._destroyCallbacks.push(mutationObserver.disconnect);
@@ -70,7 +70,7 @@ export default class PocScrollbar {
         // first we setup the event listeners, that we want to register to the container
         const eventListener = {
             wheel: aEvent => this._wheelHandler(aEvent),
-            touchstart: aEvent => this._touchHandler(aEvent),
+            touchstart: aEvent => this._touchHandler(aEvent)
         };
 
         // then we attach all event handlers to the container

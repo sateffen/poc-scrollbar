@@ -101,7 +101,7 @@ export function generateEventHandlerForElement(aAttribute, aPropertyFactor, aPar
             document.body.addEventListener('touchmove', tmpMovePointer);
             document.body.addEventListener('touchend', tmpEndPointer);
             document.body.addEventListener('touchleave', tmpEndPointer);
-        },
+        }
     };
 }
 

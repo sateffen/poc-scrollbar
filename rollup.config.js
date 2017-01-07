@@ -7,6 +7,6 @@ module.exports = {
     moduleName: 'PocScrollbar',
     dest: 'dist/pocscrollbar.js',
     plugins: [
-        buble(),
-    ],
+        buble()
+    ]
 };
