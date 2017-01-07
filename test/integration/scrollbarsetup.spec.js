@@ -1,4 +1,4 @@
-import ScrollContainer from '../../src/scrollcontainer';
+import PocScrollbar from '../../src/pocscrollbar';
 
 describe('Scrollbar Setup', () => {
     let instance = null;
@@ -19,7 +19,7 @@ describe('Scrollbar Setup', () => {
 
         parent.appendChild(child);
         document.body.appendChild(parent);
-        instance = new ScrollContainer(parent, {
+        instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
         });
@@ -65,7 +65,7 @@ describe('Scrollbar Setup', () => {
 
     it('should not add a X scrollbar if disableXScrolling is true', () => {
         instance.destroy();
-        instance = new ScrollContainer(parent, {
+        instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
             disableXScrolling: true,
@@ -77,7 +77,7 @@ describe('Scrollbar Setup', () => {
 
     it('should not add a Y scrollbar if disableYScrolling is true', () => {
         instance.destroy();
-        instance = new ScrollContainer(parent, {
+        instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
             disableYScrolling: true,

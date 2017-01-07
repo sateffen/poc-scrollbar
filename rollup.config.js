@@ -2,11 +2,11 @@
 const buble = require('rollup-plugin-buble');
 
 module.exports = {
-    entry: 'src/scrollcontainer.js',
+    entry: 'src/pocscrollbar.js',
     format: 'umd',
-    moduleName: 'pocScrollbar',
+    moduleName: 'PocScrollbar',
     dest: 'dist/pocscrollbar.js',
     plugins: [
         buble(),
-    ]
+    ],
 };

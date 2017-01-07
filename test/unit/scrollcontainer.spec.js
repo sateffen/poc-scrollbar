@@ -1,7 +1,7 @@
-import ScrollContainer from '../../src/scrollcontainer';
+import PocScrollbar from '../../src/pocscrollbar';
 
-describe('ScrollContainer', () => {
+describe('PocScrollbar', () => {
     it('should be a class', () => {
-        expect(typeof ScrollContainer).toBe('function');
+        expect(typeof PocScrollbar).toBe('function');
     });
 });

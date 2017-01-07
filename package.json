@@ -2,7 +2,7 @@
   "name": "poc-scrollbar",
   "version": "1.0.0-dev",
   "description": "A simple scrollbar that just works",
-  "main": "src/scrollcontainer.js",
+  "main": "src/pocscrollbar.js",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c --watch",

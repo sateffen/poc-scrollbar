@@ -1,4 +1,4 @@
-import ScrollContainer from '../../src/scrollcontainer';
+import PocScrollbar from '../../src/pocscrollbar';
 
 describe('Scroll by touch', () => {
     let instance = null;
@@ -17,7 +17,7 @@ describe('Scroll by touch', () => {
 
         parent.appendChild(child);
         document.body.appendChild(parent);
-        instance = new ScrollContainer(parent, {
+        instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
         });
@@ -79,7 +79,7 @@ describe('Scroll by touch', () => {
 
     it('should not scroll when using touch events if disableTouchScrollingOnContainer is true', () => {
         instance.destroy();
-        instance = new ScrollContainer(parent, {
+        instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
             disableTouchScrollingOnContainer: true,

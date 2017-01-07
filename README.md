@@ -1,18 +1,16 @@
 # poc-scroller ![codeship status](https://codeship.com/projects/caec9210-ade5-0134-3cb2-36e7a5ec89be/status?branch=master)
 
-This is a proof-of-concept scrollbar (poc-scrollbar), that just works.
+This is a scrollbar, that started out as proof-of-concept (so poc -> poc-scrollbar), but got adopted in several projects.
+It doesn't care about other libraries you use, it has no dependencies, you can just use it, and it'll do what you expect.
 
-## Requirements
-
-This scrollbar uses the MutationObserver, so your browser has to support the MutationObserver. You can tell
-the library to use an interval checker instead, by using the option *useInterval* (see further down), but it's
-recommended to use the MutationObserver.
+For details, maybe troubleshooting or so please scroll down to the "[Good to know](https://github.com/sateffen/poc-scrollbar#good-to-know)"
+section.
 
 ## Basic API
 
 This library just exports a constructor, which you can use like:
 
-    const PocScrollbar = require('poc-scrollbar');
+    const PocScrollbar = require('poc-scrollbar'); // you can use import PocScrollbar from 'poc-scrollbar' as well
     const myElement = document.getElementById(...);
     const myOptions = {...};
     const instance = new PocScrollbar(myElement, myOptions);
@@ -48,16 +46,20 @@ There are some options, you can use:
     * Description: This option tells the scrollbars not to interact with mouse and touch. This way you can disable
     scrolling with holding the scrollbars, so it's just an indicator, nothing interactive.
     * Default: false
-* useInterval
+* useMutationObserver
     * Type: Boolean
-    * Description: Tells the observer to use an interval to check the container for changes regulary. This option
-    disables the MutationObserver, and should help you if you experience a huge load with the MutationObserver.
+    * Description: Tells the scrollbar to use mutation observers instead of an interval to check for changes to the DOM.
+    This saves you some CPU power.
+    
+    **WARNING**: You have to call *destroy* by yourself when using this, because the
+    mutation observer can't observe removing the element. For details see the "[Good to know](https://github.com/sateffen/poc-scrollbar#good-to-know)"
+    section below.
     * Default: false
 * checkInterval
     * Type: Number
-    * Description: This option depends on *useInterval*. If *useInterval* is false (default), this tells the debounce
-    time for the mutation observer to wait, after the last DOM update has happend. If *useInterval* is true, this tells
-    the time for the interval to check for updates to the DOM.
+    * Description: This option depends on *useMutationObserver*. If *useMutationObserver* is false (default), this tells
+    the interval time between mutation checks. If *useMutationObserver* is true, this tells the debounce time after a
+    mutation has occured
     * Default: 300
 * disableXScrolling
     * Type: Boolean
@@ -94,8 +96,41 @@ There are some options, you can use:
     * Description: The minimal size of the y scrollbar in px.
     * Default: undefined (no minsize)
 
-## Build the code
+## Build the project
 
-To actually build the project, just install the dependencies and execute `npm run build`.
+To build the project you have to install the dependencies and run the build script. You can do so
+using [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/):
 
-You can install the dependencies with npm or yarn.
+    npm install
+    npm run build
+
+or
+
+    yarn install
+    yarn run build
+
+The result is *dist/pocscroller.js*. It's not uglified, human readable code, so you can use it for
+debugging as well.
+
+## Good to know
+
+### What do I need to use this?
+
+The code itself is written in ES6, so if you're using the raw code with a module bundler, you have to
+transpile it first. If you don't want to add a transpiler, simply build this project (see
+[build the project](https://github.com/sateffen/poc-scrollbar#build-the-code)) and use the resulting file.
+
+### Why do I have to call *destroy* by myself with MutationObservers?
+
+The problem is quite simple: A MutationObserver doesn't detect deleting the observed container, so
+there is no way to know, when to call the *destroy* method. I could observe the parent, and check
+the deletion of the container that way, but what happens, when the parent gets deleted?
+
+Because this is not doable without to much overhead, I don't know how to make this happen. If you've
+got an idea, leave me an [issue](https://github.com/sateffen/poc-scrollbar/issues).
+
+### Why does the MutationObserver trigger the mutation handler twice?
+
+The mutation handler might manipulate the scrollbars itself, which are children of the observed
+container as well, so it'll trigger itself again. In the second iteration there aren't any changes,
+so the mutation handler won't run a third time.

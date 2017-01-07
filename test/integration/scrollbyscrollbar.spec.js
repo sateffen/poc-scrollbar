@@ -1,4 +1,4 @@
-import ScrollContainer from '../../src/scrollcontainer';
+import PocScrollbar from '../../src/pocscrollbar';
 
 describe('Scroll by scrollbar', () => {
     [true, false].forEach((canScroll) => {
@@ -21,7 +21,7 @@ describe('Scroll by scrollbar', () => {
 
                 parent.appendChild(child);
                 document.body.appendChild(parent);
-                instance = new ScrollContainer(parent, {
+                instance = new PocScrollbar(parent, {
                     xElementClass: ['scrollbar', 'horizontal'],
                     yElementClass: ['scrollbar', 'vertical'],
                     disableInteractionWithScrollbars: !canScroll,

@@ -12,7 +12,7 @@ import { debounce } from './helper';
  * content. It'll detect everything by itself and acts based on your configuration.
  * The visualization is not done here, it's done in the ScrollView
  */
-export default class ScrollContainer {
+export default class PocScrollbar {
     /**
      * Here is the main starting point. The constructor will set up all events and the
      * scrollView.
@@ -27,7 +27,7 @@ export default class ScrollContainer {
         // first save the given values
         this._container = aElement;
         this._options = aOptions;
-        // then create a new scrollView, based on the ScrollContainers static property
+        // then create a new scrollView, based on the PocScrollbars static property
         this._scrollView = new ScrollView(this, aOptions);
 
         // Then setup the event listeners, that help scrolling in the container. This is
@@ -116,17 +116,17 @@ export default class ScrollContainer {
         // first we generate the needed data for mutation handling
         const mutationHandler = this._getMutationHandler();
         const checkInterval = typeof aOptions.checkInterval === 'number' ? aOptions.checkInterval : 300;
-        // then we validate the useInterval option
-        this._options.useInterval = MutationObserver ? this._options.useInterval : true;
+        // then we validate the useMutationObserver option
+        this._options.useMutationObserver = MutationObserver ? this._options.useMutationObserver : false;
         // and then we setup the corresponding mutation handler
-        if (aOptions.useInterval) {
-            this._mutationObserver = window.setInterval(mutationHandler, checkInterval);
-        }
-        else {
+        if (aOptions.useMutationObserver) {
             this._mutationObserver = new MutationObserver(debounce(mutationHandler, checkInterval));
             this._mutationObserver.observe(this._container, {
                 attributes: true, childList: true, characterData: true, subtree: true,
             });
+        }
+        else {
+            this._mutationObserver = window.setInterval(mutationHandler, checkInterval);
         }
 
         // then go and set the style for the container element. It's important to disable overflow
@@ -292,13 +292,14 @@ export default class ScrollContainer {
      * event listeners and so on get removed and destroyed.
      */
     destroy() {
+        debugger;
         // clear the mutation observer
-        if (this._options.useInterval) {
-            window.clearInterval(this._mutationObserver);
-        }
-        else {
+        if (this._options.useMutationObserver) {
             this._mutationObserver.disconnect();
             this._mutationObserver = null;
+        }
+        else {
+            window.clearInterval(this._mutationObserver);
         }
 
         // then clean up the event listeners

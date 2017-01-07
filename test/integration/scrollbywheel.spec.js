@@ -1,4 +1,4 @@
-import ScrollContainer from '../../src/scrollcontainer';
+import PocScrollbar from '../../src/pocscrollbar';
 
 describe('Scroll by wheel', () => {
     let instance = null;
@@ -20,7 +20,7 @@ describe('Scroll by wheel', () => {
         parent.appendChild(child);
         document.body.appendChild(parent);
         jasmine.clock().install();
-        instance = new ScrollContainer(parent, {
+        instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
             useInterval: true,

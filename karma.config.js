@@ -17,6 +17,6 @@ module.exports = (config) => {
             ],
             format: 'iife',
             sourceMap: 'inline',
-        }
+        },
     });
 };
