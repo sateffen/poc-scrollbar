@@ -114,13 +114,13 @@ debugging as well.
 
 ## Good to know
 
-### What do I need to use this?
+#### What do I need to use this?
 
 The code itself is written in ES6, so if you're using the raw code with a module bundler, you have to
 transpile it first. If you don't want to add a transpiler, simply build this project (see
 [build the project](https://github.com/sateffen/poc-scrollbar#build-the-code)) and use the resulting file.
 
-### Why do I have to call *destroy* by myself with MutationObservers?
+#### Why do I have to call *destroy* by myself with MutationObservers?
 
 The problem is quite simple: A MutationObserver doesn't detect deleting the observed container, so
 there is no way to know, when to call the *destroy* method. I could observe the parent, and check
@@ -129,7 +129,7 @@ the deletion of the container that way, but what happens, when the parent gets d
 Because this is not doable without to much overhead, I don't know how to make this happen. If you've
 got an idea, leave me an [issue](https://github.com/sateffen/poc-scrollbar/issues).
 
-### Why does the MutationObserver trigger the mutation handler twice?
+#### Why does the MutationObserver trigger the mutation handler twice?
 
 The mutation handler might manipulate the scrollbars itself, which are children of the observed
 container as well, so it'll trigger itself again. In the second iteration there aren't any changes,
