@@ -23,6 +23,6 @@
         "brace-style": ["error", "stroustrup"],
         "max-len": ["error", 120],
         "import/prefer-default-export": "off",
-        "line-break-style": "off"
+        "linebreak-style": "off"
     }
 }
