@@ -1,4 +1,4 @@
-import ScrollContainer from '../src/scrollcontainer';
+import ScrollContainer from '../../src/scrollcontainer';
 
 describe('Scrollbar Setup', () => {
     let instance = null;
