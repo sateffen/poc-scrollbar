@@ -10,7 +10,11 @@
  */
 export function generateEventHandlerForElement(aAttribute, aPropertyFactor, aParentWriteCallback) {
     return {
-        // of cause this should handle mouse down events
+        /**
+         * Tracks mouseevents on the scrollbar
+         *
+         * @param {MouseEvent} aEvent
+         */
         mousedown: (aEvent) => {
             // first of all we need to prevent the default behaviour, because otherwise the mouse
             // event might get handled as drag along
@@ -47,7 +51,11 @@ export function generateEventHandlerForElement(aAttribute, aPropertyFactor, aPar
             document.body.addEventListener('mouseup', tmpEndPointer);
             document.body.addEventListener('mouseleave', tmpEndPointer);
         },
-        // we want to track touch events as well
+        /**
+         * Tracks touch events on the scrollbar
+         *
+         * @param {TouchEvent} aEvent
+         */
         touchstart: (aEvent) => {
             // first of all prevent the default, so the browser does nothing strange
             aEvent.preventDefault();
@@ -109,7 +117,7 @@ export function applyOptionsToScollBarElement(aElement, aElementName, aOptions) 
     const stylesKey = `${aElementName}Styles`;
     const classKey = `${aElementName}Class`;
 
-// then go for the style key and apply it to the element
+    // then go for the style key and apply it to the element
     if (aOptions && aOptions[stylesKey] && typeof aOptions[stylesKey] === 'object' &&
         !Array.isArray(aOptions[stylesKey])
     ) {
@@ -131,7 +139,7 @@ export function applyOptionsToScollBarElement(aElement, aElementName, aOptions) 
 }
 
 /**
- * Debounces given callback by given waittime
+ * Debounces given callback by given waittime. No arguments will be passed through
  *
  * @param {function} aCallback The callback to call debounced
  * @param {number} aWaitTime The time to wait till calling the callback
@@ -142,8 +150,6 @@ export function debounce(aCallback, aWaitTime) {
 
     return () => {
         window.clearTimeout(pointer);
-        pointer = window.setTimeout(() => {
-            aCallback();
-        }, aWaitTime);
+        pointer = window.setTimeout(aCallback, aWaitTime);
     };
 }
