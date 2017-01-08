@@ -29,65 +29,45 @@ export class ScrollView {
         this._scrollWidthFactor = this._parent.scrollWidth / this._parent.clientWidth;
 
         // setup scroll elements
-        this._xElement = aOptions.disableXScrolling ? null : this._setupXElement();
-        this._yElement = aOptions.disableYScrolling ? null : this._setupYElement();
+        this._xElement = aOptions.disableXScrolling ? null : this._setupElement(true);
+        this._yElement = aOptions.disableYScrolling ? null : this._setupElement(false);
 
         // and call all update functions initially
         this.parentUpdated();
     }
 
     /**
-     * Generates an HTMLElement to use for the x scrollbar
+     * Generates an HTMLElement to use for the scrollbar
      *
+     * @param {bool} aIsX Whether the element is X or not
      * @return {HTMLElement}
      */
-    _setupXElement() {
+    _setupElement(aIsX) {
         const element = document.createElement('div');
+        const details = aIsX ? {
+            name: 'xElement',
+            event: 'clientX',
+            factor: '_scrollWidthFactor',
+            callback: 'scrollLeft'
+        } : {
+            name: 'yElement',
+            event: 'clientY',
+            factor: '_scrollHeightFactor',
+            callback: 'scrollTop'
+        };
 
         // style some x specific things
+        element.style.width = '0px';
         element.style.height = '0px';
+        element.style.top = '0px';
         element.style.left = '0px';
         element.style.position = 'absolute';
 
-        applyOptionsToScollBarElement(element, 'xElement', this._options);
+        applyOptionsToScollBarElement(element, details.name, this._options);
 
         if (!this._options.disableInteractionWithScrollbars) {
             const eventListeners = generateEventHandlerForElement
-                .call(this, 'clientX', '_scrollWidthFactor', 'scrollLeft');
-            const keys = Object.keys(eventListeners);
-
-            keys.forEach(aKey => element.addEventListener(aKey, eventListeners[aKey]));
-            this._destroyCallbacks.push(() => {
-                keys.forEach(aKey => element.removeEventListener(aKey, eventListeners[aKey]));
-            });
-        }
-
-        this._parent.appendChild(element);
-        this._destroyCallbacks.push(() => {
-            this._parent.removeChild(element);
-        });
-
-        return element;
-    }
-
-    /**
-     * Generates an HTMLElement to use for the y scrollbar
-     *
-     * @return {HTMLElement}
-     */
-    _setupYElement() {
-        const element = document.createElement('div');
-
-        // style some y specific things
-        element.style.width = '0px';
-        element.style.top = '0px';
-        element.style.position = 'absolute';
-
-        applyOptionsToScollBarElement(element, 'yElement', this._options);
-
-        if (!this._options.disableInteractionWithScrollbars) {
-            const eventListeners = generateEventHandlerForElement
-                .call(this, 'clientY', '_scrollHeightFactor', 'scrollTop');
+                .call(this, details.event, details.factor, details.callback);
             const keys = Object.keys(eventListeners);
 
             keys.forEach(aKey => element.addEventListener(aKey, eventListeners[aKey]));
