@@ -19,6 +19,7 @@ export class ScrollView {
         this._parent = aParentInstance._container;
         this._scrollerParent = aParentInstance;
         this._options = aOptions;
+        this._destroyCallbacks = [];
 
         // then calculate a initial scroll factor, that is used for scrolling with the scrollbars
         // itself. The problem is, that if the user grabs the vertical scrollbar, and drags it
@@ -28,55 +29,79 @@ export class ScrollView {
         this._scrollWidthFactor = this._parent.scrollWidth / this._parent.clientWidth;
 
         // setup scroll elements
-        this._xElement = document.createElement('div');
-        this._yElement = document.createElement('div');
-
-        // create the event handler for the scroll elements if it's not disabled
-        if (aOptions.disableInteractionWithScrollbars) {
-            this._xEventListener = {};
-            this._yEventListener = {};
-        }
-        else {
-            this._xEventListener = generateEventHandlerForElement
-                .call(this, 'clientX', '_scrollWidthFactor', 'scrollLeft');
-            this._yEventListener = generateEventHandlerForElement
-                .call(this, 'clientY', '_scrollHeightFactor', 'scrollTop');
-        }
-
-        // style some x specific things
-        this._xElement.style.height = '0px';
-        this._xElement.style.left = '0px';
-        this._xElement.style.position = 'absolute';
-
-        // style some y specific things
-        this._yElement.style.width = '0px';
-        this._yElement.style.top = '0px';
-        this._yElement.style.position = 'absolute';
-
-        // and apply the options to the scrollbar elements
-        applyOptionsToScollBarElement(this._xElement, 'xElement', aOptions);
-        applyOptionsToScollBarElement(this._yElement, 'yElement', aOptions);
-
-        // and append the elements to the DOM tree
-        if (!aOptions.disableXScrolling) {
-            this._parent.appendChild(this._xElement);
-        }
-        if (!aOptions.disableYScrolling) {
-            this._parent.appendChild(this._yElement);
-        }
-
-        // then append the event listeners to x
-        Object.keys(this._xEventListener).forEach((aKey) => {
-            this._xElement.addEventListener(aKey, this._xEventListener[aKey]);
-        });
-
-        // and y
-        Object.keys(this._yEventListener).forEach((aKey) => {
-            this._yElement.addEventListener(aKey, this._yEventListener[aKey]);
-        });
+        this._xElement = aOptions.disableXScrolling ? null : this._setupXElement();
+        this._yElement = aOptions.disableYScrolling ? null : this._setupYElement();
 
         // and call all update functions initially
         this.parentUpdated();
+    }
+
+    /**
+     * Generates an HTMLElement to use for the x scrollbar
+     *
+     * @return {HTMLElement}
+     */
+    _setupXElement() {
+        const element = document.createElement('div');
+
+        // style some x specific things
+        element.style.height = '0px';
+        element.style.left = '0px';
+        element.style.position = 'absolute';
+
+        applyOptionsToScollBarElement(element, 'xElement', this._options);
+
+        if (!this._options.disableInteractionWithScrollbars) {
+            const eventListeners = generateEventHandlerForElement
+                .call(this, 'clientX', '_scrollWidthFactor', 'scrollLeft');
+            const keys = Object.keys(eventListeners);
+
+            keys.forEach(aKey => element.addEventListener(aKey, eventListeners[aKey]));
+            this._destroyCallbacks.push(() => {
+                keys.forEach(aKey => element.removeEventListener(aKey, eventListeners[aKey]))
+            });
+        }
+
+        this._parent.appendChild(element);
+        this._destroyCallbacks.push(() => {
+            this._parent.removeChild(element);
+        });
+
+        return element;
+    }
+
+    /**
+     * Generates an HTMLElement to use for the y scrollbar
+     *
+     * @return {HTMLElement}
+     */
+    _setupYElement() {
+        const element = document.createElement('div');
+
+        // style some y specific things
+        element.style.width = '0px';
+        element.style.top = '0px';
+        element.style.position = 'absolute';
+
+        applyOptionsToScollBarElement(element, 'yElement', this._options);
+
+        if (!this._options.disableInteractionWithScrollbars) {
+            const eventListeners = generateEventHandlerForElement
+                .call(this, 'clientY', '_scrollHeightFactor', 'scrollTop');
+            const keys = Object.keys(eventListeners);
+
+            keys.forEach(aKey => element.addEventListener(aKey, eventListeners[aKey]));
+            this._destroyCallbacks.push(() => {
+                keys.forEach(aKey => element.removeEventListener(aKey, eventListeners[aKey]))
+            });
+        }
+
+        this._parent.appendChild(element);
+        this._destroyCallbacks.push(() => {
+            this._parent.removeChild(element);
+        });
+
+        return element;
     }
 
     /**
@@ -86,13 +111,15 @@ export class ScrollView {
      * @param {number} aScrollTop
      */
     scrollTopUpdated(aScrollTop) {
-        if (this._parentScrollHeight > this._parentHeight) {
+        if (this._yElement && this._parentScrollHeight > this._parentHeight) {
             let partSize = aScrollTop / (this._parentScrollHeight - this._parentHeight);
             partSize *= (this._parentHeight - this._elementHeight);
             this._yElement.style.top = `${aScrollTop + partSize}px`;
         }
 
-        this._xElement.style.top = `${Math.floor(aScrollTop + this._parentHeight)}px`;
+        if (this._xElement) {
+            this._xElement.style.top = `${Math.floor(aScrollTop + this._parentHeight)}px`;
+        }
     }
 
     /**
@@ -102,13 +129,15 @@ export class ScrollView {
      * @param {number} aScrollLeft
      */
     scrollLeftUpdated(aScrollLeft) {
-        if (this._parentScrollWidth > this._parentWidth) {
+        if (this._xElement && this._parentScrollWidth > this._parentWidth) {
             let partSize = aScrollLeft / (this._parentScrollWidth - this._parentWidth);
             partSize *= (this._parentWidth - this._elementWidth);
             this._xElement.style.left = `${aScrollLeft + partSize}px`;
         }
 
-        this._yElement.style.left = `${Math.floor(aScrollLeft + this._parentWidth)}px`;
+        if (this._yElement) {
+            this._yElement.style.left = `${Math.floor(aScrollLeft + this._parentWidth)}px`;
+        }
     }
 
     /**
@@ -127,33 +156,37 @@ export class ScrollView {
         this._scrollWidthFactor = this._parent.scrollWidth / this._parent.clientWidth;
 
         // determine visibility of x element
-        if (this._parentWidth < this._parentScrollWidth) {
-            // check if the xMinSize option is available and if the element is too small
-            if (typeof this._options.xMinSize === 'number' && this._elementWidth < this._options.xMinSize) {
-                this._elementWidth = this._options.xMinSize;
-            }
+        if (this._xElement) {
+            if (this._parentWidth < this._parentScrollWidth) {
+                // check if the xMinSize option is available and if the element is too small
+                if (typeof this._options.xMinSize === 'number' && this._elementWidth < this._options.xMinSize) {
+                    this._elementWidth = this._options.xMinSize;
+                }
 
-            this.scrollTopUpdated(this._parent.scrollTop);
-            this._xElement.style.display = 'block';
-            this._xElement.style.width = `${this._elementWidth}px`;
-        }
-        else {
-            this._xElement.style.display = 'none';
+                this.scrollTopUpdated(this._parent.scrollTop);
+                this._xElement.style.display = 'block';
+                this._xElement.style.width = `${this._elementWidth}px`;
+            }
+            else {
+                this._xElement.style.display = 'none';
+            }
         }
 
         // determine visibility of y element
-        if (this._parentHeight < this._parentScrollHeight) {
-            // check if the yMinSize option is available and if the element is too small
-            if (typeof this._options.yMinSize === 'number' && this._elementHeight < this._options.yMinSize) {
-                this._elementHeight = this._options.yMinSize;
-            }
+        if (this._yElement) {
+            if (this._parentHeight < this._parentScrollHeight) {
+                // check if the yMinSize option is available and if the element is too small
+                if (typeof this._options.yMinSize === 'number' && this._elementHeight < this._options.yMinSize) {
+                    this._elementHeight = this._options.yMinSize;
+                }
 
-            this.scrollLeftUpdated(this._parent.scrollLeft);
-            this._yElement.style.display = 'block';
-            this._yElement.style.height = `${this._elementHeight}px`;
-        }
-        else {
-            this._yElement.style.display = 'none';
+                this.scrollLeftUpdated(this._parent.scrollLeft);
+                this._yElement.style.display = 'block';
+                this._yElement.style.height = `${this._elementHeight}px`;
+            }
+            else {
+                this._yElement.style.display = 'none';
+            }
         }
     }
 
@@ -163,24 +196,10 @@ export class ScrollView {
      * for the GC.
      */
     destroy() {
-        // first remove all event listeners for x
-        Object.keys(this._xEventListener).forEach((aKey) => {
-            this._xElement.removeEventListener(aKey, this._xEventListener[aKey]);
-        });
-        // and y
-        Object.keys(this._yEventListener).forEach((aKey) => {
-            this._yElement.removeEventListener(aKey, this._yEventListener[aKey]);
-        });
+        // first call all destroy callbacks
+        this._destroyCallbacks.forEach(aCallback => aCallback());
 
-        // then remove the elements from DOM if they are appended
-        if (this._parent.contains(this._xElement)) {
-            this._parent.removeChild(this._xElement);
-        }
-        if (this._parent.contains(this._yElement)) {
-            this._parent.removeChild(this._yElement);
-        }
-
-        // and finally null all data, so the GC can clean it up
+        // and then null all data, so the GC can clean it up
         this._parent = null;
         this._scrollerParent = null;
         this._xElement = null;
