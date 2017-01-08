@@ -29,7 +29,7 @@ export default class PocScrollbar {
         this._options = aOptions;
         this._scrollTop = 0;
         this._scrollLeft = 0;
-        this._scrollView = new ScrollView(this, this._options);
+        this._scrollView = new PocScrollbar.ScrollView(this, this._options);
         this._destroyCallbacks = [
             () => this._scrollView.destroy()
         ];
@@ -328,3 +328,6 @@ export default class PocScrollbar {
         this._destroyCallbacks = [];
     }
 }
+
+// and add the scrollview as static property, so it's overwritable
+PocScrollbar.ScrollView = ScrollView;
