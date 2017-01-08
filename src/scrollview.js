@@ -58,7 +58,7 @@ export class ScrollView {
 
             keys.forEach(aKey => element.addEventListener(aKey, eventListeners[aKey]));
             this._destroyCallbacks.push(() => {
-                keys.forEach(aKey => element.removeEventListener(aKey, eventListeners[aKey]))
+                keys.forEach(aKey => element.removeEventListener(aKey, eventListeners[aKey]));
             });
         }
 
@@ -92,7 +92,7 @@ export class ScrollView {
 
             keys.forEach(aKey => element.addEventListener(aKey, eventListeners[aKey]));
             this._destroyCallbacks.push(() => {
-                keys.forEach(aKey => element.removeEventListener(aKey, eventListeners[aKey]))
+                keys.forEach(aKey => element.removeEventListener(aKey, eventListeners[aKey]));
             });
         }
 
