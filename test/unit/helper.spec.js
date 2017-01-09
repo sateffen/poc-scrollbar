@@ -4,28 +4,6 @@ const originalWindowSetTimeout = window.setTimeout;
 const originalWindowClearTimeout = window.clearTimeout;
 
 describe('Helper functions', () => {
-    describe('generateEventHandlerForElement', () => {
-        it('should be a function', () => {
-            expect(typeof generateEventHandlerForElement).toBe('function');
-        });
-
-        it('should return an object calling the function', () => {
-            expect(typeof generateEventHandlerForElement()).toBe('object');
-        });
-
-        it('should have the "mousedown" member on the returned object', () => {
-            const returned = generateEventHandlerForElement();
-
-            expect(typeof returned.mousedown).toBe('function');
-        });
-
-        it('should have the "touchstart" member on the returned object', () => {
-            const returned = generateEventHandlerForElement();
-
-            expect(typeof returned.touchstart).toBe('function');
-        });
-    });
-
     describe('applyOptionsToScollBarElement', () => {
         it('should be a function', () => {
             expect(typeof applyOptionsToScollBarElement).toBe('function');

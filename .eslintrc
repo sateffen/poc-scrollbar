@@ -17,7 +17,6 @@
         "airbnb-base"
     ],
     "rules": {
-        "no-invalid-this": "warn",
         "no-underscore-dangle": "off",
         "indent": ["warn", 4],
         "brace-style": ["error", "stroustrup"],
