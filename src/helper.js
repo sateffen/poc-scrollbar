@@ -10,6 +10,7 @@ export function applyOptionsToScrollBarElement(aElement, aElementName, aOptions)
     // first create the option keys, that should get read
     const stylesKey = `${aElementName}Styles`;
     const classKey = `${aElementName}Class`;
+    const element = aElement;
 
     // then go for the style key and apply it to the element
     if (aOptions && aOptions[stylesKey] && typeof aOptions[stylesKey] === 'object' &&
@@ -17,18 +18,16 @@ export function applyOptionsToScrollBarElement(aElement, aElementName, aOptions)
     ) {
         Object.keys(aOptions[stylesKey]).forEach((aKey) => {
             // here we need to disable the param reassign, because we want to make clear where we write to
-            aElement.style[aKey] = aOptions[stylesKey][aKey]; // eslint-disable-line no-param-reassign
+            element.style[aKey] = aOptions[stylesKey][aKey];
         });
     }
 
     // then apply the classes to the elements
-    if (aOptions && aOptions[classKey] && typeof aOptions[classKey] === 'string') {
-        aElement.classList.add(aOptions[classKey]);
+    if (aOptions && typeof aOptions[classKey] === 'string') {
+        element.className += ` ${aOptions[classKey]}`;
     }
     else if (aOptions && Array.isArray(aOptions[classKey])) {
-        aOptions[classKey].forEach((aClass) => {
-            aElement.classList.add(aClass);
-        });
+        element.className += ` ${aOptions[classKey].join(' ')}`;
     }
 }
 
