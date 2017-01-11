@@ -1,12 +1,12 @@
-import { debounce, applyOptionsToScollBarElement, generateEventHandlerForElement } from '../../src/helper';
+import { debounce, applyOptionsToScrollBarElement, generateEventHandlerForElement } from '../../src/helper';
 
 const originalWindowSetTimeout = window.setTimeout;
 const originalWindowClearTimeout = window.clearTimeout;
 
 describe('Helper functions', () => {
-    describe('applyOptionsToScollBarElement', () => {
+    describe('applyOptionsToScrollBarElement', () => {
         it('should be a function', () => {
-            expect(typeof applyOptionsToScollBarElement).toBe('function');
+            expect(typeof applyOptionsToScrollBarElement).toBe('function');
         });
     });
 

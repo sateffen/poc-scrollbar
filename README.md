@@ -59,7 +59,7 @@ There are some options, you can use:
     * Type: Number
     * Description: This option depends on *useMutationObserver*. If *useMutationObserver* is false (default), this tells
     the interval time between mutation checks. If *useMutationObserver* is true, this tells the debounce time after a
-    mutation has occured
+    mutation has occurred
     * Default: 300
 * disableXScrolling
     * Type: Boolean

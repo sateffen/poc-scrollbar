@@ -6,8 +6,8 @@
  * @param {string} aElementName The element name (xElement and yElement) to create the options read propertys from
  * @param {object} aOptions The options to read from
  */
-export function applyOptionsToScollBarElement(aElement, aElementName, aOptions) {
-    // frist create the option keys, that should get read
+export function applyOptionsToScrollBarElement(aElement, aElementName, aOptions) {
+    // first create the option keys, that should get read
     const stylesKey = `${aElementName}Styles`;
     const classKey = `${aElementName}Class`;
 
@@ -37,7 +37,7 @@ export function applyOptionsToScollBarElement(aElement, aElementName, aOptions) 
  *
  * @param {function} aCallback The callback to call debounced
  * @param {number} aWaitTime The time to wait till calling the callback
- * @return {function} The replacment function
+ * @return {function} The replacement function
  */
 export function debounce(aCallback, aWaitTime) {
     let pointer = null;

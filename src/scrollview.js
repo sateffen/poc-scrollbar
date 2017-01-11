@@ -1,6 +1,5 @@
 
-
-import { applyOptionsToScollBarElement } from './helper';
+import { applyOptionsToScrollBarElement } from './helper';
 
 /**
  * The scrollView is the visual representation of the current scroll state. While the scroll
@@ -11,8 +10,8 @@ export class ScrollView {
     /**
      * This constructor sets up all elements and handlers needed to visualize normal scrollbars
      *
-     * @param {ScrollContainer} aParentInstance The parent ScrollContainer instance
-     * @param {Object} aOptions The options of the parent instance for styling the scollbars
+     * @param {PocScrollbar} aParentInstance The parent ScrollContainer instance
+     * @param {PocScrollbarOptions} aOptions The options of the parent instance for styling the scollbars
      */
     constructor(aParentInstance, aOptions) {
         // first save the details about the parent instance and it's container element
@@ -23,7 +22,7 @@ export class ScrollView {
 
         // then calculate a initial scroll factor, that is used for scrolling with the scrollbars
         // itself. The problem is, that if the user grabs the vertical scrollbar, and drags it
-        // 10px down the scrollTop changed not only by ten, but 10*scrollheight/height. This is
+        // 10px down the scrollTop changed not only by ten, but 10*scrollHeight/height. This is
         // because of the absolute positioning relative to the parent
         this._scrollHeightFactor = this._parent.scrollHeight / this._parent.clientHeight;
         this._scrollWidthFactor = this._parent.scrollWidth / this._parent.clientWidth;
@@ -39,7 +38,7 @@ export class ScrollView {
     /**
      * Generates an HTMLElement to use for the scrollbar
      *
-     * @param {bool} aIsX Whether the element is X or not
+     * @param {Boolean} aIsX Whether the element is X or not
      * @return {HTMLElement}
      */
     _setupElement(aIsX) {
@@ -63,7 +62,7 @@ export class ScrollView {
         element.style.left = '0px';
         element.style.position = 'absolute';
 
-        applyOptionsToScollBarElement(element, details.name, this._options);
+        applyOptionsToScrollBarElement(element, details.name, this._options);
 
         if (!this._options.disableInteractionWithScrollbars) {
             const eventListeners = this._generateEventHandlerForElement
@@ -88,18 +87,13 @@ export class ScrollView {
      * This function generates event handlers for a scrollbar element, based on given data.
      * Warning: You need to set the this context of this function to the scrollView instance you're working with!
      *
-     * @param {string} aAttribute The attribute to use from the event for calculation
-     * @param {string} aPropertyFactor The factor for scroll top and left to compensate for normal distances
-     * @param {string} aParentWriteCallback The name for the callback where to write to
-     * @return {object} An object containing event handlers for the scrollbar
+     * @param {String} aAttribute The attribute to use from the event for calculation
+     * @param {String} aPropertyFactor The factor for scroll top and left to compensate for normal distances
+     * @param {String} aParentWriteCallback The name for the callback where to write to
+     * @return {Object} An object containing event handlers for the scrollbar
      */
     _generateEventHandlerForElement(aAttribute, aPropertyFactor, aParentWriteCallback) {
         return {
-            /**
-             * Tracks mouseevents on the scrollbar
-             *
-             * @param {MouseEvent} aEvent
-             */
             mousedown: (aEvent) => {
                 // first of all we need to prevent the default behaviour, because otherwise the mouse
                 // event might get handled as drag along
@@ -136,11 +130,6 @@ export class ScrollView {
                 document.body.addEventListener('mouseup', tmpEndPointer);
                 document.body.addEventListener('mouseleave', tmpEndPointer);
             },
-            /**
-             * Tracks touch events on the scrollbar
-             *
-             * @param {TouchEvent} aEvent
-             */
             touchstart: (aEvent) => {
                 // first of all prevent the default, so the browser does nothing strange
                 aEvent.preventDefault();
@@ -195,7 +184,7 @@ export class ScrollView {
      * This method handles updating the scrollTop property to the scrollbars. Every time
      * the parent scrollTop changes, this recalculates the style
      *
-     * @param {number} aScrollTop
+     * @param {Number} aScrollTop
      */
     scrollTopUpdated(aScrollTop) {
         if (this._yElement && this._parentScrollHeight > this._parentHeight) {
@@ -213,7 +202,7 @@ export class ScrollView {
      * This method handles updating the scrollLeft property to the scrollbars. Every time
      * the parent scrollLeft changes, this recalculates the style
      *
-     * @param {number} aScrollLeft
+     * @param {Number} aScrollLeft
      */
     scrollLeftUpdated(aScrollLeft) {
         if (this._xElement && this._parentScrollWidth > this._parentWidth) {

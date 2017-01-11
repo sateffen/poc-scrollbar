@@ -8,6 +8,20 @@ import { ScrollView } from './scrollview';
 import { debounce } from './helper';
 
 /**
+ * @typedef {Object} PocScrollbarOptions
+ * @property {Boolean} [aOptions.disableInteractionWithScrollbars=false]
+ * @property {Boolean} [aOptions.useMutationObserver=false]
+ * @property {Number} [aOptions.checkInterval=300]
+ * @property {Boolean} [aOptions.disableXScrolling=false]
+ * @property {Boolean} [aOptions.disableYScrolling=false]
+ * @property {Object} [aOptions.xElementStyles={}]
+ * @property {Object} [aOptions.xElementStyles={}]
+ * @property {Array.<String>|String} [aOptions.xElementClass=[]]
+ * @property {Array.<String>|String} [aOptions.yElementClass=[]]
+ * @property {Number} [aOptions.xMinSize]
+ * @property {Number} [aOptions.yMinSize]
+ */
+/**
  * The scroll container represents the main element, which contains too long
  * content. It'll detect everything by itself and acts based on your configuration.
  * The visualization is not done here, it's done in the ScrollView
@@ -17,11 +31,11 @@ export default class PocScrollbar {
      * Here is the main starting point. The constructor will set up all events and the
      * scrollView.
      * Warning: The container elements needs to serve as container for absolute elements.
-     * To garantee this, the style is changed to position=relative if it's not already
+     * To guarantee this, the style is changed to position=relative if it's not already
      * relative or absolute.
      *
      * @param {HTMLElement} aElement The element that should be scrollable
-     * @param {Object} [aOptions = {}] The provided options. For details see README.md
+     * @param {PocScrollbarOptions} [aOptions = {}] The provided options. For details see README.md
      */
     constructor(aElement, aOptions = {}) {
         // first we initialize all member properties
@@ -49,6 +63,11 @@ export default class PocScrollbar {
         this._scrollView.parentUpdated();
     }
 
+    /**
+     * Sets the mutation handlers for this instance up
+     *
+     * @private
+     */
     _setupMutationHandler() {
         // first we generate the data for the observers, and validate the options
         const checkInterval = typeof this._options.checkInterval === 'number' ? this._options.checkInterval : 300;
@@ -77,6 +96,11 @@ export default class PocScrollbar {
         }
     }
 
+    /**
+     * Sets all eventlisteners for this instance up
+     *
+     * @private
+     */
     _setupEventListeners() {
         // first we setup the event listeners, that we want to register to the container
         const eventListener = {
@@ -99,6 +123,12 @@ export default class PocScrollbar {
         });
     }
 
+    /**
+     * Handles wheel events on this instance
+     *
+     * @private
+     * @param {WheelEvent} aEvent
+     */
     _wheelHandler(aEvent) {
         // if the default is prevented, we ignore this event
         if (aEvent.defaultPrevented) {
@@ -123,6 +153,12 @@ export default class PocScrollbar {
         }
     }
 
+    /**
+     * Handles all touch events on this instance
+     *
+     * @private
+     * @param {TouchEvent} aEvent
+     */
     _touchHandler(aEvent) {
         if (aEvent.defaultPrevented) {
             return;
@@ -179,7 +215,7 @@ export default class PocScrollbar {
      * This function creates a closure, that handles update checks.
      *
      * @private
-     * @return {function} An interval handler to call at each tick
+     * @return {Function} An interval handler to call at each tick
      */
     _getMutationHandler() {
         // setup some variables, that serve as cache for the closure
@@ -249,12 +285,12 @@ export default class PocScrollbar {
     /**
      * This function serves as getter and setter for the scrollTop value
      *
-     * @param {number} [aScrollTop] The new scrollTop value
-     * @return {number} The new scrollTop value
+     * @param {Number} [aScrollTop] The new scrollTop value
+     * @return {Number} The new scrollTop value
      */
     scrollTop(aScrollTop) {
         // If this method was called with something else than a number, or scrolling is
-        // completly disabled, just return the scroll top and do nothing else
+        // completely disabled, just return the scroll top and do nothing else
         if (typeof aScrollTop !== 'number' || this._options.disableYScrolling) {
             return this._container.scrollTop;
         }
@@ -283,12 +319,12 @@ export default class PocScrollbar {
     /**
      * This function serves as getter and setter for the scrollLeft value
      *
-     * @param {number} [aScrollLeft] The new scrollLeft value
-     * @return {number} The new scrollLeft value
+     * @param {Number} [aScrollLeft] The new scrollLeft value
+     * @return {Number} The new scrollLeft value
      */
     scrollLeft(aScrollLeft) {
         // If this method was called with something else than a number, or scrolling is
-        // completly disabled, just return the scroll top and do nothing else
+        // completely disabled, just return the scroll top and do nothing else
         if (arguments.length === 0 || this._options.disableXScrolling) {
             return this._container.scrollLeft;
         }
