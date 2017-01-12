@@ -1,5 +1,16 @@
 
 /**
+ * This constant tells the browsers line height for one line. This is used for calculating the distance
+ * to scroll in a wheel event
+ *
+ * @type {Number}
+ */
+const browsersLineHeight = window.parseInt(
+    window
+        .getComputedStyle(document.querySelector('html'), null)
+        .getPropertyValue('font-size')) || 16;
+
+/**
  * This applies the given options to the scrollbar elements
  *
  * @param {HTMLElement} aElement The scrollbar element to apply the options to
@@ -45,4 +56,30 @@ export function debounce(aCallback, aWaitTime) {
         window.clearTimeout(pointer);
         pointer = window.setTimeout(aCallback, aWaitTime);
     };
+}
+
+/**
+ * This function calculates the distance to scroll in pixel, based on given information from the
+ * scroll event.
+ *
+ * @param {Boolean} aIsX
+ * @param {Number|undefined} aDeltaOption
+ * @param {Number} aDeltaMode
+ * @param {Number} aDeltaValue
+ * @param {HTMLElement} aScrollContainer
+ */
+export function getWheelDeltaAsPixel(aIsX, aDeltaOption, aDeltaMode, aDeltaValue, aScrollContainer) {
+    if (typeof aDeltaOption === 'number') {
+        return aDeltaOption;
+    }
+
+    switch (aDeltaMode) {
+        case 1:
+            return aDeltaValue * browsersLineHeight;
+        case 2:
+            const containerValue = aIsX ? aScrollContainer.clientWidth : aScrollContainer.clientHeight;
+            return aDeltaValue * containerValue;
+        default:
+            return aDeltaValue;
+    }
 }

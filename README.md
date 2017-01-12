@@ -95,6 +95,10 @@ There are some options, you can use:
     * Type: Number
     * Description: The minimal size of the y scrollbar in px.
     * Default: undefined (no minsize)
+* wheelDeltaSize
+    * Type: Number
+    * Description: A constant size in pixel to scroll on each wheel event, ignoring the event values
+    * Default: undefined (use event values)
 
 ## Build the project
 

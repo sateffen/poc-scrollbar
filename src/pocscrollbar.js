@@ -5,7 +5,7 @@
  */
 
 import { ScrollView } from './scrollview';
-import { debounce } from './helper';
+import { debounce, getWheelDeltaAsPixel } from './helper';
 
 /**
  * @typedef {Object} PocScrollbarOptions
@@ -20,6 +20,7 @@ import { debounce } from './helper';
  * @property {Array.<String>|String} [aOptions.yElementClass=[]]
  * @property {Number} [aOptions.xMinSize]
  * @property {Number} [aOptions.yMinSize]
+ * @property {Number} [aOptions.wheelDeltaSize]
  */
 /**
  * The scroll container represents the main element, which contains too long
@@ -138,10 +139,12 @@ export default class PocScrollbar {
         // else we store the old values
         const currentScrollTop = this._container.scrollTop;
         const currentScrollLeft = this._container.scrollLeft;
+        const deltaX = getWheelDeltaAsPixel(true, this._options.wheelDeltaSize, aEvent.deltaMode, aEvent.deltaX, this._container);
+        const deltaY = getWheelDeltaAsPixel(false, this._options.wheelDeltaSize, aEvent.deltaMode, aEvent.deltaY, this._container);
 
         // trigger the changing
-        this.scrollTop(this._container.scrollTop + aEvent.deltaY);
-        this.scrollLeft(this._container.scrollLeft + aEvent.deltaX);
+        this.scrollTop(this._container.scrollTop + deltaY);
+        this.scrollLeft(this._container.scrollLeft + deltaX);
 
         // and if something actually changed
         if (currentScrollTop !== this._container.scrollTop ||
