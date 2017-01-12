@@ -55,7 +55,7 @@ export class ScrollView {
             callback: 'scrollTop'
         };
 
-        // style some x specific things
+        // set some default styles
         element.style.width = '0px';
         element.style.height = '0px';
         element.style.top = '0px';
