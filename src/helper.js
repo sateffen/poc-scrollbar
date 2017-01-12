@@ -77,8 +77,7 @@ export function getWheelDeltaAsPixel(aIsX, aDeltaOption, aDeltaMode, aDeltaValue
         case 1:
             return aDeltaValue * browsersLineHeight;
         case 2:
-            const containerValue = aIsX ? aScrollContainer.clientWidth : aScrollContainer.clientHeight;
-            return aDeltaValue * containerValue;
+            return aDeltaValue * (aIsX ? aScrollContainer.clientWidth : aScrollContainer.clientHeight);
         default:
             return aDeltaValue;
     }

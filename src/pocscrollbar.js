@@ -139,8 +139,20 @@ export default class PocScrollbar {
         // else we store the old values
         const currentScrollTop = this._container.scrollTop;
         const currentScrollLeft = this._container.scrollLeft;
-        const deltaX = getWheelDeltaAsPixel(true, this._options.wheelDeltaSize, aEvent.deltaMode, aEvent.deltaX, this._container);
-        const deltaY = getWheelDeltaAsPixel(false, this._options.wheelDeltaSize, aEvent.deltaMode, aEvent.deltaY, this._container);
+        const deltaX = getWheelDeltaAsPixel(
+            true,
+            this._options.wheelDeltaSize,
+            aEvent.deltaMode,
+            aEvent.deltaX,
+            this._container
+        );
+        const deltaY = getWheelDeltaAsPixel(
+            false,
+            this._options.wheelDeltaSize,
+            aEvent.deltaMode,
+            aEvent.deltaY,
+            this._container
+        );
 
         // trigger the changing
         this.scrollTop(this._container.scrollTop + deltaY);

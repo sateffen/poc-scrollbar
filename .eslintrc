@@ -18,7 +18,7 @@
     ],
     "rules": {
         "no-underscore-dangle": "off",
-        "indent": ["warn", 4],
+        "indent": ["warn", 4, {"SwitchCase": 1}],
         "brace-style": ["error", "stroustrup"],
         "max-len": ["error", 120],
         "import/prefer-default-export": "off",
