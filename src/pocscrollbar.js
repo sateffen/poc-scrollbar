@@ -1,26 +1,21 @@
-/**
- * If you're looking in this code, you usually want to know, how this works. It might look
- * some kind of messy, but the code itself is logically structured. If you don't get some
- * struct, just ask.
- */
 
 import { ScrollView } from './scrollview';
 import { debounce, getWheelDeltaAsPixel } from './helper';
 
 /**
  * @typedef {Object} PocScrollbarOptions
- * @property {Boolean} [aOptions.disableInteractionWithScrollbars=false]
- * @property {Boolean} [aOptions.useMutationObserver=false]
- * @property {Number} [aOptions.checkInterval=300]
- * @property {Boolean} [aOptions.disableXScrolling=false]
- * @property {Boolean} [aOptions.disableYScrolling=false]
+ * @property {boolean} [aOptions.disableInteractionWithScrollbars=false]
+ * @property {boolean} [aOptions.useMutationObserver=false]
+ * @property {number} [aOptions.checkInterval=300]
+ * @property {boolean} [aOptions.disableXScrolling=false]
+ * @property {boolean} [aOptions.disableYScrolling=false]
  * @property {Object} [aOptions.xElementStyles={}]
  * @property {Object} [aOptions.xElementStyles={}]
- * @property {Array.<String>|String} [aOptions.xElementClass=[]]
- * @property {Array.<String>|String} [aOptions.yElementClass=[]]
- * @property {Number} [aOptions.xMinSize]
- * @property {Number} [aOptions.yMinSize]
- * @property {Number} [aOptions.wheelDeltaSize]
+ * @property {array.<String>|String} [aOptions.xElementClass=[]]
+ * @property {array.<String>|String} [aOptions.yElementClass=[]]
+ * @property {number} [aOptions.xMinSize]
+ * @property {number} [aOptions.yMinSize]
+ * @property {number} [aOptions.wheelDeltaSize]
  */
 /**
  * The scroll container represents the main element, which contains too long
@@ -35,7 +30,7 @@ export default class PocScrollbar {
      * To guarantee this, the style is changed to position=relative if it's not already
      * relative or absolute.
      *
-     * @param {HTMLElement} aElement The element that should be scrollable
+     * @param {Element} aElement The element that should be scrollable
      * @param {PocScrollbarOptions} [aOptions = {}] The provided options. For details see README.md
      */
     constructor(aElement, aOptions = {}) {
@@ -300,8 +295,8 @@ export default class PocScrollbar {
     /**
      * This function serves as getter and setter for the scrollTop value
      *
-     * @param {Number} [aScrollTop] The new scrollTop value
-     * @return {Number} The new scrollTop value
+     * @param {number} [aScrollTop] The new scrollTop value
+     * @return {number} The new scrollTop value
      */
     scrollTop(aScrollTop) {
         // If this method was called with something else than a number, or scrolling is
@@ -334,8 +329,8 @@ export default class PocScrollbar {
     /**
      * This function serves as getter and setter for the scrollLeft value
      *
-     * @param {Number} [aScrollLeft] The new scrollLeft value
-     * @return {Number} The new scrollLeft value
+     * @param {number} [aScrollLeft] The new scrollLeft value
+     * @return {number} The new scrollLeft value
      */
     scrollLeft(aScrollLeft) {
         // If this method was called with something else than a number, or scrolling is
@@ -381,4 +376,9 @@ export default class PocScrollbar {
 }
 
 // and add the scrollview as static property, so it's overwritable
+/**
+ * A reference to the scrollview to use
+ * @static
+ * @type {ScrollView}
+ */
 PocScrollbar.ScrollView = ScrollView;

@@ -3,7 +3,7 @@
  * This constant tells the browsers line height for one line. This is used for calculating the distance
  * to scroll in a wheel event
  *
- * @type {Number}
+ * @type {number}
  */
 const browsersLineHeight = window.parseInt(
     window
@@ -13,8 +13,8 @@ const browsersLineHeight = window.parseInt(
 /**
  * This applies the given options to the scrollbar elements
  *
- * @param {HTMLElement} aElement The scrollbar element to apply the options to
- * @param {String} aElementName The element name (xElement and yElement) to create the options read propertys from
+ * @param {Element} aElement The scrollbar element to apply the options to
+ * @param {string} aElementName The element name (xElement and yElement) to create the options read propertys from
  * @param {Object} aOptions The options to read from
  */
 export function applyOptionsToScrollBarElement(aElement, aElementName, aOptions) {
@@ -46,7 +46,7 @@ export function applyOptionsToScrollBarElement(aElement, aElementName, aOptions)
  * Debounces given callback by given waittime. No arguments will be passed through
  *
  * @param {Function} aCallback The callback to call debounced
- * @param {Number} aWaitTime The time to wait till calling the callback
+ * @param {number} aWaitTime The time to wait till calling the callback
  * @return {Function} The replacement function
  */
 export function debounce(aCallback, aWaitTime) {
@@ -62,11 +62,11 @@ export function debounce(aCallback, aWaitTime) {
  * This function calculates the distance to scroll in pixel, based on given information from the
  * scroll event.
  *
- * @param {Boolean} aIsX
- * @param {Number|undefined} aDeltaOption
- * @param {Number} aDeltaMode
- * @param {Number} aDeltaValue
- * @param {HTMLElement} aScrollContainer
+ * @param {boolean} aIsX
+ * @param {number|undefined} aDeltaOption
+ * @param {number} aDeltaMode
+ * @param {number} aDeltaValue
+ * @param {Element} aScrollContainer
  */
 export function getWheelDeltaAsPixel(aIsX, aDeltaOption, aDeltaMode, aDeltaValue, aScrollContainer) {
     if (typeof aDeltaOption === 'number') {

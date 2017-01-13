@@ -36,10 +36,10 @@ export class ScrollView {
     }
 
     /**
-     * Generates an HTMLElement to use for the scrollbar
+     * Generates an Element to use for the scrollbar
      *
-     * @param {Boolean} aIsX Whether the element is X or not
-     * @return {HTMLElement}
+     * @param {boolean} aIsX Whether the element is X or not
+     * @return {Element}
      */
     _setupElement(aIsX) {
         const element = document.createElement('div');
@@ -87,9 +87,9 @@ export class ScrollView {
      * This function generates event handlers for a scrollbar element, based on given data.
      * Warning: You need to set the this context of this function to the scrollView instance you're working with!
      *
-     * @param {String} aAttribute The attribute to use from the event for calculation
-     * @param {String} aPropertyFactor The factor for scroll top and left to compensate for normal distances
-     * @param {String} aParentWriteCallback The name for the callback where to write to
+     * @param {string} aAttribute The attribute to use from the event for calculation
+     * @param {string} aPropertyFactor The factor for scroll top and left to compensate for normal distances
+     * @param {string} aParentWriteCallback The name for the callback where to write to
      * @return {Object} An object containing event handlers for the scrollbar
      */
     _generateEventHandlerForElement(aAttribute, aPropertyFactor, aParentWriteCallback) {
@@ -184,7 +184,7 @@ export class ScrollView {
      * This method handles updating the scrollTop property to the scrollbars. Every time
      * the parent scrollTop changes, this recalculates the style
      *
-     * @param {Number} aScrollTop
+     * @param {number} aScrollTop
      */
     scrollTopUpdated(aScrollTop) {
         if (this._yElement && this._parentScrollHeight > this._parentHeight) {
@@ -202,7 +202,7 @@ export class ScrollView {
      * This method handles updating the scrollLeft property to the scrollbars. Every time
      * the parent scrollLeft changes, this recalculates the style
      *
-     * @param {Number} aScrollLeft
+     * @param {number} aScrollLeft
      */
     scrollLeftUpdated(aScrollLeft) {
         if (this._xElement && this._parentScrollWidth > this._parentWidth) {
