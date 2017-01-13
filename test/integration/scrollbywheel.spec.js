@@ -22,8 +22,7 @@ describe('Scroll by wheel', () => {
         jasmine.clock().install();
         instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
-            yElementClass: ['scrollbar', 'vertical'],
-            useInterval: true,
+            yElementClass: ['scrollbar', 'vertical']
         });
         jasmine.clock().tick(301);
 
@@ -46,7 +45,7 @@ describe('Scroll by wheel', () => {
     it('should react on wheel scroll down events', () => {
         const event = new WheelEvent('wheel', {
             deltaX: 0,
-            deltaY: 25,
+            deltaY: 25
         });
 
         parent.dispatchEvent(event);
@@ -58,7 +57,7 @@ describe('Scroll by wheel', () => {
     it('should react on wheel scroll left events', () => {
         const event = new WheelEvent('wheel', {
             deltaX: 25,
-            deltaY: 0,
+            deltaY: 0
         });
 
         parent.dispatchEvent(event);
@@ -70,7 +69,7 @@ describe('Scroll by wheel', () => {
     it('should react on wheel scroll down and left events', () => {
         const event = new WheelEvent('wheel', {
             deltaX: 25,
-            deltaY: 25,
+            deltaY: 25
         });
 
         parent.dispatchEvent(event);
@@ -84,7 +83,7 @@ describe('Scroll by wheel', () => {
         jasmine.clock().tick(301);
         const event = new WheelEvent('wheel', {
             deltaX: 25,
-            deltaY: 25,
+            deltaY: 25
         });
 
         parent.dispatchEvent(event);
@@ -98,7 +97,7 @@ describe('Scroll by wheel', () => {
         jasmine.clock().tick(301);
         const event = new WheelEvent('wheel', {
             deltaX: 50,
-            deltaY: 100,
+            deltaY: 100
         });
 
         parent.dispatchEvent(event);

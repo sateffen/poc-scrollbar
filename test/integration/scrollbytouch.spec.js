@@ -19,7 +19,7 @@ describe('Scroll by touch', () => {
         document.body.appendChild(parent);
         instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
-            yElementClass: ['scrollbar', 'vertical'],
+            yElementClass: ['scrollbar', 'vertical']
         });
     });
 
@@ -42,8 +42,8 @@ describe('Scroll by touch', () => {
                     identifier: 0,
                     target: parent,
                     clientX: 35,
-                    clientY: 50,
-                }),
+                    clientY: 50
+                })
             ]
         });
         const moveEvent = new TouchEvent('touchmove', {
@@ -53,8 +53,8 @@ describe('Scroll by touch', () => {
                     identifier: 0,
                     target: parent,
                     clientX: 10,
-                    clientY: 0,
-                }),
+                    clientY: 0
+                })
             ]
         });
         const stopEvent = new TouchEvent('touchend', {
@@ -64,8 +64,8 @@ describe('Scroll by touch', () => {
                     identifier: 0,
                     target: parent,
                     clientX: 10,
-                    clientY: 0,
-                }),
+                    clientY: 0
+                })
             ]
         });
 
@@ -82,8 +82,7 @@ describe('Scroll by touch', () => {
         instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
-            disableTouchScrollingOnContainer: true,
-            useInterval: true,
+            disableTouchScrollingOnContainer: true
         });
         const startEvent = new TouchEvent('touchstart', {
             touches: [
@@ -91,8 +90,8 @@ describe('Scroll by touch', () => {
                     identifier: 0,
                     target: parent,
                     clientX: 50,
-                    clientY: 35,
-                }),
+                    clientY: 35
+                })
             ]
         });
         const moveEvent = new TouchEvent('touchmove', {
@@ -101,8 +100,8 @@ describe('Scroll by touch', () => {
                     identifier: 0,
                     target: parent,
                     clientX: 0,
-                    clientY: 10,
-                }),
+                    clientY: 10
+                })
             ]
         });
         const stopEvent = new TouchEvent('touchend', {
@@ -111,8 +110,8 @@ describe('Scroll by touch', () => {
                     identifier: 0,
                     target: parent,
                     clientX: 0,
-                    clientY: 10,
-                }),
+                    clientY: 10
+                })
             ]
         });
 

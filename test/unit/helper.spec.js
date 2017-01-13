@@ -10,9 +10,16 @@ describe('Helper functions', () => {
         });
     });
 
+    describe('getWheelDeltaAsPixel', () => {
+        it('should be a function', () => {
+            expect(typeof getWheelDeltaAsPixel).toBe('function');
+        });
+    });
+
     describe('debounce', () => {
         const setTimeoutReturnValue = Math.random();
         const clearTimeoutReturnValue = Math.random();
+
         beforeEach(() => {
             window.setTimeout = jasmine.createSpy('window.setTimeout').and.returnValue(setTimeoutReturnValue);
             window.clearTimeout = jasmine.createSpy('window.clearTimeout').and.returnValue(clearTimeoutReturnValue);
