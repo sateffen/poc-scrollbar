@@ -68,27 +68,28 @@ export default class PocScrollbar {
         // first we generate the data for the observers, and validate the options
         const checkInterval = typeof this._options.checkInterval === 'number' ? this._options.checkInterval : 300;
         const mutationHandler = this._getMutationHandler();
-        const debouncedMutationHandler = debounce(mutationHandler, checkInterval);
         // then we validate the useMutationObserver option
         this._options.useMutationObserver = MutationObserver ? this._options.useMutationObserver : false;
 
         // and then we setup the corresponding mutation handler and its destroy callback
         if (this._options.useMutationObserver) {
+            const debouncedMutationHandler = debounce(mutationHandler, checkInterval);
             const mutationObserver = new MutationObserver(debouncedMutationHandler);
+
+            window.addEventListener('resize', debouncedMutationHandler);
             mutationObserver.observe(this._container, {
                 attributes: true, childList: true, characterData: true, subtree: true
             });
 
-            this._destroyCallbacks.push(mutationObserver.disconnect);
+            this._destroyCallbacks.push(() => {
+                mutationObserver.disconnect();
+                window.removeEventListener('resize', debouncedMutationHandler);
+            });
         }
         else {
             const intervalPointer = window.setInterval(mutationHandler, checkInterval);
-            window.addEventListener('resize', debouncedMutationHandler);
 
-            this._destroyCallbacks.push(() => {
-                window.clearInterval(intervalPointer);
-                window.removeEventListener('resize', debouncedMutationHandler);
-            });
+            this._destroyCallbacks.push(() => window.clearInterval(intervalPointer));
         }
     }
 
