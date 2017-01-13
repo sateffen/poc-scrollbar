@@ -8,7 +8,7 @@
 const browsersLineHeight = window.parseInt(
     window
         .getComputedStyle(document.querySelector('html'), null)
-        .getPropertyValue('font-size')) || 16;
+        .getPropertyValue('font-size'), 10) || 16;
 
 /**
  * This applies the given options to the scrollbar elements
