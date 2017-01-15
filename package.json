@@ -1,7 +1,9 @@
 {
   "name": "poc-scrollbar",
   "version": "1.0.0",
-  "description": "A simple scrollbar that just works",
+  "description": "A simple scrollbar, that just works",
+  "homepage": "https://github.com/sateffen/poc-scrollbar",
+  "bugs": "https://github.com/sateffen/poc-scrollbar/issues",
   "main": "src/pocscrollbar.js",
   "scripts": {
     "build": "rollup -c",
@@ -12,8 +14,13 @@
   },
   "keywords": [
     "scrollbar",
-    "scroll"
+    "scroll",
+    "poc"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sateffen/poc-scrollbar.git",
+  },
   "license": "MIT",
   "devDependencies": {
     "eslint": "~3.12.2",
