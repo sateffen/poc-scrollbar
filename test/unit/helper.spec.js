@@ -1,4 +1,4 @@
-import { debounce, applyOptionsToScrollBarElement, generateEventHandlerForElement } from '../../src/helper';
+import { debounce, applyOptionsToScrollBarElement, getWheelDeltaAsPixel } from '../../src/helper';
 
 const originalWindowSetTimeout = window.setTimeout;
 const originalWindowClearTimeout = window.clearTimeout;
