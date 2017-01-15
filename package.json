@@ -1,6 +1,6 @@
 {
   "name": "poc-scrollbar",
-  "version": "1.0.0-dev",
+  "version": "1.0.0",
   "description": "A simple scrollbar that just works",
   "main": "src/pocscrollbar.js",
   "scripts": {
