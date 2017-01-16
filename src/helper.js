@@ -5,7 +5,7 @@
  *
  * @type {Number}
  */
-const DOM_DELTA_PIXEL = window.WheelEvent && window.WheelEvent.DOM_DELTA_PIXEL || 0x00;
+const DOM_DELTA_PIXEL = (window.WheelEvent && window.WheelEvent.DOM_DELTA_PIXEL) || 0x00;
 
 /**
  * This constant is one possible option for the deltaMode property of a wheel event.
@@ -13,7 +13,7 @@ const DOM_DELTA_PIXEL = window.WheelEvent && window.WheelEvent.DOM_DELTA_PIXEL |
  *
  * @type {Number}
  */
-const DOM_DELTA_LINE = window.WheelEvent && window.WheelEvent.DOM_DELTA_LINE || 0x01;
+const DOM_DELTA_LINE = (window.WheelEvent && window.WheelEvent.DOM_DELTA_LINE) || 0x01;
 
 /**
  * This constant is one possible option for the deltaMode property of a wheel event.
@@ -21,7 +21,7 @@ const DOM_DELTA_LINE = window.WheelEvent && window.WheelEvent.DOM_DELTA_LINE || 
  *
  * @type {Number}
  */
-const DOM_DELTA_PAGE = window.WheelEvent && window.WheelEvent.DOM_DELTA_PAGE || 0x02;
+const DOM_DELTA_PAGE = (window.WheelEvent && window.WheelEvent.DOM_DELTA_PAGE) || 0x02;
 
 /**
  * This constant tells the browsers line height for one line. This is used for calculating the distance
