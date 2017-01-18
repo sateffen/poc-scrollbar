@@ -3,7 +3,7 @@
  * This constant is one possible option for the deltaMode property of a wheel event.
  * This deltaMode measures the delta values in pixels.
  *
- * @type {Number}
+ * @type {number}
  */
 const DOM_DELTA_PIXEL = (window.WheelEvent && window.WheelEvent.DOM_DELTA_PIXEL) || 0x00;
 
@@ -11,7 +11,7 @@ const DOM_DELTA_PIXEL = (window.WheelEvent && window.WheelEvent.DOM_DELTA_PIXEL)
  * This constant is one possible option for the deltaMode property of a wheel event.
  * This deltaMode measures the delta values in lines.
  *
- * @type {Number}
+ * @type {number}
  */
 const DOM_DELTA_LINE = (window.WheelEvent && window.WheelEvent.DOM_DELTA_LINE) || 0x01;
 
@@ -19,7 +19,7 @@ const DOM_DELTA_LINE = (window.WheelEvent && window.WheelEvent.DOM_DELTA_LINE) |
  * This constant is one possible option for the deltaMode property of a wheel event.
  * This deltaMode measures the delta values in pages.
  *
- * @type {Number}
+ * @type {number}
  */
 const DOM_DELTA_PAGE = (window.WheelEvent && window.WheelEvent.DOM_DELTA_PAGE) || 0x02;
 
