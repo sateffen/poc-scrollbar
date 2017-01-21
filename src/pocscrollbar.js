@@ -73,7 +73,7 @@ export default class PocScrollbar {
 
         // and then we setup the corresponding mutation handler and its destroy callback
         if (this._options.useMutationObserver) {
-            const debouncedMutationHandler = debounce(mutationHandler, checkInterval);
+            const [debouncedMutationHandler, destroyCallback] = debounce(mutationHandler, checkInterval);
             const mutationObserver = new MutationObserver(debouncedMutationHandler);
 
             window.addEventListener('resize', debouncedMutationHandler);
@@ -82,6 +82,7 @@ export default class PocScrollbar {
             });
 
             this._destroyCallbacks.push(() => {
+                destroyCallback();
                 mutationObserver.disconnect();
                 window.removeEventListener('resize', debouncedMutationHandler);
             });
@@ -237,6 +238,11 @@ export default class PocScrollbar {
 
         // then return the closure function
         return () => {
+            // if the container doesn't exist anymore, we can't do anything
+            if (this._container === null) {
+                return;
+            }
+
             // search for the root element of this element
             let potentialRootElement = this._container.parentElement;
             while (potentialRootElement !== null &&

@@ -71,15 +71,21 @@ export function applyOptionsToScrollBarElement(aElement, aElementName, aOptions)
  *
  * @param {Function} aCallback The callback to call debounced
  * @param {number} aWaitTime The time to wait till calling the callback
- * @return {Function} The replacement function
+ * @return {Array.<Function>} An array with two functions. The first is the debounced callback,
+ * the second is a destroy callback
  */
 export function debounce(aCallback, aWaitTime) {
     let pointer = null;
 
-    return () => {
-        window.clearTimeout(pointer);
-        pointer = window.setTimeout(aCallback, aWaitTime);
-    };
+    return [
+        () => {
+            window.clearTimeout(pointer);
+            pointer = window.setTimeout(aCallback, aWaitTime);
+        },
+        () => {
+            window.clearTimeout(pointer);
+        }
+    ];
 }
 
 /**

@@ -34,8 +34,13 @@ describe('Helper functions', () => {
             expect(typeof debounce).toBe('function');
         });
 
-        it('should return a function', () => {
-            expect(typeof debounce()).toBe('function');
+        it('should return an array with two functions', () => {
+            const returnValue = debounce();
+
+            expect(Array.isArray(returnValue)).toBe(true);
+            expect(returnValue.length).toBe(2);
+            expect(typeof returnValue[0]).toBe('function');
+            expect(typeof returnValue[1]).toBe('function');
         });
 
         it('should not call clearTimeout initially', () => {
@@ -49,13 +54,13 @@ describe('Helper functions', () => {
         });
 
         it('should call clearTimeout with null on first call', () => {
-            debounce()();
+            debounce()[0]();
             expect(window.clearTimeout).toHaveBeenCalledTimes(1);
             expect(window.clearTimeout).toHaveBeenCalledWith(null);
         });
 
         it('should call clearTimeout with the returned setTimeout pointer from prev call at second call', () => {
-            const callback = debounce();
+            const [callback] = debounce();
             callback();
             callback();
 
@@ -63,11 +68,18 @@ describe('Helper functions', () => {
             expect(window.clearTimeout.calls.mostRecent().args[0]).toBe(setTimeoutReturnValue);
         });
 
+        it('should have called clearTimeout when calling the destroyCallback', () => {
+            debounce()[1]();
+            expect(window.clearTimeout).toHaveBeenCalledTimes(1);
+            expect(window.clearTimeout).toHaveBeenCalledWith(null);
+        });
+
         it('should call setTimeout with a function as first argument and the given time as second argument', () => {
             const spyCallback = jasmine.createSpy('spyCallback');
             const waitTime = Math.round(Math.random() * 100);
-            debounce(spyCallback, waitTime)();
+            debounce(spyCallback, waitTime)[0]();
 
+            expect(window.setTimeout).toHaveBeenCalledTimes(1);
             expect(window.setTimeout).toHaveBeenCalledWith(spyCallback, waitTime);
         });
     });
