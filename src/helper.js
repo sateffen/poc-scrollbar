@@ -1,5 +1,29 @@
 
 /**
+ * This constant is one possible option for the deltaMode property of a wheel event.
+ * This deltaMode measures the delta values in pixels.
+ *
+ * @type {number}
+ */
+const DOM_DELTA_PIXEL = (window.WheelEvent && window.WheelEvent.DOM_DELTA_PIXEL) || 0x00;
+
+/**
+ * This constant is one possible option for the deltaMode property of a wheel event.
+ * This deltaMode measures the delta values in lines.
+ *
+ * @type {number}
+ */
+const DOM_DELTA_LINE = (window.WheelEvent && window.WheelEvent.DOM_DELTA_LINE) || 0x01;
+
+/**
+ * This constant is one possible option for the deltaMode property of a wheel event.
+ * This deltaMode measures the delta values in pages.
+ *
+ * @type {number}
+ */
+const DOM_DELTA_PAGE = (window.WheelEvent && window.WheelEvent.DOM_DELTA_PAGE) || 0x02;
+
+/**
  * This constant tells the browsers line height for one line. This is used for calculating the distance
  * to scroll in a wheel event
  *
@@ -47,15 +71,21 @@ export function applyOptionsToScrollBarElement(aElement, aElementName, aOptions)
  *
  * @param {Function} aCallback The callback to call debounced
  * @param {number} aWaitTime The time to wait till calling the callback
- * @return {Function} The replacement function
+ * @return {Array.<Function>} An array with two functions. The first is the debounced callback,
+ * the second is a destroy callback
  */
 export function debounce(aCallback, aWaitTime) {
     let pointer = null;
 
-    return () => {
-        window.clearTimeout(pointer);
-        pointer = window.setTimeout(aCallback, aWaitTime);
-    };
+    return [
+        () => {
+            window.clearTimeout(pointer);
+            pointer = window.setTimeout(aCallback, aWaitTime);
+        },
+        () => {
+            window.clearTimeout(pointer);
+        }
+    ];
 }
 
 /**
@@ -74,10 +104,11 @@ export function getWheelDeltaAsPixel(aIsX, aDeltaOption, aDeltaMode, aDeltaValue
     }
 
     switch (aDeltaMode) {
-        case 1:
+        case DOM_DELTA_LINE:
             return aDeltaValue * browsersLineHeight;
-        case 2:
+        case DOM_DELTA_PAGE:
             return aDeltaValue * (aIsX ? aScrollContainer.clientWidth : aScrollContainer.clientHeight);
+        case DOM_DELTA_PIXEL:
         default:
             return aDeltaValue;
     }
