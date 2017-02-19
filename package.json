@@ -4,8 +4,10 @@
   "description": "A simple scrollbar, that just works",
   "homepage": "https://github.com/sateffen/poc-scrollbar",
   "bugs": "https://github.com/sateffen/poc-scrollbar/issues",
-  "main": "src/pocscrollbar.js",
+  "main": "dist/pocscrollbar.js",
+  "jsnext:main": "src/pocscrollbar.js",
   "scripts": {
+    "prepare": "npm run build",
     "build": "rollup -c",
     "dev": "rollup -c --watch",
     "lint": "eslint -c .eslintrc src",
