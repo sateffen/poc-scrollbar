@@ -1,0 +1,15 @@
+# patterns
+.*
+
+# folder
+node_modules/
+test/
+
+# files
+npm-debug.log
+.eslintrc
+.gitignore
+index.html
+karma.config.js
+rollup.config.js
+yarn.lock
