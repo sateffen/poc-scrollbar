@@ -3,6 +3,18 @@ import { ScrollView } from './scrollview';
 import { debounce, getWheelDeltaAsPixel } from './helper';
 
 /**
+ * Contains all allowed touch-action values for x direction
+ * @type {string[]}
+ */
+const ALLOWED_X_TOUCH_ACTIONS = ['auto', 'manipulation', 'pan-x'];
+
+/**
+ * Contains all allowed touch-action values for y direction
+ * @type {string[]}
+ */
+const ALLOWED_Y_TOUCH_ACTIONS = ['auto', 'manipulation', 'pan-y'];
+
+/**
  * @typedef {Object} PocScrollbarOptions
  * @property {boolean} [aOptions.disableInteractionWithScrollbars=false]
  * @property {boolean} [aOptions.useMutationObserver=false]
@@ -190,17 +202,24 @@ export default class PocScrollbar {
             if (aaEvent.which !== touchToTrack) {
                 return;
             }
+            // read the touch-action from the target element for checking
+            const touchActionValue = window.getComputedStyle(aaEvent.target, null).getPropertyValue('touch-action');
 
-            // calculates the distance
-            const distanceX = tmpMoverX - aaEvent.touches[touchToTrack].clientX;
-            const distanceY = tmpMoverY - aaEvent.touches[touchToTrack].clientY;
+            // check, if the touch is allowed to scroll in x direction
+            if (ALLOWED_X_TOUCH_ACTIONS.indexOf(touchActionValue) > -1) {
+                const distanceX = tmpMoverX - aaEvent.touches[touchToTrack].clientX;
+                this.scrollLeft(this._container.scrollLeft + distanceX);
+            }
 
+            // check, if the touch is allowed to scroll in y direction
+            if (ALLOWED_Y_TOUCH_ACTIONS.indexOf(touchActionValue) > -1) {
+                const distanceY = tmpMoverY - aaEvent.touches[touchToTrack].clientY;
+                this.scrollTop(this._container.scrollTop + distanceY);
+            }
+
+            // and update the tmp movers
             tmpMoverX = aaEvent.touches[touchToTrack].clientX;
             tmpMoverY = aaEvent.touches[touchToTrack].clientY;
-
-            // and triggers an update for scrollTop and scrollLeft
-            this.scrollTop(this._container.scrollTop + distanceY);
-            this.scrollLeft(this._container.scrollLeft + distanceX);
         };
 
         // finally setup a pointer to a touchend function handler
