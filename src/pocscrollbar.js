@@ -4,19 +4,20 @@ import { debounce, getWheelDeltaAsPixel } from './helper';
 
 /**
  * Contains all allowed touch-action values for x direction
- * @type {string[]}
+ * @type {Array<string>}
  */
 const ALLOWED_X_TOUCH_ACTIONS = ['auto', 'manipulation', 'pan-x'];
 
 /**
  * Contains all allowed touch-action values for y direction
- * @type {string[]}
+ * @type {Array<string>}
  */
 const ALLOWED_Y_TOUCH_ACTIONS = ['auto', 'manipulation', 'pan-y'];
 
 /**
  * @typedef {Object} PocScrollbarOptions
  * @property {boolean} [aOptions.disableInteractionWithScrollbars=false]
+ * @property {boolean} [aOptions.disableTouchScrollingOnContainer=false]
  * @property {boolean} [aOptions.useMutationObserver=false]
  * @property {number} [aOptions.checkInterval=300]
  * @property {boolean} [aOptions.disableXScrolling=false]
