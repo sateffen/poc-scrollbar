@@ -88,11 +88,11 @@ export class ScrollView {
      * Warning: You need to set the this context of this function to the scrollView instance you're working with!
      *
      * @param {string} aAttribute The attribute to use from the event for calculation
-     * @param {string} aPropertyFactor The factor for scroll top and left to compensate for normal distances
+     * @param {string} aScaleFactor The factor for scroll top and left to compensate for normal distances
      * @param {string} aParentWriteCallback The name for the callback where to write to
      * @return {Object} An object containing event handlers for the scrollbar
      */
-    _generateEventHandlerForElement(aAttribute, aPropertyFactor, aParentWriteCallback) {
+    _generateEventHandlerForElement(aAttribute, aScaleFactor, aParentWriteCallback) {
         return {
             mousedown: (aEvent) => {
                 // first of all we need to prevent the default behaviour, because otherwise the mouse
@@ -101,16 +101,16 @@ export class ScrollView {
                 // then setup some cache variables, that contain the last page value and the current
                 // scroll value we want to modify
                 let tmpMover = aEvent[aAttribute];
-                let scrollPositionFloat = this._scrollerParent[aParentWriteCallback]();
+                let scrollPosition = this._scrollerParent[aParentWriteCallback]();
 
                 // then setup a pointer to the move function for registering and unregistering
                 let tmpMovePointer = (e) => {
                     // here we calculate the new scrollPosition
-                    scrollPositionFloat += (e[aAttribute] - tmpMover) * this[aPropertyFactor];
+                    scrollPosition += (e[aAttribute] - tmpMover) * this[aScaleFactor];
                     // save to the cache
                     tmpMover = e[aAttribute];
                     // and set the new scroll positioning. The callback will tell us, what it did with the value
-                    scrollPositionFloat = this._scrollerParent[aParentWriteCallback](Math.round(scrollPositionFloat));
+                    scrollPosition = this._scrollerParent[aParentWriteCallback](Math.round(scrollPosition));
                 };
 
                 // then we setup a function for the end function, which cleans up everything
@@ -137,7 +137,7 @@ export class ScrollView {
                 const touchToTrack = aEvent.which || 0;
                 // and init the cache variables
                 let tmpMover = aEvent.touches[touchToTrack][aAttribute];
-                let scrollPositionFloat = this._scrollerParent[aParentWriteCallback]();
+                let scrollPosition = this._scrollerParent[aParentWriteCallback]();
 
                 // setup a move function, that we can register and unregister
                 let tmpMovePointer = (aaEvent) => {
@@ -146,12 +146,12 @@ export class ScrollView {
                         return;
                     }
                     // first calculate the scroll new scroll position
-                    scrollPositionFloat += (aaEvent.touches[touchToTrack][aAttribute] - tmpMover) * this[aPropertyFactor];
+                    scrollPosition += (aaEvent.touches[touchToTrack][aAttribute] - tmpMover) * this[aScaleFactor];
                     // then update the cache
                     tmpMover = aaEvent.touches[touchToTrack][aAttribute];
 
                     // and write the new scroll value
-                    scrollPositionFloat = this._scrollerParent[aParentWriteCallback](Math.round(scrollPositionFloat));
+                    scrollPosition = this._scrollerParent[aParentWriteCallback](Math.round(scrollPosition));
                 };
 
                 // and setup a clean up function, if the touch ends
