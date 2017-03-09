@@ -175,6 +175,8 @@ export default class PocScrollbar {
         if (aEvent.defaultPrevented) {
             return;
         }
+        // prevent default so outer elements wont scroll
+        aEvent.preventDefault();
 
         // save a pointer to the touch to track. This should help to support multitouch
         const touchToTrack = aEvent.which || 0;
