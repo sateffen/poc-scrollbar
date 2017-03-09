@@ -146,8 +146,7 @@ export class ScrollView {
                         return;
                     }
                     // first calculate the scroll new scroll position
-                    scrollPositionFloat += (aaEvent.touches[touchToTrack][aAttribute] - tmpMover);
-                    scrollPositionFloat *= this[aPropertyFactor];
+                    scrollPositionFloat += (aaEvent.touches[touchToTrack][aAttribute] - tmpMover) * this[aPropertyFactor];
                     // then update the cache
                     tmpMover = aaEvent.touches[touchToTrack][aAttribute];
 
