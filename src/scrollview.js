@@ -61,6 +61,7 @@ export class ScrollView {
         element.style.top = '0px';
         element.style.left = '0px';
         element.style.position = 'absolute';
+        element.style.touchAction = 'none';
 
         applyOptionsToScrollBarElement(element, details.name, this._options);
 
