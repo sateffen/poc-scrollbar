@@ -17,19 +17,21 @@ const ALLOWED_Y_TOUCH_ACTIONS = ['auto', 'manipulation', 'pan-y'];
 /**
  * A boolean telling about the passive event listening support
  * @type {boolean}
- * @see {@link https://github.com/Modernizr/Modernizr/blob/5eea7e2a213edc9e83a47b6414d0250468d83471/feature-detects/dom/passiveeventlisteners.js}
  */
 const SUPPORTS_PASSIVE = (() => {
     let supportsPassive = false;
-    
+
     try {
         const opts = Object.defineProperty({}, 'passive', {
-            get: function () {
+            get() {
                 supportsPassive = true;
             }
         });
-        window.addEventListener("test", null, opts);
-    } catch (e) { }
+        window.addEventListener('test', null, opts);
+    }
+    catch (e) {
+        // supportsPassive is false
+    }
 
     return supportsPassive;
 })();
