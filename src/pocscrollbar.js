@@ -216,6 +216,11 @@ export default class PocScrollbar {
         // and save temporary variables for the move calculation
         let tmpMoverX = aEvent.touches[touchToTrack].clientX;
         let tmpMoverY = aEvent.touches[touchToTrack].clientY;
+        
+        // read the touch-action from the target element for checking
+        const touchActionValue = window.getComputedStyle(aEvent.target, null).getPropertyValue('touch-action');
+        const xPanAllowed = ALLOWED_X_TOUCH_ACTIONS.indexOf(touchActionValue) > -1;
+        const yPanAllowed = ALLOWED_Y_TOUCH_ACTIONS.indexOf(touchActionValue) > -1;
 
         // then setup a move function pointer
         let tmpMovePointer = (aaEvent) => {
@@ -228,18 +233,16 @@ export default class PocScrollbar {
             if (aaEvent.which !== touchToTrack) {
                 return;
             }
-            // read the touch-action from the target element for checking
-            const touchActionValue = window.getComputedStyle(aaEvent.target, null).getPropertyValue('touch-action');
 
             // check, if the touch is allowed to scroll in x direction
-            if (ALLOWED_X_TOUCH_ACTIONS.indexOf(touchActionValue) > -1) {
+            if (xPanAllowed) {
                 const distanceX = tmpMoverX - aaEvent.touches[touchToTrack].clientX;
                 this.scrollLeft(this._container.scrollLeft + distanceX);
                 aaEvent.preventDefault();
             }
 
             // check, if the touch is allowed to scroll in y direction
-            if (ALLOWED_Y_TOUCH_ACTIONS.indexOf(touchActionValue) > -1) {
+            if (yPanAllowed) {
                 const distanceY = tmpMoverY - aaEvent.touches[touchToTrack].clientY;
                 this.scrollTop(this._container.scrollTop + distanceY);
                 aaEvent.preventDefault();
