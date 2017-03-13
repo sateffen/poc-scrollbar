@@ -216,7 +216,7 @@ export default class PocScrollbar {
         // and save temporary variables for the move calculation
         let tmpMoverX = aEvent.touches[touchToTrack].clientX;
         let tmpMoverY = aEvent.touches[touchToTrack].clientY;
-        
+
         // read the touch-action from the target element for checking
         const touchActionValue = window.getComputedStyle(aEvent.target, null).getPropertyValue('touch-action');
         const xPanAllowed = ALLOWED_X_TOUCH_ACTIONS.indexOf(touchActionValue) > -1;
