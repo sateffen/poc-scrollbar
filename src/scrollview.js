@@ -15,7 +15,7 @@ export class ScrollView {
      */
     constructor(aParentInstance, aOptions) {
         // first save the details about the parent instance and it's container element
-        this._parent = aParentInstance._container;
+        this._parentElement = aParentInstance._container;
         this._scrollerParent = aParentInstance;
         this._options = aOptions;
         this._destroyCallbacks = [];
@@ -24,8 +24,8 @@ export class ScrollView {
         // itself. The problem is, that if the user grabs the vertical scrollbar, and drags it
         // 10px down the scrollTop changed not only by ten, but 10*scrollHeight/height. This is
         // because of the absolute positioning relative to the parent
-        this._scrollHeightFactor = this._parent.scrollHeight / this._parent.clientHeight;
-        this._scrollWidthFactor = this._parent.scrollWidth / this._parent.clientWidth;
+        this._scrollHeightFactor = this._parentElement.scrollHeight / this._parentElement.clientHeight;
+        this._scrollWidthFactor = this._parentElement.scrollWidth / this._parentElement.clientWidth;
 
         // setup scroll elements
         this._xElement = aOptions.disableXScrolling ? null : this._setupElement(true);
@@ -76,10 +76,10 @@ export class ScrollView {
             });
         }
 
-        this._parent.appendChild(element);
+        this._parentElement.appendChild(element);
         this._destroyCallbacks.push(() => {
-            if (Array.prototype.indexOf.call(this._parent.children, element) >= 0) {
-                this._parent.removeChild(element);
+            if (Array.prototype.indexOf.call(this._parentElement.children, element) >= 0) {
+                this._parentElement.removeChild(element);
             }
         });
 
@@ -224,14 +224,14 @@ export class ScrollView {
      */
     parentUpdated() {
         // read and recalculate all needed data
-        this._parentWidth = this._parent.clientWidth;
-        this._parentScrollWidth = this._parent.scrollWidth;
+        this._parentWidth = this._parentElement.clientWidth;
+        this._parentScrollWidth = this._parentElement.scrollWidth;
         this._elementWidth = (this._parentWidth * this._parentWidth) / this._parentScrollWidth;
-        this._parentHeight = this._parent.clientHeight;
-        this._parentScrollHeight = this._parent.scrollHeight;
+        this._parentHeight = this._parentElement.clientHeight;
+        this._parentScrollHeight = this._parentElement.scrollHeight;
         this._elementHeight = (this._parentHeight * this._parentHeight) / this._parentScrollHeight;
-        this._scrollHeightFactor = this._parent.scrollHeight / this._parent.clientHeight;
-        this._scrollWidthFactor = this._parent.scrollWidth / this._parent.clientWidth;
+        this._scrollHeightFactor = this._parentElement.scrollHeight / this._parentElement.clientHeight;
+        this._scrollWidthFactor = this._parentElement.scrollWidth / this._parentElement.clientWidth;
 
         // determine visibility of x element
         if (this._xElement) {
@@ -241,7 +241,7 @@ export class ScrollView {
                     this._elementWidth = this._options.xMinSize;
                 }
 
-                this.scrollTopUpdated(this._parent.scrollTop);
+                this.scrollTopUpdated(this._parentElement.scrollTop);
                 this._xElement.style.display = 'block';
                 this._xElement.style.width = `${this._elementWidth}px`;
             }
@@ -258,7 +258,7 @@ export class ScrollView {
                     this._elementHeight = this._options.yMinSize;
                 }
 
-                this.scrollLeftUpdated(this._parent.scrollLeft);
+                this.scrollLeftUpdated(this._parentElement.scrollLeft);
                 this._yElement.style.display = 'block';
                 this._yElement.style.height = `${this._elementHeight}px`;
             }
@@ -278,7 +278,7 @@ export class ScrollView {
         this._destroyCallbacks.forEach(aCallback => aCallback());
 
         // and then null all data, so the GC can clean it up
-        this._parent = null;
+        this._parentElement = null;
         this._scrollerParent = null;
         this._xElement = null;
         this._yElement = null;
