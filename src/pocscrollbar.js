@@ -3,16 +3,51 @@ import { ScrollView } from './scrollview';
 import { debounce, getWheelDeltaAsPixel } from './helper';
 
 /**
+ * Contains all allowed touch-action values for x direction
+ * @type {Array<string>}
+ */
+const ALLOWED_X_TOUCH_ACTIONS = ['auto', 'manipulation', 'pan-x'];
+
+/**
+ * Contains all allowed touch-action values for y direction
+ * @type {Array<string>}
+ */
+const ALLOWED_Y_TOUCH_ACTIONS = ['auto', 'manipulation', 'pan-y'];
+
+/**
+ * A boolean telling about the passive event listening support
+ * @type {boolean}
+ */
+const SUPPORTS_PASSIVE = (() => {
+    let supportsPassive = false;
+
+    try {
+        const opts = Object.defineProperty({}, 'passive', {
+            get() {
+                supportsPassive = true;
+            }
+        });
+        window.addEventListener('test', null, opts);
+    }
+    catch (e) {
+        // supportsPassive is false
+    }
+
+    return supportsPassive;
+})();
+
+/**
  * @typedef {Object} PocScrollbarOptions
  * @property {boolean} [aOptions.disableInteractionWithScrollbars=false]
+ * @property {boolean} [aOptions.disableTouchScrollingOnContainer=false]
  * @property {boolean} [aOptions.useMutationObserver=false]
  * @property {number} [aOptions.checkInterval=300]
  * @property {boolean} [aOptions.disableXScrolling=false]
  * @property {boolean} [aOptions.disableYScrolling=false]
  * @property {Object} [aOptions.xElementStyles={}]
  * @property {Object} [aOptions.xElementStyles={}]
- * @property {array.<String>|String} [aOptions.xElementClass=[]]
- * @property {array.<String>|String} [aOptions.yElementClass=[]]
+ * @property {Array.<String>|String} [aOptions.xElementClass=[]]
+ * @property {Array.<String>|String} [aOptions.yElementClass=[]]
  * @property {number} [aOptions.xMinSize]
  * @property {number} [aOptions.yMinSize]
  * @property {number} [aOptions.wheelDeltaSize]
@@ -182,23 +217,40 @@ export default class PocScrollbar {
         let tmpMoverX = aEvent.touches[touchToTrack].clientX;
         let tmpMoverY = aEvent.touches[touchToTrack].clientY;
 
+        // read the touch-action from the target element for checking
+        const touchActionValue = window.getComputedStyle(aEvent.target, null).getPropertyValue('touch-action');
+        const xPanAllowed = ALLOWED_X_TOUCH_ACTIONS.indexOf(touchActionValue) > -1;
+        const yPanAllowed = ALLOWED_Y_TOUCH_ACTIONS.indexOf(touchActionValue) > -1;
+
         // then setup a move function pointer
         let tmpMovePointer = (aaEvent) => {
+            // prevented events should not be handled
+            if (aaEvent.defaultPrevented) {
+                return;
+            }
+
             // which only tracks the correct touch
             if (aaEvent.which !== touchToTrack) {
                 return;
             }
 
-            // calculates the distance
-            const distanceX = tmpMoverX - aaEvent.touches[touchToTrack].clientX;
-            const distanceY = tmpMoverY - aaEvent.touches[touchToTrack].clientY;
+            // check, if the touch is allowed to scroll in x direction
+            if (xPanAllowed) {
+                const distanceX = tmpMoverX - aaEvent.touches[touchToTrack].clientX;
+                this.scrollLeft(this._container.scrollLeft + distanceX);
+                aaEvent.preventDefault();
+            }
 
+            // check, if the touch is allowed to scroll in y direction
+            if (yPanAllowed) {
+                const distanceY = tmpMoverY - aaEvent.touches[touchToTrack].clientY;
+                this.scrollTop(this._container.scrollTop + distanceY);
+                aaEvent.preventDefault();
+            }
+
+            // and update the tmp movers
             tmpMoverX = aaEvent.touches[touchToTrack].clientX;
             tmpMoverY = aaEvent.touches[touchToTrack].clientY;
-
-            // and triggers an update for scrollTop and scrollLeft
-            this.scrollTop(this._container.scrollTop + distanceY);
-            this.scrollLeft(this._container.scrollLeft + distanceX);
         };
 
         // finally setup a pointer to a touchend function handler
@@ -218,7 +270,7 @@ export default class PocScrollbar {
         };
 
         // and finally add the event handlers, so this will actually work correctly
-        document.body.addEventListener('touchmove', tmpMovePointer);
+        document.body.addEventListener('touchmove', tmpMovePointer, SUPPORTS_PASSIVE ? { passive: false } : false);
         document.body.addEventListener('touchend', tmpEndPointer);
         document.body.addEventListener('touchleave', tmpEndPointer);
     }

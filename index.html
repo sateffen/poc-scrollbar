@@ -25,7 +25,11 @@
 <body>
     <div id="container" style="height: 250px;border: 2px solid black;">
         <div style="height: 100px;background-color: red;width:111%;"></div>
-        <div style="height: 100px;background-color: blue;"></div>
+        <div style="height: 110px" id="inner">
+            <div style="height: 100px; width: 111%; touch-action: pan-y; background-color: lightblue"></div>
+            <div style="height: 100px; background-color: blue"></div>
+            <div style="height: 100px; background-color: darkblue"></div>
+        </div>
         <div style="height: 100px;background-color: green;"></div>
         <div style="height: 100px;background-color: yellow;"></div>
     </div>
@@ -33,6 +37,10 @@
     <script src="dist/pocscrollbar.js"></script>
     <script>
         window.scrollerInstance = new window.PocScrollbar(document.querySelector('#container'), {
+            xElementClass: ['scrollbar', 'horizontal'],
+            yElementClass: ['scrollbar', 'vertical']
+        });
+        window.scrollerInnerInstance = new window.PocScrollbar(document.querySelector('#inner'), {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical']
         });

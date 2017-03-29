@@ -15,7 +15,7 @@ export class ScrollView {
      */
     constructor(aParentInstance, aOptions) {
         // first save the details about the parent instance and it's container element
-        this._parent = aParentInstance._container;
+        this._parentElement = aParentInstance._container;
         this._scrollerParent = aParentInstance;
         this._options = aOptions;
         this._destroyCallbacks = [];
@@ -24,8 +24,8 @@ export class ScrollView {
         // itself. The problem is, that if the user grabs the vertical scrollbar, and drags it
         // 10px down the scrollTop changed not only by ten, but 10*scrollHeight/height. This is
         // because of the absolute positioning relative to the parent
-        this._scrollHeightFactor = this._parent.scrollHeight / this._parent.clientHeight;
-        this._scrollWidthFactor = this._parent.scrollWidth / this._parent.clientWidth;
+        this._scrollHeightFactor = this._parentElement.scrollHeight / this._parentElement.clientHeight;
+        this._scrollWidthFactor = this._parentElement.scrollWidth / this._parentElement.clientWidth;
 
         // setup scroll elements
         this._xElement = aOptions.disableXScrolling ? null : this._setupElement(true);
@@ -61,6 +61,7 @@ export class ScrollView {
         element.style.top = '0px';
         element.style.left = '0px';
         element.style.position = 'absolute';
+        element.style.touchAction = 'none';
 
         applyOptionsToScrollBarElement(element, details.name, this._options);
 
@@ -75,9 +76,11 @@ export class ScrollView {
             });
         }
 
-        this._parent.appendChild(element);
+        this._parentElement.appendChild(element);
         this._destroyCallbacks.push(() => {
-            this._parent.removeChild(element);
+            if (Array.prototype.indexOf.call(this._parentElement.children, element) >= 0) {
+                this._parentElement.removeChild(element);
+            }
         });
 
         return element;
@@ -88,11 +91,11 @@ export class ScrollView {
      * Warning: You need to set the this context of this function to the scrollView instance you're working with!
      *
      * @param {string} aAttribute The attribute to use from the event for calculation
-     * @param {string} aPropertyFactor The factor for scroll top and left to compensate for normal distances
+     * @param {string} aScaleFactor The factor for scroll top and left to compensate for normal distances
      * @param {string} aParentWriteCallback The name for the callback where to write to
      * @return {Object} An object containing event handlers for the scrollbar
      */
-    _generateEventHandlerForElement(aAttribute, aPropertyFactor, aParentWriteCallback) {
+    _generateEventHandlerForElement(aAttribute, aScaleFactor, aParentWriteCallback) {
         return {
             mousedown: (aEvent) => {
                 // first of all we need to prevent the default behaviour, because otherwise the mouse
@@ -101,16 +104,16 @@ export class ScrollView {
                 // then setup some cache variables, that contain the last page value and the current
                 // scroll value we want to modify
                 let tmpMover = aEvent[aAttribute];
-                let scrollPositionFloat = this._scrollerParent[aParentWriteCallback]();
+                let scrollPosition = this._scrollerParent[aParentWriteCallback]();
 
                 // then setup a pointer to the move function for registering and unregistering
                 let tmpMovePointer = (e) => {
                     // here we calculate the new scrollPosition
-                    scrollPositionFloat += (e[aAttribute] - tmpMover) * this[aPropertyFactor];
+                    scrollPosition += (e[aAttribute] - tmpMover) * this[aScaleFactor];
                     // save to the cache
                     tmpMover = e[aAttribute];
                     // and set the new scroll positioning. The callback will tell us, what it did with the value
-                    scrollPositionFloat = this._scrollerParent[aParentWriteCallback](Math.round(scrollPositionFloat));
+                    scrollPosition = this._scrollerParent[aParentWriteCallback](Math.round(scrollPosition));
                 };
 
                 // then we setup a function for the end function, which cleans up everything
@@ -137,7 +140,7 @@ export class ScrollView {
                 const touchToTrack = aEvent.which || 0;
                 // and init the cache variables
                 let tmpMover = aEvent.touches[touchToTrack][aAttribute];
-                let scrollPositionFloat = this._scrollerParent[aParentWriteCallback]();
+                let scrollPosition = this._scrollerParent[aParentWriteCallback]();
 
                 // setup a move function, that we can register and unregister
                 let tmpMovePointer = (aaEvent) => {
@@ -146,13 +149,12 @@ export class ScrollView {
                         return;
                     }
                     // first calculate the scroll new scroll position
-                    scrollPositionFloat += (aaEvent.touches[touchToTrack][aAttribute] - tmpMover);
-                    scrollPositionFloat *= this[aPropertyFactor];
+                    scrollPosition += (aaEvent.touches[touchToTrack][aAttribute] - tmpMover) * this[aScaleFactor];
                     // then update the cache
                     tmpMover = aaEvent.touches[touchToTrack][aAttribute];
 
                     // and write the new scroll value
-                    scrollPositionFloat = this._scrollerParent[aParentWriteCallback](Math.round(scrollPositionFloat));
+                    scrollPosition = this._scrollerParent[aParentWriteCallback](Math.round(scrollPosition));
                 };
 
                 // and setup a clean up function, if the touch ends
@@ -222,14 +224,14 @@ export class ScrollView {
      */
     parentUpdated() {
         // read and recalculate all needed data
-        this._parentWidth = this._parent.clientWidth;
-        this._parentScrollWidth = this._parent.scrollWidth;
+        this._parentWidth = this._parentElement.clientWidth;
+        this._parentScrollWidth = this._parentElement.scrollWidth;
         this._elementWidth = (this._parentWidth * this._parentWidth) / this._parentScrollWidth;
-        this._parentHeight = this._parent.clientHeight;
-        this._parentScrollHeight = this._parent.scrollHeight;
+        this._parentHeight = this._parentElement.clientHeight;
+        this._parentScrollHeight = this._parentElement.scrollHeight;
         this._elementHeight = (this._parentHeight * this._parentHeight) / this._parentScrollHeight;
-        this._scrollHeightFactor = this._parent.scrollHeight / this._parent.clientHeight;
-        this._scrollWidthFactor = this._parent.scrollWidth / this._parent.clientWidth;
+        this._scrollHeightFactor = this._parentElement.scrollHeight / this._parentElement.clientHeight;
+        this._scrollWidthFactor = this._parentElement.scrollWidth / this._parentElement.clientWidth;
 
         // determine visibility of x element
         if (this._xElement) {
@@ -239,7 +241,7 @@ export class ScrollView {
                     this._elementWidth = this._options.xMinSize;
                 }
 
-                this.scrollTopUpdated(this._parent.scrollTop);
+                this.scrollTopUpdated(this._parentElement.scrollTop);
                 this._xElement.style.display = 'block';
                 this._xElement.style.width = `${this._elementWidth}px`;
             }
@@ -256,7 +258,7 @@ export class ScrollView {
                     this._elementHeight = this._options.yMinSize;
                 }
 
-                this.scrollLeftUpdated(this._parent.scrollLeft);
+                this.scrollLeftUpdated(this._parentElement.scrollLeft);
                 this._yElement.style.display = 'block';
                 this._yElement.style.height = `${this._elementHeight}px`;
             }
@@ -276,7 +278,7 @@ export class ScrollView {
         this._destroyCallbacks.forEach(aCallback => aCallback());
 
         // and then null all data, so the GC can clean it up
-        this._parent = null;
+        this._parentElement = null;
         this._scrollerParent = null;
         this._xElement = null;
         this._yElement = null;
