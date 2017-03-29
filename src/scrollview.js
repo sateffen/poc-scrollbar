@@ -78,7 +78,9 @@ export class ScrollView {
 
         this._parent.appendChild(element);
         this._destroyCallbacks.push(() => {
-            this._parent.removeChild(element);
+            if (Array.prototype.indexOf.call(this._parent.children, element) >= 0) {
+                this._parent.removeChild(element);
+            }
         });
 
         return element;
