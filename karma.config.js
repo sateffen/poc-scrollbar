@@ -13,9 +13,11 @@ module.exports = (config) => {
             'test/**/*.spec.js': ['rollup'],
         },
         rollupPreprocessor: {
-            name: 'poc-scrollbar',
-            format: 'iife',
-            sourceMap: 'inline',
+            output: {
+                name: 'pocScrollbar',
+                format: 'iife',
+                sourcemap: 'inline',
+            },
             plugins: [
                 buble(),
             ],
