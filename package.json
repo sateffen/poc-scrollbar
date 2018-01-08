@@ -5,6 +5,7 @@
   "homepage": "https://github.com/sateffen/poc-scrollbar",
   "bugs": "https://github.com/sateffen/poc-scrollbar/issues",
   "main": "dist/pocscrollbar.js",
+  "module": "src/pocscrollbar.js",
   "jsnext:main": "src/pocscrollbar.js",
   "scripts": {
     "prepare": "npm run build",
