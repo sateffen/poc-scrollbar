@@ -1,5 +1,5 @@
 
-import { applyOptionsToScrollBarElement } from './helper';
+import {applyOptionsToScrollBarElement} from './helper';
 
 /**
  * The scrollView is the visual representation of the current scroll state. While the scroll
@@ -47,12 +47,12 @@ export class ScrollView {
             name: 'xElement',
             event: 'clientX',
             factor: '_scrollWidthFactor',
-            callback: 'scrollLeft'
+            callback: 'scrollLeft',
         } : {
             name: 'yElement',
             event: 'clientY',
             factor: '_scrollHeightFactor',
-            callback: 'scrollTop'
+            callback: 'scrollTop',
         };
 
         // set some default styles
@@ -70,9 +70,9 @@ export class ScrollView {
                 .call(this, details.event, details.factor, details.callback);
             const keys = Object.keys(eventListeners);
 
-            keys.forEach(aKey => element.addEventListener(aKey, eventListeners[aKey]));
+            keys.forEach((aKey) => element.addEventListener(aKey, eventListeners[aKey]));
             this._destroyCallbacks.push(() => {
-                keys.forEach(aKey => element.removeEventListener(aKey, eventListeners[aKey]));
+                keys.forEach((aKey) => element.removeEventListener(aKey, eventListeners[aKey]));
             });
         }
 
@@ -178,7 +178,7 @@ export class ScrollView {
                 document.body.addEventListener('touchmove', tmpMovePointer);
                 document.body.addEventListener('touchend', tmpEndPointer);
                 document.body.addEventListener('touchleave', tmpEndPointer);
-            }
+            },
         };
     }
 
@@ -275,7 +275,7 @@ export class ScrollView {
      */
     destroy() {
         // first call all destroy callbacks
-        this._destroyCallbacks.forEach(aCallback => aCallback());
+        this._destroyCallbacks.forEach((aCallback) => aCallback());
 
         // and then null all data, so the GC can clean it up
         this._parentElement = null;

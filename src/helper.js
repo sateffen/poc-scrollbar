@@ -84,7 +84,7 @@ export function debounce(aCallback, aWaitTime) {
         },
         () => {
             window.clearTimeout(pointer);
-        }
+        },
     ];
 }
 
@@ -97,6 +97,7 @@ export function debounce(aCallback, aWaitTime) {
  * @param {number} aDeltaMode
  * @param {number} aDeltaValue
  * @param {Element} aScrollContainer
+ * @return {number} The calculated distance to scroll
  */
 export function getWheelDeltaAsPixel(aIsX, aDeltaOption, aDeltaMode, aDeltaValue, aScrollContainer) {
     if (typeof aDeltaOption === 'number') {
