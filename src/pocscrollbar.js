@@ -1,6 +1,6 @@
 
-import { ScrollView } from './scrollview';
-import { debounce, getWheelDeltaAsPixel } from './helper';
+import {ScrollView} from './scrollview';
+import {debounce, getWheelDeltaAsPixel} from './helper';
 
 /**
  * Contains all allowed touch-action values for x direction
@@ -25,7 +25,7 @@ const SUPPORTS_PASSIVE = (() => {
         const opts = Object.defineProperty({}, 'passive', {
             get() {
                 supportsPassive = true;
-            }
+            },
         });
         window.addEventListener('test', null, opts);
     }
@@ -76,7 +76,7 @@ export default class PocScrollbar {
         this._scrollLeft = 0;
         this._scrollView = new PocScrollbar.ScrollView(this, this._options);
         this._destroyCallbacks = [
-            () => this._scrollView.destroy()
+            () => this._scrollView.destroy(),
         ];
 
         // then go and set the style for the container element. It's important to disable overflow
@@ -113,7 +113,7 @@ export default class PocScrollbar {
 
             window.addEventListener('resize', debouncedMutationHandler);
             mutationObserver.observe(this._container, {
-                attributes: true, childList: true, characterData: true, subtree: true
+                attributes: true, childList: true, characterData: true, subtree: true,
             });
 
             this._destroyCallbacks.push(() => {
@@ -137,8 +137,8 @@ export default class PocScrollbar {
     _setupEventListeners() {
         // first we setup the event listeners, that we want to register to the container
         const eventListener = {
-            wheel: aEvent => this._wheelHandler(aEvent),
-            touchstart: aEvent => this._touchHandler(aEvent)
+            wheel: (aEvent) => this._wheelHandler(aEvent),
+            touchstart: (aEvent) => this._touchHandler(aEvent),
         };
 
         // then we attach all event handlers to the container
@@ -270,7 +270,7 @@ export default class PocScrollbar {
         };
 
         // and finally add the event handlers, so this will actually work correctly
-        document.body.addEventListener('touchmove', tmpMovePointer, SUPPORTS_PASSIVE ? { passive: false } : false);
+        document.body.addEventListener('touchmove', tmpMovePointer, SUPPORTS_PASSIVE ? {passive: false} : false);
         document.body.addEventListener('touchend', tmpEndPointer);
         document.body.addEventListener('touchleave', tmpEndPointer);
     }
@@ -425,7 +425,7 @@ export default class PocScrollbar {
      */
     destroy() {
         // execute all destroy callbacks
-        this._destroyCallbacks.forEach(aCallback => aCallback());
+        this._destroyCallbacks.forEach((aCallback) => aCallback());
 
         // and null the pointers to the GC can clean up, even if this object isn't cleaned up
         this._scrollView = null;

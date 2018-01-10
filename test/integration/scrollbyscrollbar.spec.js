@@ -24,7 +24,7 @@ describe('Scroll by scrollbar', () => {
                 instance = new PocScrollbar(parent, {
                     xElementClass: ['scrollbar', 'horizontal'],
                     yElementClass: ['scrollbar', 'vertical'],
-                    disableInteractionWithScrollbars: !canScroll
+                    disableInteractionWithScrollbars: !canScroll,
                 });
 
                 verticalScrollbar = parent.querySelector('.scrollbar.vertical');
@@ -45,15 +45,15 @@ describe('Scroll by scrollbar', () => {
             it('should scroll vertically if the vertical scrollbar is moved with the mouse', () => {
                 const startEvent = new MouseEvent('mousedown', {
                     clientX: 0,
-                    clientY: 10
+                    clientY: 10,
                 });
                 const moveEvent = new MouseEvent('mousemove', {
                     clientX: 10,
-                    clientY: 35
+                    clientY: 35,
                 });
                 const stopEvent = new MouseEvent('mouseup', {
                     clientX: 10,
-                    clientY: 35
+                    clientY: 35,
                 });
 
                 verticalScrollbar.dispatchEvent(startEvent);
@@ -67,15 +67,15 @@ describe('Scroll by scrollbar', () => {
             it('should scroll horizontally if the horizontal scrollbar is moved with the mouse', () => {
                 const startEvent = new MouseEvent('mousedown', {
                     clientX: 10,
-                    clientY: 0
+                    clientY: 0,
                 });
                 const moveEvent = new MouseEvent('mousemove', {
                     clientX: 35,
-                    clientY: 10
+                    clientY: 10,
                 });
                 const stopEvent = new MouseEvent('mouseup', {
                     clientX: 35,
-                    clientY: 10
+                    clientY: 10,
                 });
 
                 horizontalScrollbar.dispatchEvent(startEvent);
@@ -93,9 +93,9 @@ describe('Scroll by scrollbar', () => {
                             identifier: 0,
                             target: verticalScrollbar,
                             clientX: 0,
-                            clientY: 10
-                        })
-                    ]
+                            clientY: 10,
+                        }),
+                    ],
                 });
                 const moveEvent = new TouchEvent('touchmove', {
                     touches: [
@@ -103,9 +103,9 @@ describe('Scroll by scrollbar', () => {
                             identifier: 0,
                             target: verticalScrollbar,
                             clientX: 10,
-                            clientY: 35
-                        })
-                    ]
+                            clientY: 35,
+                        }),
+                    ],
                 });
                 const stopEvent = new TouchEvent('touchend', {
                     touches: [
@@ -113,9 +113,9 @@ describe('Scroll by scrollbar', () => {
                             identifier: 0,
                             target: verticalScrollbar,
                             clientX: 10,
-                            clientY: 35
-                        })
-                    ]
+                            clientY: 35,
+                        }),
+                    ],
                 });
 
                 verticalScrollbar.dispatchEvent(startEvent);
@@ -133,9 +133,9 @@ describe('Scroll by scrollbar', () => {
                             identifier: 0,
                             target: horizontalScrollbar,
                             clientX: 10,
-                            clientY: 0
-                        })
-                    ]
+                            clientY: 0,
+                        }),
+                    ],
                 });
                 const moveEvent = new TouchEvent('touchmove', {
                     touches: [
@@ -143,9 +143,9 @@ describe('Scroll by scrollbar', () => {
                             identifier: 0,
                             target: horizontalScrollbar,
                             clientX: 35,
-                            clientY: 10
-                        })
-                    ]
+                            clientY: 10,
+                        }),
+                    ],
                 });
                 const stopEvent = new TouchEvent('touchend', {
                     touches: [
@@ -153,9 +153,9 @@ describe('Scroll by scrollbar', () => {
                             identifier: 0,
                             target: horizontalScrollbar,
                             clientX: 35,
-                            clientY: 10
-                        })
-                    ]
+                            clientY: 10,
+                        }),
+                    ],
                 });
 
                 horizontalScrollbar.dispatchEvent(startEvent);

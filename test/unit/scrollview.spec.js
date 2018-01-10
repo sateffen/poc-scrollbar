@@ -1,4 +1,4 @@
-import { ScrollView } from '../../src/scrollview';
+import {ScrollView} from '../../src/scrollview';
 
 describe('ScrollView', () => {
     describe('Constructor', () => {
@@ -43,7 +43,7 @@ describe('ScrollView', () => {
             instance._setupElement.calls.reset();
 
             instance = new ScrollView(parentInstance, {
-                disableXScrolling: true
+                disableXScrolling: true,
             });
 
             expect(instance._setupElement).toHaveBeenCalledTimes(1);
@@ -55,7 +55,7 @@ describe('ScrollView', () => {
             instance._setupElement.calls.reset();
 
             instance = new ScrollView(parentInstance, {
-                disableYScrolling: true
+                disableYScrolling: true,
             });
 
             expect(instance._setupElement).toHaveBeenCalledTimes(1);

@@ -21,7 +21,7 @@ describe('Scrollbar Setup', () => {
         document.body.appendChild(parent);
         instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
-            yElementClass: ['scrollbar', 'vertical']
+            yElementClass: ['scrollbar', 'vertical'],
         });
 
         verticalScrollbar = parent.querySelector('.scrollbar.vertical');
@@ -68,7 +68,7 @@ describe('Scrollbar Setup', () => {
         instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
-            disableXScrolling: true
+            disableXScrolling: true,
         });
 
         expect(parent.querySelector('.scrollbar.horizontal')).toBeNull();
@@ -79,7 +79,7 @@ describe('Scrollbar Setup', () => {
         instance = new PocScrollbar(parent, {
             xElementClass: ['scrollbar', 'horizontal'],
             yElementClass: ['scrollbar', 'vertical'],
-            disableYScrolling: true
+            disableYScrolling: true,
         });
 
         expect(parent.querySelector('.scrollbar.vertical')).toBeNull();

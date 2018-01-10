@@ -1,28 +1,22 @@
 {
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": false,
-            "globalReturn": false,
-            "experimentalObjectRestSpread": false
-        }
-    },
-    "env": {
-        "browser": true,
-        "jasmine": true
-    },
-    "extends": [
-        "eslint:recommended",
-        "airbnb-base"
-    ],
-    "rules": {
-        "no-underscore-dangle": "off",
-        "indent": ["warn", 4, {"SwitchCase": 1}],
-        "brace-style": ["error", "stroustrup"],
-        "max-len": ["error", 120],
-        "import/prefer-default-export": "off",
-        "linebreak-style": "off",
-        "comma-dangle": ["error", "never"]
-    }
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "jasmine": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "google"
+  ],
+  "rules": {
+    "max-len": "off",
+    "no-console": "warn",
+    "brace-style": [
+      "error",
+      "stroustrup"
+    ]
+  }
 }

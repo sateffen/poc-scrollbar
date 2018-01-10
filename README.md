@@ -1,4 +1,6 @@
-# poc-scroller ![codeship status](https://codeship.com/projects/caec9210-ade5-0134-3cb2-36e7a5ec89be/status?branch=master)
+# poc-scroller
+
+[ ![Codeship Status for sateffen/poc-scrollbar](https://app.codeship.com/projects/caec9210-ade5-0134-3cb2-36e7a5ec89be/status?branch=master)](https://app.codeship.com/projects/192580)
 
 This is a scrollbar, that started out as proof-of-concept (so poc -> poc-scrollbar), but got adopted in several projects.
 It doesn't care about other libraries you use, it has no dependencies, you can just use it, and it'll do what you expect.
