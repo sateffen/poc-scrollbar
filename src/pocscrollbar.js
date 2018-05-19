@@ -256,13 +256,20 @@ export default class PocScrollbar {
         // finally setup a pointer to a touchend function handler
         let tmpEndPointer = (aaEvent) => {
             // which only reacts to the correct touch
-            if (aaEvent.which !== touchToTrack) {
+            if (aaEvent && aaEvent.which !== touchToTrack) {
                 return;
             }
+            // else it's the correct touch, or no touch at all. If it's no touch at all, it's a destroy call
             // deregisters the event handlers
             document.body.removeEventListener('touchmove', tmpMovePointer);
             document.body.removeEventListener('touchend', tmpEndPointer);
             document.body.removeEventListener('touchleave', tmpEndPointer);
+
+            const destroyIndexToRemove = this._destroyCallbacks.indexOf(tmpEndPointer);
+
+            if (destroyIndexToRemove > -1) {
+                this._destroyCallbacks.splice(destroyIndexToRemove, 1);
+            }
 
             // and nulls the pointer for freeing memory
             tmpMovePointer = null;
@@ -273,6 +280,7 @@ export default class PocScrollbar {
         document.body.addEventListener('touchmove', tmpMovePointer, SUPPORTS_PASSIVE ? {passive: false} : false);
         document.body.addEventListener('touchend', tmpEndPointer);
         document.body.addEventListener('touchleave', tmpEndPointer);
+        this._destroyCallbacks.push(tmpEndPointer);
     }
 
     /**

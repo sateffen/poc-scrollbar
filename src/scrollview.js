@@ -123,6 +123,12 @@ export class ScrollView {
                     document.body.removeEventListener('mouseup', tmpEndPointer);
                     document.body.removeEventListener('mouseleave', tmpEndPointer);
 
+                    const destroyIndexToRemove = this._destroyCallbacks.indexOf(tmpEndPointer);
+
+                    if (destroyIndexToRemove > -1) {
+                        this._destroyCallbacks.splice(destroyIndexToRemove, 1);
+                    }
+
                     // and null the pointers, just to make sure the GC can clean up everything
                     tmpMovePointer = null;
                     tmpEndPointer = null;
@@ -132,6 +138,7 @@ export class ScrollView {
                 document.body.addEventListener('mousemove', tmpMovePointer);
                 document.body.addEventListener('mouseup', tmpEndPointer);
                 document.body.addEventListener('mouseleave', tmpEndPointer);
+                this._destroyCallbacks.push(tmpEndPointer);
             },
             touchstart: (aEvent) => {
                 // first of all prevent the default, so the browser does nothing strange
@@ -160,7 +167,7 @@ export class ScrollView {
                 // and setup a clean up function, if the touch ends
                 let tmpEndPointer = (aaEvent) => {
                     // if the touch is the wrong one, we don't want to clean up, so do nothing
-                    if (aaEvent.which !== touchToTrack) {
+                    if (aaEvent && aaEvent.which !== touchToTrack) {
                         return;
                     }
 
@@ -168,6 +175,12 @@ export class ScrollView {
                     document.body.removeEventListener('touchmove', tmpMovePointer);
                     document.body.removeEventListener('touchend', tmpEndPointer);
                     document.body.removeEventListener('touchleave', tmpEndPointer);
+
+                    const destroyIndexToRemove = this._destroyCallbacks.indexOf(tmpEndPointer);
+
+                    if (destroyIndexToRemove > -1) {
+                        this._destroyCallbacks.splice(destroyIndexToRemove, 1);
+                    }
 
                     // and null some pointers for the GC
                     tmpMovePointer = null;
@@ -178,6 +191,7 @@ export class ScrollView {
                 document.body.addEventListener('touchmove', tmpMovePointer);
                 document.body.addEventListener('touchend', tmpEndPointer);
                 document.body.addEventListener('touchleave', tmpEndPointer);
+                this._destroyCallbacks.push(tmpEndPointer);
             },
         };
     }
