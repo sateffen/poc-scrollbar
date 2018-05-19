@@ -107,11 +107,11 @@ export class ScrollView {
                 let scrollPosition = this._scrollerParent[aParentWriteCallback]();
 
                 // then setup a pointer to the move function for registering and unregistering
-                let tmpMovePointer = (e) => {
+                let tmpMovePointer = (aaEvent) => {
                     // here we calculate the new scrollPosition
-                    scrollPosition += (e[aAttribute] - tmpMover) * this[aScaleFactor];
+                    scrollPosition += (aaEvent[aAttribute] - tmpMover) * this[aScaleFactor];
                     // save to the cache
-                    tmpMover = e[aAttribute];
+                    tmpMover = aaEvent[aAttribute];
                     // and set the new scroll positioning. The callback will tell us, what it did with the value
                     scrollPosition = this._scrollerParent[aParentWriteCallback](Math.round(scrollPosition));
                 };
@@ -273,8 +273,8 @@ export class ScrollView {
                 }
 
                 this.scrollLeftUpdated(this._parentElement.scrollLeft);
-                this._yElement.style.display = 'block';
                 this._yElement.style.height = `${this._elementHeight}px`;
+                this._yElement.style.display = 'block';
             }
             else {
                 this._yElement.style.display = 'none';

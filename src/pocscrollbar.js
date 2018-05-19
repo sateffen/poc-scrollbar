@@ -136,22 +136,20 @@ export default class PocScrollbar {
      */
     _setupEventListeners() {
         // first we setup the event listeners, that we want to register to the container
-        const eventListener = {
-            wheel: (aEvent) => this._wheelHandler(aEvent),
-            touchstart: (aEvent) => this._touchHandler(aEvent),
-        };
+        const wheelHandler = this._wheelHandler.bind(this);
+        const touchHandler = this._touchHandler.bind(this);
 
         // then we attach all event handlers to the container
-        this._container.addEventListener('wheel', eventListener.wheel);
+        this._container.addEventListener('wheel', wheelHandler);
         if (!this._options.disableTouchScrollingOnContainer) {
-            this._container.addEventListener('touchstart', eventListener.touchstart);
+            this._container.addEventListener('touchstart', touchHandler);
         }
 
         // and we generate a destroy callback for cleanup
         this._destroyCallbacks.push(() => {
-            this._container.removeEventListener('wheel', eventListener.wheel);
+            this._container.removeEventListener('wheel', wheelHandler);
             if (!this._options.disableTouchScrollingOnContainer) {
-                this._container.removeEventListener('touchstart', eventListener.touchstart);
+                this._container.removeEventListener('touchstart', touchHandler);
             }
         });
     }
