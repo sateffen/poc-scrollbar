@@ -1,4 +1,4 @@
-# poc-scroller
+# poc-scrollbar
 
 [ ![Codeship Status for sateffen/poc-scrollbar](https://app.codeship.com/projects/caec9210-ade5-0134-3cb2-36e7a5ec89be/status?branch=master)](https://app.codeship.com/projects/192580)
 
@@ -7,6 +7,15 @@ It doesn't care about other libraries you use, it has no dependencies, you can j
 
 For details, maybe troubleshooting or so please scroll down to the "[Good to know](https://github.com/sateffen/poc-scrollbar#good-to-know)"
 section.
+
+## Installing it
+
+The poc-scrollbar is available via [npm](https://www.npmjs.com/package/poc-scrollbar). Just use one of the following commands:
+
+    npm install poc-scrollbar --save
+    yarn add poc-scrollbar
+
+If you can't use it via npm, refer to the bottom of this document. There is a chapter called *Build the project*.
 
 ## Basic API
 
