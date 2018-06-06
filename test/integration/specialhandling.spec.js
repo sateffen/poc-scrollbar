@@ -1,6 +1,6 @@
 import PocScrollbar from '../../src/pocscrollbar';
 
-fdescribe('Scrollbar Setup', () => {
+describe('Scrollbar Setup', () => {
     let instance = null;
     let parent = null;
     let child = null;
