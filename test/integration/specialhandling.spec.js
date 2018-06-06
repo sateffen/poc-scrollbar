@@ -61,6 +61,7 @@ describe('Scrollbar Setup', () => {
         document.body.dispatchEvent(stopEvent);
 
         expect(windowErrorSpy).not.toHaveBeenCalled();
+        window.removeEventListener('error', windowErrorSpy);
     });
 
     it('should not trigger an global error when destroying the scrollbar while scrolling with the touch on scrollbar', () => {
@@ -107,6 +108,7 @@ describe('Scrollbar Setup', () => {
         document.body.dispatchEvent(stopEvent);
 
         expect(windowErrorSpy).not.toHaveBeenCalled();
+        window.removeEventListener('error', windowErrorSpy);
     });
 
     it('should not trigger an global error when destroying the scrollbar while scrolling with the touch on parent', () => {
@@ -153,5 +155,6 @@ describe('Scrollbar Setup', () => {
         document.body.dispatchEvent(stopEvent);
 
         expect(windowErrorSpy).not.toHaveBeenCalled();
+        window.removeEventListener('error', windowErrorSpy);
     });
 });
