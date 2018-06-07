@@ -136,22 +136,20 @@ export default class PocScrollbar {
      */
     _setupEventListeners() {
         // first we setup the event listeners, that we want to register to the container
-        const eventListener = {
-            wheel: (aEvent) => this._wheelHandler(aEvent),
-            touchstart: (aEvent) => this._touchHandler(aEvent),
-        };
+        const wheelHandler = this._wheelHandler.bind(this);
+        const touchHandler = this._touchHandler.bind(this);
 
         // then we attach all event handlers to the container
-        this._container.addEventListener('wheel', eventListener.wheel);
+        this._container.addEventListener('wheel', wheelHandler);
         if (!this._options.disableTouchScrollingOnContainer) {
-            this._container.addEventListener('touchstart', eventListener.touchstart);
+            this._container.addEventListener('touchstart', touchHandler);
         }
 
         // and we generate a destroy callback for cleanup
         this._destroyCallbacks.push(() => {
-            this._container.removeEventListener('wheel', eventListener.wheel);
+            this._container.removeEventListener('wheel', wheelHandler);
             if (!this._options.disableTouchScrollingOnContainer) {
-                this._container.removeEventListener('touchstart', eventListener.touchstart);
+                this._container.removeEventListener('touchstart', touchHandler);
             }
         });
     }
@@ -256,13 +254,20 @@ export default class PocScrollbar {
         // finally setup a pointer to a touchend function handler
         let tmpEndPointer = (aaEvent) => {
             // which only reacts to the correct touch
-            if (aaEvent.which !== touchToTrack) {
+            if (aaEvent && aaEvent.which !== touchToTrack) {
                 return;
             }
+            // else it's the correct touch, or no touch at all. If it's no touch at all, it's a destroy call
             // deregisters the event handlers
             document.body.removeEventListener('touchmove', tmpMovePointer);
             document.body.removeEventListener('touchend', tmpEndPointer);
             document.body.removeEventListener('touchleave', tmpEndPointer);
+
+            const destroyIndexToRemove = this._destroyCallbacks.indexOf(tmpEndPointer);
+
+            if (destroyIndexToRemove > -1) {
+                this._destroyCallbacks.splice(destroyIndexToRemove, 1);
+            }
 
             // and nulls the pointer for freeing memory
             tmpMovePointer = null;
@@ -273,6 +278,7 @@ export default class PocScrollbar {
         document.body.addEventListener('touchmove', tmpMovePointer, SUPPORTS_PASSIVE ? {passive: false} : false);
         document.body.addEventListener('touchend', tmpEndPointer);
         document.body.addEventListener('touchleave', tmpEndPointer);
+        this._destroyCallbacks.push(tmpEndPointer);
     }
 
     /**

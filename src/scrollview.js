@@ -107,11 +107,11 @@ export class ScrollView {
                 let scrollPosition = this._scrollerParent[aParentWriteCallback]();
 
                 // then setup a pointer to the move function for registering and unregistering
-                let tmpMovePointer = (e) => {
+                let tmpMovePointer = (aaEvent) => {
                     // here we calculate the new scrollPosition
-                    scrollPosition += (e[aAttribute] - tmpMover) * this[aScaleFactor];
+                    scrollPosition += (aaEvent[aAttribute] - tmpMover) * this[aScaleFactor];
                     // save to the cache
-                    tmpMover = e[aAttribute];
+                    tmpMover = aaEvent[aAttribute];
                     // and set the new scroll positioning. The callback will tell us, what it did with the value
                     scrollPosition = this._scrollerParent[aParentWriteCallback](Math.round(scrollPosition));
                 };
@@ -123,6 +123,12 @@ export class ScrollView {
                     document.body.removeEventListener('mouseup', tmpEndPointer);
                     document.body.removeEventListener('mouseleave', tmpEndPointer);
 
+                    const destroyIndexToRemove = this._destroyCallbacks.indexOf(tmpEndPointer);
+
+                    if (destroyIndexToRemove > -1) {
+                        this._destroyCallbacks.splice(destroyIndexToRemove, 1);
+                    }
+
                     // and null the pointers, just to make sure the GC can clean up everything
                     tmpMovePointer = null;
                     tmpEndPointer = null;
@@ -132,6 +138,7 @@ export class ScrollView {
                 document.body.addEventListener('mousemove', tmpMovePointer);
                 document.body.addEventListener('mouseup', tmpEndPointer);
                 document.body.addEventListener('mouseleave', tmpEndPointer);
+                this._destroyCallbacks.push(tmpEndPointer);
             },
             touchstart: (aEvent) => {
                 // first of all prevent the default, so the browser does nothing strange
@@ -160,7 +167,7 @@ export class ScrollView {
                 // and setup a clean up function, if the touch ends
                 let tmpEndPointer = (aaEvent) => {
                     // if the touch is the wrong one, we don't want to clean up, so do nothing
-                    if (aaEvent.which !== touchToTrack) {
+                    if (aaEvent && aaEvent.which !== touchToTrack) {
                         return;
                     }
 
@@ -168,6 +175,12 @@ export class ScrollView {
                     document.body.removeEventListener('touchmove', tmpMovePointer);
                     document.body.removeEventListener('touchend', tmpEndPointer);
                     document.body.removeEventListener('touchleave', tmpEndPointer);
+
+                    const destroyIndexToRemove = this._destroyCallbacks.indexOf(tmpEndPointer);
+
+                    if (destroyIndexToRemove > -1) {
+                        this._destroyCallbacks.splice(destroyIndexToRemove, 1);
+                    }
 
                     // and null some pointers for the GC
                     tmpMovePointer = null;
@@ -178,6 +191,7 @@ export class ScrollView {
                 document.body.addEventListener('touchmove', tmpMovePointer);
                 document.body.addEventListener('touchend', tmpEndPointer);
                 document.body.addEventListener('touchleave', tmpEndPointer);
+                this._destroyCallbacks.push(tmpEndPointer);
             },
         };
     }
@@ -259,8 +273,8 @@ export class ScrollView {
                 }
 
                 this.scrollLeftUpdated(this._parentElement.scrollLeft);
-                this._yElement.style.display = 'block';
                 this._yElement.style.height = `${this._elementHeight}px`;
+                this._yElement.style.display = 'block';
             }
             else {
                 this._yElement.style.display = 'none';
