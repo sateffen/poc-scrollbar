@@ -1,7 +1,5 @@
 # poc-scrollbar
 
-[ ![Codeship Status for sateffen/poc-scrollbar](https://app.codeship.com/projects/caec9210-ade5-0134-3cb2-36e7a5ec89be/status?branch=master)](https://app.codeship.com/projects/192580)
-
 This is a scrollbar, that started out as proof-of-concept (so poc -> poc-scrollbar), but got adopted in several projects.
 It doesn't care about other libraries you use, it has no dependencies, you can just use it, and it'll do what you expect.
 
@@ -12,19 +10,22 @@ section.
 
 The poc-scrollbar is available via [npm](https://www.npmjs.com/package/poc-scrollbar). Just use one of the following commands:
 
-    npm install poc-scrollbar --save
-    yarn add poc-scrollbar
-
+```sh
+npm install poc-scrollbar --save
+yarn add poc-scrollbar
+```
 If you can't use it via npm, refer to the bottom of this document. There is a chapter called *Build the project*.
 
 ## Basic API
 
 This library just exports a constructor, which you can use like:
 
-    const PocScrollbar = require('poc-scrollbar'); // you can use import PocScrollbar from 'poc-scrollbar' as well
-    const myElement = document.getElementById(...);
-    const myOptions = {...};
-    const instance = new PocScrollbar(myElement, myOptions);
+```js
+const PocScrollbar = require('poc-scrollbar'); // you can use import PocScrollbar from 'poc-scrollbar' as well
+const myElement = document.getElementById(...);
+const myOptions = {...};
+const instance = new PocScrollbar(myElement, myOptions);
+```
 
 The library will track the element by itself, apply the scrollbars if necessary, and destroy itself if the
 element gets detached from the DOM tree. You can use the instance methods as well, just as you like.
@@ -116,13 +117,17 @@ There are some options, you can use:
 To build the project you have to install the dependencies and run the build script. You can do so
 using [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/):
 
-    npm install
-    npm run build
+```sh
+npm install
+npm run build
+```
 
 or
 
-    yarn install
-    yarn run build
+```sh
+yarn install
+yarn run build
+```
 
 The result is *dist/pocscroller.js*. It's not uglified, human readable code, so you can use it for
 debugging as well.

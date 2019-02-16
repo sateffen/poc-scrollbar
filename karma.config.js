@@ -3,7 +3,7 @@ const buble = require('rollup-plugin-buble');
 
 module.exports = (config) => {
     config.set({
-        browsers: ['Chrome'],
+        browsers: ['ChromeHeadless'],
         frameworks: ['jasmine'],
         reporters: ['progress'],
         files: [
