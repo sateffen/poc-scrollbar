@@ -25,6 +25,8 @@ const SUPPORTS_PASSIVE = (() => {
         const opts = Object.defineProperty({}, 'passive', {
             get() {
                 supportsPassive = true;
+
+                return true;
             },
         });
         window.addEventListener('test', null, opts);

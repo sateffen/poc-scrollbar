@@ -1,22 +1,18 @@
 {
   "parserOptions": {
-    "ecmaVersion": 6,
     "sourceType": "module"
   },
   "env": {
     "browser": true,
+    "es6": true,
     "jasmine": true
   },
-  "extends": [
-    "eslint:recommended",
-    "google"
-  ],
+  "extends": ["eslint:recommended", "google"],
   "rules": {
     "max-len": "off",
-    "no-console": "warn",
-    "brace-style": [
-      "error",
-      "stroustrup"
-    ]
+    "brace-style": ["error", "stroustrup"],
+    "indent": ["error", 4],
+    "prefer-promise-reject-errors": "off",
+    "prefer-rest-params": "off"
   }
 }

@@ -105,12 +105,12 @@ export function getWheelDeltaAsPixel(aIsX, aDeltaOption, aDeltaMode, aDeltaValue
     }
 
     switch (aDeltaMode) {
-        case DOM_DELTA_LINE:
-            return aDeltaValue * browsersLineHeight;
-        case DOM_DELTA_PAGE:
-            return aDeltaValue * (aIsX ? aScrollContainer.clientWidth : aScrollContainer.clientHeight);
-        case DOM_DELTA_PIXEL:
-        default:
-            return aDeltaValue;
+    case DOM_DELTA_LINE:
+        return aDeltaValue * browsersLineHeight;
+    case DOM_DELTA_PAGE:
+        return aDeltaValue * (aIsX ? aScrollContainer.clientWidth : aScrollContainer.clientHeight);
+    case DOM_DELTA_PIXEL:
+    default:
+        return aDeltaValue;
     }
 }
