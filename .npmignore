@@ -7,8 +7,6 @@ test/
 
 # files
 npm-debug.log
-.eslintrc
-.gitignore
 index.html
 karma.config.js
 rollup.config.js
