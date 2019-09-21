@@ -27,14 +27,14 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "eslint": "~6.2.2",
-    "eslint-config-google": "~0.13.0",
-    "jasmine-core": "~3.4.0",
+    "eslint": "~6.4.0",
+    "eslint-config-google": "~0.14.0",
+    "jasmine-core": "~3.5.0",
     "karma": "~4.3.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-jasmine": "~2.0.1",
     "karma-rollup-preprocessor": "~7.0.2",
-    "rollup": "~1.20.3",
+    "rollup": "~1.21.4",
     "rollup-plugin-buble": "~0.19.8"
   }
 }
