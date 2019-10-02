@@ -8,25 +8,43 @@ function createBaseEvent() {
     let propagationStopped = false;
     let defaultPrevented = false;
 
-    return {
-        get timestamp() {
-            return timestamp;
+    const baseEvent = {};
+
+    Object.defineProperties(baseEvent, {
+        timestamp: {
+            get: () => timestamp,
+            configurable: false,
+            enumerable: true,
         },
 
-        get defaultPrevented() {
-            return defaultPrevented;
+        defaultPrevented: {
+            get: () => defaultPrevented,
+            configurable: false,
+            enumerable: true,
         },
-        preventDefault() {
-            defaultPrevented = true;
+        preventDefault: {
+            value: () => {
+                defaultPrevented = true;
+            },
+            configurable: false,
+            enumerable: true,
         },
 
-        get propagationStopped() {
-            return propagationStopped;
+        propagationStopped: {
+            get: () => propagationStopped,
+            configurable: false,
+            enumerable: true,
         },
-        stopPropagation() {
-            propagationStopped = true;
+        stopPropagation: {
+            value: () => {
+                propagationStopped = true;
+            },
+            configurable: false,
+            enumerable: true,
         },
-    };
+    });
+
+    return baseEvent;
 }
 
 /**
