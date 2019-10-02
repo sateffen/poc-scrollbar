@@ -8,7 +8,7 @@ describe('ScrollView', () => {
         let yElement = null;
 
         beforeEach(() => {
-            parentInstance = jasmine.createSpyObj('parentInstance', ['parentUpdated', 'scrollTop', 'scrollLeft']);
+            parentInstance = jasmine.createSpyObj('parentInstance', ['_emitEvent', 'parentUpdated', 'scrollTop', 'scrollLeft']);
             parentInstance._container = document.createElement('div');
             xElement = document.createElement('div');
             yElement = document.createElement('div');

@@ -76,6 +76,10 @@ export default class PocScrollbar {
         this._options = aOptions;
         this._scrollTop = 0;
         this._scrollLeft = 0;
+        this._eventListeners = {
+            scrolltopchanged: [],
+            scrollleftchanged: [],
+        };
         this._scrollView = new PocScrollbar.ScrollView(this, this._options);
         this._destroyCallbacks = [
             () => this._scrollView.destroy(),
@@ -360,6 +364,85 @@ export default class PocScrollbar {
     }
 
     /**
+     * Emits given event to all listeners, passing along the eventobject.
+     * @param {string} aEventName The eventname to process
+     * @param {Object} aEventObject The eventobject to pass to the callbacks
+     * @return {Object} The event object after completing all calls
+     */
+    _emitEvent(aEventName, aEventObject) {
+        // as this is a private function, we asume the params are valid to safe the overhead
+        const eventName = aEventName.toLowerCase();
+
+        for (let i = 0, iLen = this._eventListeners[eventName].length; i < iLen; i++) {
+            this._eventListeners[eventName][i](aEventObject);
+
+            if (aEventObject.propagationStopped) {
+                break;
+            }
+        }
+
+        return aEventObject;
+    }
+
+    /**
+     * Registers given callback as eventlistener for given eventname. Can get called
+     * multiple times with the same callback for the same eventname. The eventname gets
+     * normalized to lowercase.
+     *
+     * @throws Will throw an error if the eventname is not known by poc-scrollbar
+     * @param {string} aEventName The eventname to register the callback to
+     * @param {Function} aCallback The callback to register
+     */
+    addEventListener(aEventName, aCallback) {
+        if (typeof aEventName !== 'string') {
+            throw new TypeError(`First parameter "eventName" has to be of type string, got ${typeof aEventName}`);
+        }
+        else if (typeof aCallback !== 'function') {
+            throw new TypeError(`Second parameter "callback" has to be of type string, got ${typeof aEventName}`);
+        }
+
+        const eventName = aEventName.toLowerCase();
+
+        if (!Array.isArray(this._eventListeners[eventName])) {
+            throw new Error(`Adding listener to unknown event "${eventName}" is not possible, valid events are: ${Object.keys(this._eventListeners).join(', ')}`);
+        }
+        // else the eventname is valid, so we can safely push to the eventlist
+
+        this._eventListeners[eventName].push(aCallback);
+    }
+
+    /**
+     * Removes given callback as eventlistener for given eventname. Removes only one
+     * registerd callback, even if it's registered multiple times. The eventname gets
+     * normalized to lowercase.
+     *
+     * @throws Will throw an error if the eventname is not known by poc-scrollbar
+     * @param {string} aEventName The eventname ro remove the callback from
+     * @param {Function} aCallback The callback to remove from given event
+     */
+    removeEventListener(aEventName, aCallback) {
+        if (typeof aEventName !== 'string') {
+            throw new TypeError(`First parameter "eventName" has to be of type string, got ${typeof aEventName}`);
+        }
+        else if (typeof aCallback !== 'function') {
+            throw new TypeError(`Second parameter "callback" has to be of type string, got ${typeof aEventName}`);
+        }
+
+        const eventName = aEventName.toLowerCase();
+
+        if (!Array.isArray(this._eventListeners[eventName])) {
+            throw new Error(`Removing listener from unknown event "${eventName}" is not possible, valid events are: ${Object.keys(this._eventListeners).join(', ')}`);
+        }
+        // else the eventname is valid, so we can safely remove the callback from given eventnames list
+
+        const callbackIndex = this._eventListeners[eventName].indexOf(aCallback);
+
+        if (callbackIndex > -1) {
+            this._eventListeners.splice(callbackIndex, 1);
+        }
+    }
+
+    /**
      * This function serves as getter and setter for the scrollTop value
      *
      * @param {number} [aScrollTop] The new scrollTop value
@@ -384,9 +467,12 @@ export default class PocScrollbar {
         // if the scroll top has changed
         if (this._scrollTop !== newScrollTop) {
             // call the update trigger and save the scroll top value
-            this._scrollView.scrollTopUpdated(newScrollTop);
-            this._container.scrollTop = newScrollTop;
-            this._scrollTop = newScrollTop;
+            const scrollTopUpdated = this._scrollView.scrollTopUpdated(newScrollTop, this._scrollTop);
+
+            if (scrollTopUpdated) {
+                this._container.scrollTop = newScrollTop;
+                this._scrollTop = newScrollTop;
+            }
         }
 
         // finally simply return the scrollTop value
@@ -418,9 +504,12 @@ export default class PocScrollbar {
         // if scrollLeft has changed
         if (this._scrollLeft !== newScrollLeft) {
             // call the update trigger and save set the scrollLeft value
-            this._scrollView.scrollLeftUpdated(newScrollLeft);
-            this._container.scrollLeft = newScrollLeft;
-            this._scrollLeft = newScrollLeft;
+            const scrollLeftUpdated = this._scrollView.scrollLeftUpdated(newScrollLeft, this._scrollLeft);
+
+            if (scrollLeftUpdated) {
+                this._container.scrollLeft = newScrollLeft;
+                this._scrollLeft = newScrollLeft;
+            }
         }
 
         // finally return the scrollLeft value

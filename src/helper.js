@@ -25,11 +25,11 @@ const DOM_DELTA_PAGE = (window.WheelEvent && window.WheelEvent.DOM_DELTA_PAGE) |
 
 /**
  * This constant tells the browsers line height for one line. This is used for calculating the distance
- * to scroll in a wheel event
+ * to scroll in a wheel event.
  *
  * @type {number}
  */
-const browsersLineHeight = window.parseInt(
+const BROWSER_LINE_HEIGHT = window.parseInt(
     window
         .getComputedStyle(document.querySelector('html'), null)
         .getPropertyValue('font-size'), 10) || 16;
@@ -106,7 +106,7 @@ export function getWheelDeltaAsPixel(aIsX, aDeltaOption, aDeltaMode, aDeltaValue
 
     switch (aDeltaMode) {
     case DOM_DELTA_LINE:
-        return aDeltaValue * browsersLineHeight;
+        return aDeltaValue * BROWSER_LINE_HEIGHT;
     case DOM_DELTA_PAGE:
         return aDeltaValue * (aIsX ? aScrollContainer.clientWidth : aScrollContainer.clientHeight);
     case DOM_DELTA_PIXEL:
