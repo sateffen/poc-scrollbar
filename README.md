@@ -21,7 +21,7 @@ If you can't use it via npm, refer to the bottom of this document. There is a ch
 This library just exports a constructor, which you can use like:
 
 ```js
-const PocScrollbar = require('poc-scrollbar'); // you can use import PocScrollbar from 'poc-scrollbar' as well
+const PocScrollbar = require('poc-scrollbar'); // or: import PocScrollbar from 'poc-scrollbar'
 const myElement = document.getElementById(...);
 const myOptions = {...};
 const instance = new PocScrollbar(myElement, myOptions);
@@ -32,20 +32,30 @@ element gets detached from the DOM tree. You can use the instance methods as wel
 
 For a list of all options please see the list below.
 
-## Instance methods
+### Instance methods
 
 * scrollTop(newValue)
     * Description: Setter and getter for the current scrollTop value
+    * Param `newValue`: Number (Optional)
     * Returns: Number
 * scrollLeft(newValue)
     * Description: Setter and getter for the current scrollLeft value
+    * Param `newValue`: Number (Optional)
     * Returns: Number
+* addEventListener(eventName, callback)
+    * Description: Adds given callback as eventlistener for given eventname. For possible event objects see below
+    * Param `eventName`: String - The event name. Possible options are: *scrollTopChanged*, *scrollLeftChanged*
+    * Param `callback`: Function - The callback to register as eventlistener
+* removeEventListener(eventName, callback)
+    * Description: Removes given callback as eventlistener from given eventname
+    * Param `eventName`: String - The event name. Possible options are: *scrollTopChanged*, *scrollLeftChanged*
+    * Param `callback`: Function - The callback to remove as eventlistener
 * destroy()
     * Description: Destroys the current instance of the scrollbar (removes elements, unregisters listeners and so on)
 
-## Available options
+### Available options
 
-There are some options, you can use:
+There are some options, you can use. Pass them along as object to the PocScrollbar constructor:
 
 * disableTouchScrollingOnContainer
     * Type: Boolean
@@ -111,6 +121,47 @@ There are some options, you can use:
     * Type: Number
     * Description: A constant size in pixel to scroll on each wheel event, ignoring the event values
     * Default: undefined (use event values)
+
+### Event objects
+
+All properties of all event objects are readonly. Values can only get changed by
+their corresponding functions.
+
+#### scrollTopChanged and scrollLeftChanged events
+
+* timestamp
+    * Type: Number
+    * Description: The time, when the event occured, in ms.
+* defaultPrevented
+    * Type: Boolean
+    * Description: Whether the default behaviour is prevented. If it is, the change in scrollTop/scrollLeft won't happen. Can only get changed by *preventDefault*.
+* preventDefault
+    * Type: Function
+    * Description: Sets *defaultPrevented* to true.
+* propagationStopped
+    * Type: Boolean
+    * Description: Whether the event should get propagated to the next event-listeners or not. Can only get changed by *stopPropagation*.
+* stopPropagation
+    * Type: Function
+    * Description: Sets *propagationStopped* to true.
+* type
+    * Type: String
+    * Description: The actual event-type. Possible values are *scrollTopChanged* and *scrollLeftChanged*.
+* target
+    * Type: HTMLElement
+    * Description: The actual scrollbar element, that will be affected, so either the horizontal or vertical scrollbar.
+* srcElement
+    * Type: HTMLElement
+    * Description: The scroll-container, that was passed to the PocScrollbar-constructor.
+* delta
+    * Type: Number
+    * Description: The actual delta between old and new value of scrollTop/scrollLeft (in pixel)
+* oldValue
+    * Type: Number
+    * Description: The old value of scrollTop/scrollLeft, before the event gets applied (in pixel)
+* newValue
+    * Type: Number
+    * Description: The new value of scrollTop/scrollLeft, after the event gets applied (in pixel)
 
 ## Build the project
 
