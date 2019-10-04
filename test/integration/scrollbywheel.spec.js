@@ -4,8 +4,6 @@ describe('Scroll by wheel', () => {
     let instance = null;
     let parent = null;
     let child = null;
-    let verticalScrollbar = null;
-    let horizontalScrollbar = null;
 
     beforeEach(() => {
         instance = null;
@@ -25,9 +23,6 @@ describe('Scroll by wheel', () => {
             yElementClass: ['scrollbar', 'vertical'],
         });
         jasmine.clock().tick(301);
-
-        verticalScrollbar = parent.querySelector('.scrollbar.vertical');
-        horizontalScrollbar = parent.querySelector('.scrollbar.horizontal');
     });
 
     afterEach(() => {
@@ -56,8 +51,9 @@ describe('Scroll by wheel', () => {
 
     it('should react on wheel scroll left events', () => {
         const event = new WheelEvent('wheel', {
-            deltaX: 25,
-            deltaY: 0,
+            deltaX: 0,
+            deltaY: 25,
+            shiftKey: true,
         });
 
         parent.dispatchEvent(event);
@@ -66,9 +62,11 @@ describe('Scroll by wheel', () => {
         expect(parent.scrollLeft).toBe(0);
     });
 
-    it('should react on wheel scroll down and left events', () => {
+    it('should react on wheel scroll down events with bigger child', () => {
+        child.style.width = '200px';
+        jasmine.clock().tick(301);
         const event = new WheelEvent('wheel', {
-            deltaX: 25,
+            deltaX: 0,
             deltaY: 25,
         });
 
@@ -78,33 +76,18 @@ describe('Scroll by wheel', () => {
         expect(parent.scrollLeft).toBe(0);
     });
 
-    it('should react on wheel scroll down and left events with bigger child', () => {
+    it('should react on wheel scroll left events with bigger child', () => {
         child.style.width = '200px';
         jasmine.clock().tick(301);
         const event = new WheelEvent('wheel', {
-            deltaX: 25,
+            deltaX: 0,
             deltaY: 25,
+            shiftKey: true,
         });
 
         parent.dispatchEvent(event);
 
-        expect(parent.scrollTop).toBe(25);
+        expect(parent.scrollTop).toBe(0);
         expect(parent.scrollLeft).toBe(25);
-    });
-
-    it('should react on wheel scroll down and left events with bigger child', () => {
-        child.style.width = '200px';
-        jasmine.clock().tick(301);
-        const event = new WheelEvent('wheel', {
-            deltaX: 50,
-            deltaY: 100,
-        });
-
-        parent.dispatchEvent(event);
-
-        // 50 is scrolled away, and 50/200 = 25/100 in viewport
-        expect(horizontalScrollbar.style.left).toBe(`${50 + 25}px`);
-        // 100 is scrolled away, and 100/200 = 50/100 in viewport
-        expect(verticalScrollbar.style.top).toBe(`${100 + 50}px`);
     });
 });
