@@ -1,5 +1,5 @@
 /* globals require, module*/
-const buble = require('rollup-plugin-buble');
+const rollupConfig = require('./rollup.config');
 
 module.exports = (config) => {
     config.set({
@@ -18,9 +18,7 @@ module.exports = (config) => {
                 format: 'iife',
                 sourcemap: 'inline',
             },
-            plugins: [
-                buble(),
-            ],
+            plugins: rollupConfig.plugins,
         },
     });
 };
