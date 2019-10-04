@@ -280,10 +280,7 @@ export default class PocScrollbar {
 
             // search for the root element of this element
             let potentialRootElement = this._container.parentElement;
-            while (potentialRootElement !== null &&
-                potentialRootElement !== undefined &&
-                potentialRootElement !== document.body
-            ) {
+            while (potentialRootElement !== null && potentialRootElement !== undefined && potentialRootElement !== document.body) {
                 potentialRootElement = potentialRootElement.parentElement;
             }
 

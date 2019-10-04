@@ -14,9 +14,7 @@ export function applyOptionsToScrollBarElement(aElement, aElementName, aOptions)
     const element = aElement;
 
     // then go for the style key and apply it to the element
-    if (aOptions && aOptions[stylesKey] && typeof aOptions[stylesKey] === 'object' &&
-        !Array.isArray(aOptions[stylesKey])
-    ) {
+    if (aOptions && aOptions[stylesKey] && typeof aOptions[stylesKey] === 'object' && !Array.isArray(aOptions[stylesKey])) {
         Object.keys(aOptions[stylesKey]).forEach((aKey) => {
             // here we need to disable the param reassign, because we want to make clear where we write to
             element.style[aKey] = aOptions[stylesKey][aKey];
@@ -25,10 +23,10 @@ export function applyOptionsToScrollBarElement(aElement, aElementName, aOptions)
 
     // then apply the classes to the elements
     if (aOptions && typeof aOptions[classKey] === 'string') {
-        element.className += ` ${aOptions[classKey]}`;
+        element.classList.add(aOptions[classKey]);
     }
     else if (aOptions && Array.isArray(aOptions[classKey])) {
-        element.className += ` ${aOptions[classKey].join(' ')}`;
+        aOptions[classKey].forEach((aClassName) => element.classList.add(aClassName));
     }
 }
 
@@ -59,7 +57,7 @@ export function debounce(aCallback, aWaitTime) {
  * scroll event.
  *
  * @param {boolean} aIsX
- * @param {number|undefined} aDeltaOption
+ * @param {number|undefined} aDeltaOption The possible PocScrollbar options value, that should be used instead of a calculated value
  * @param {number} aDeltaMode
  * @param {number} aDeltaValue
  * @param {Element} aScrollContainer
