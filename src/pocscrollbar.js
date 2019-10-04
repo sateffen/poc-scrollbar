@@ -1,42 +1,7 @@
 
 import {ScrollView} from './scrollview';
 import {debounce, getWheelDeltaAsPixel} from './helper';
-
-/**
- * Contains all allowed touch-action values for x direction
- * @type {Array<string>}
- */
-const ALLOWED_X_TOUCH_ACTIONS = ['auto', 'manipulation', 'pan-x'];
-
-/**
- * Contains all allowed touch-action values for y direction
- * @type {Array<string>}
- */
-const ALLOWED_Y_TOUCH_ACTIONS = ['auto', 'manipulation', 'pan-y'];
-
-/**
- * A boolean telling about the passive event listening support
- * @type {boolean}
- */
-const SUPPORTS_PASSIVE = (() => {
-    let supportsPassive = false;
-
-    try {
-        const opts = Object.defineProperty({}, 'passive', {
-            get() {
-                supportsPassive = true;
-
-                return true;
-            },
-        });
-        window.addEventListener('test', null, opts);
-    }
-    catch (e) {
-        // supportsPassive is false
-    }
-
-    return supportsPassive;
-})();
+import {SUPPORTS_PASSIVE, ALLOWED_X_TOUCH_ACTIONS, ALLOWED_Y_TOUCH_ACTIONS} from './constants';
 
 /**
  * @typedef {Object} PocScrollbarOptions

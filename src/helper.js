@@ -1,38 +1,4 @@
-
-/**
- * This constant is one possible option for the deltaMode property of a wheel event.
- * This deltaMode measures the delta values in pixels.
- *
- * @type {number}
- */
-const DOM_DELTA_PIXEL = (window.WheelEvent && window.WheelEvent.DOM_DELTA_PIXEL) || 0x00;
-
-/**
- * This constant is one possible option for the deltaMode property of a wheel event.
- * This deltaMode measures the delta values in lines.
- *
- * @type {number}
- */
-const DOM_DELTA_LINE = (window.WheelEvent && window.WheelEvent.DOM_DELTA_LINE) || 0x01;
-
-/**
- * This constant is one possible option for the deltaMode property of a wheel event.
- * This deltaMode measures the delta values in pages.
- *
- * @type {number}
- */
-const DOM_DELTA_PAGE = (window.WheelEvent && window.WheelEvent.DOM_DELTA_PAGE) || 0x02;
-
-/**
- * This constant tells the browsers line height for one line. This is used for calculating the distance
- * to scroll in a wheel event.
- *
- * @type {number}
- */
-const BROWSER_LINE_HEIGHT = window.parseInt(
-    window
-        .getComputedStyle(document.querySelector('html'), null)
-        .getPropertyValue('font-size'), 10) || 16;
+import {DOM_DELTA_LINE, DOM_DELTA_PAGE, DOM_DELTA_PIXEL, BROWSER_LINE_HEIGHT} from './constants';
 
 /**
  * This applies the given options to the scrollbar elements
