@@ -15,7 +15,7 @@
             height: 100%;
         }
 
-        #container div {
+        #container > * {
             flex: 0 0 auto;
         }
 
@@ -145,13 +145,13 @@
         <div class="spacer"></div>
 
         <div id="credits">
-            <p>
+            <div>
                 This demo belongs to the <a href="https://github.com/sateffen/poc-scrollbar/">PocScrollbar</a>.
-            </p>
-            <p>
+            </div>
+            <div>
                 All used images are provided by <a href="https://commons.wikimedia.org/wiki/Main_Page" alt="Wikimedia Mainpage">Wikimedia</a>.
                 They are chosen randomly. All credits belong to the original owners.
-            </p>
+            </div>
             <ul>
                 <li><a href="https://commons.wikimedia.org/wiki/File:Mars_transparent.png">https://commons.wikimedia.org/wiki/File:Mars_transparent.png</a></li>
                 <li><a href="https://commons.wikimedia.org/wiki/File:DSC0210-w-busch-realschule-neuperlach-alpenkulisse.jpg">https://commons.wikimedia.org/wiki/File:DSC0210-w-busch-realschule-neuperlach-alpenkulisse.jpg</a></li>
@@ -178,7 +178,7 @@
             target.classList.add('expanded');
 
             window.clearTimeout(containerTimer);
-            containerTimer = window.setTimeout(() => target.classList.remove('expanded'), 300);
+            containerTimer = window.setTimeout(function () {target.classList.remove('expanded');}, 300);
         }
         containerScrollbar.addEventListener('scrollTopChanged', animateContainer);
 
@@ -204,7 +204,7 @@
             target.classList.add('visible');
 
             window.clearTimeout(advancedExampleTimer[direction]);
-            advancedExampleTimer[direction] = window.setTimeout(() => target.classList.remove('visible'), 750);
+            advancedExampleTimer[direction] = window.setTimeout(function () {target.classList.remove('visible');}, 750);
         }
         advancedExampleScrollbar.addEventListener('scrollTopChanged', animateAdvancedExample);
         advancedExampleScrollbar.addEventListener('scrollLeftChanged', animateAdvancedExample);
