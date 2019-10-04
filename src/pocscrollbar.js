@@ -140,32 +140,38 @@ export default class PocScrollbar {
         // else we store the old values
         const currentScrollTop = this._container.scrollTop;
         const currentScrollLeft = this._container.scrollLeft;
-        const deltaX = getWheelDeltaAsPixel(
-            true,
-            this._options.wheelDeltaSize,
-            aEvent.deltaMode,
-            aEvent.deltaX,
-            this._container
-        );
-        const deltaY = getWheelDeltaAsPixel(
-            false,
-            this._options.wheelDeltaSize,
-            aEvent.deltaMode,
-            aEvent.deltaY,
-            this._container
-        );
 
-        // trigger the changing
-        this.scrollTop(this._container.scrollTop + deltaY);
-        this.scrollLeft(this._container.scrollLeft + deltaX);
+        // if the shiftKey is pressed, the user wants to scroll in X direction
+        if (aEvent.shiftKey === true) {
+            const delta = getWheelDeltaAsPixel(
+                true,
+                this._options.wheelDeltaSize,
+                aEvent.deltaMode,
+                aEvent.deltaY,
+                this._container
+            );
 
-        // and if something actually changed
-        if (currentScrollTop !== this._container.scrollTop ||
-            currentScrollLeft !== this._container.scrollLeft
-        ) {
-            // we call prevent default, so the browser and other scrollbars won't
-            // do anything
-            aEvent.preventDefault();
+            this.scrollLeft(this._container.scrollLeft + delta);
+
+            if (currentScrollLeft !== this._container.scrollLeft) {
+                aEvent.preventDefault();
+            }
+        }
+        // otherwise handle it as normal Y direction scroll
+        else {
+            const delta = getWheelDeltaAsPixel(
+                false,
+                this._options.wheelDeltaSize,
+                aEvent.deltaMode,
+                aEvent.deltaY,
+                this._container
+            );
+
+            this.scrollTop(this._container.scrollTop + delta);
+
+            if (currentScrollTop !== this._container.scrollTop) {
+                aEvent.preventDefault();
+            }
         }
     }
 
