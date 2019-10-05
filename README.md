@@ -1,7 +1,8 @@
 # poc-scrollbar
 
-This is a scrollbar, that started out as proof-of-concept (so poc -> poc-scrollbar), but got adopted in several projects.
-It doesn't care about other libraries you use, it has no dependencies, you can just use it, and it'll do what you expect.
+This scrollbar started out as proof-of-concept (hence poc -> poc-scrollbar), but got adopted in several projects. So now it's
+a full blown library, doing everything a real scrollbar needs to do. Additionally, it doesn't care about other libraries you
+use, it has no dependencies, you can just use it, and it'll do what you expect.
 
 For details, maybe troubleshooting or so please scroll down to the "[Good to know](https://github.com/sateffen/poc-scrollbar#good-to-know)"
 section.
@@ -190,6 +191,10 @@ debugging as well.
 The code itself is written in ES6, so if you're using the raw code with a module bundler, you have to
 transpile it first. If you don't want to add a transpiler, simply build this project (see
 [build the project](https://github.com/sateffen/poc-scrollbar#build-the-code)) and use the resulting file.
+
+#### Is shift + wheel scrolling supported?
+
+Yes, scrolling with your mouse wheel while pressing shift will attempt to scroll horizontally, not vertically.
 
 #### Why do I have to call *destroy* by myself with MutationObservers?
 
