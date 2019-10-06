@@ -66,8 +66,7 @@ export class ScrollView {
         applyOptionsToScrollBarElement(element, details.name, this._options);
 
         if (!this._options.disableInteractionWithScrollbars) {
-            const eventListeners = this._generateEventHandlerForElement
-                .call(this, details.event, details.factor, details.callback);
+            const eventListeners = this._generateEventHandlerForElement.call(this, details.event, details.factor, details.callback);
             const keys = Object.keys(eventListeners);
 
             keys.forEach((aKey) => element.addEventListener(aKey, eventListeners[aKey]));
@@ -78,7 +77,8 @@ export class ScrollView {
 
         this._parentElement.appendChild(element);
         this._destroyCallbacks.push(() => {
-            if (Array.prototype.indexOf.call(this._parentElement.children, element) >= 0) {
+            // if the element is still attached, remove it
+            if (element.parentElement === this._parentElement) {
                 this._parentElement.removeChild(element);
             }
         });
