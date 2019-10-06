@@ -1,6 +1,5 @@
 
 import {applyOptionsToScrollBarElement} from './helper';
-import {createScrollTopChangedEvent, createScrollLeftChangedEvent} from './events';
 
 /**
  * The scrollView is the visual representation of the current scroll state. While the scroll
@@ -31,9 +30,6 @@ export class ScrollView {
         // setup scroll elements
         this._xElement = aOptions.disableXScrolling ? null : this._setupElement(true);
         this._yElement = aOptions.disableYScrolling ? null : this._setupElement(false);
-
-        this._parentEmitScrollTopChanged = aParentInstance._emitEvent.bind(aParentInstance, 'scrolltopchanged');
-        this._parentEmitScrollLeftChanged = aParentInstance._emitEvent.bind(aParentInstance, 'scrollleftchanged');
 
         // and call all update functions initially
         this.parentUpdated();
@@ -205,22 +201,8 @@ export class ScrollView {
      * the parent scrollTop changes, this recalculates the style
      *
      * @param {number} aNewScrollTop
-     * @param {number} [aOldScrollTop]
-     * @return {boolean} Whether scrollTop was updated or not
      */
-    scrollTopUpdated(aNewScrollTop, aOldScrollTop) {
-        // if oldScrollTop is given, the intention is a real change, otherwise the scrollTop
-        // change is for size change purpose
-        if (typeof aOldScrollTop === 'number') {
-            const scrollTopChangedEvent = this._parentEmitScrollTopChanged(
-                createScrollTopChangedEvent(this._yElement, this._parentElement, aOldScrollTop, aNewScrollTop)
-            );
-
-            if (scrollTopChangedEvent.defaultPrevented) {
-                return false;
-            }
-        }
-
+    scrollTopUpdated(aNewScrollTop) {
         // update the yElement position
         if (this._yElement && this._parentScrollHeight > this._parentHeight) {
             let partSize = aNewScrollTop / (this._parentScrollHeight - this._parentHeight);
@@ -232,8 +214,6 @@ export class ScrollView {
         if (this._xElement) {
             this._xElement.style.top = `${Math.floor(aNewScrollTop + this._parentHeight)}px`;
         }
-
-        return true;
     }
 
     /**
@@ -241,22 +221,8 @@ export class ScrollView {
      * the parent scrollLeft changes, this recalculates the style
      *
      * @param {number} aNewScrollLeft
-     * @param {number} [aOldScrollLeft]
-     * @return {boolean} Whether scrollLeft has updated or not
      */
-    scrollLeftUpdated(aNewScrollLeft, aOldScrollLeft) {
-        // if oldScrollLeft is given, the intention is a real change, otherwise the scrollLeft
-        // change is for size change purpose
-        if (typeof aOldScrollLeft === 'number') {
-            const scrollLeftChangedEvent = this._parentEmitScrollLeftChanged(
-                createScrollLeftChangedEvent(this._xElement, this._parentElement, aOldScrollLeft, aNewScrollLeft)
-            );
-
-            if (scrollLeftChangedEvent.defaultPrevented) {
-                return false;
-            }
-        }
-
+    scrollLeftUpdated(aNewScrollLeft) {
         // update the xElement position
         if (this._xElement && this._parentScrollWidth > this._parentWidth) {
             let partSize = aNewScrollLeft / (this._parentScrollWidth - this._parentWidth);
@@ -268,8 +234,6 @@ export class ScrollView {
         if (this._yElement) {
             this._yElement.style.left = `${Math.floor(aNewScrollLeft + this._parentWidth)}px`;
         }
-
-        return true;
     }
 
     /**
@@ -320,6 +284,15 @@ export class ScrollView {
                 this._yElement.style.display = 'none';
             }
         }
+    }
+
+    /**
+     * Returns the scroll element for direction
+     * @param {boolean} aForX
+     * @return {HTMLElement|null} The scroll element for direction
+     */
+    getScrollElement(aForX) {
+        return aForX ? this._xElement : this._yElement;
     }
 
     /**

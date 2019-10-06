@@ -1,6 +1,7 @@
 
 import {ScrollView} from './scrollview';
 import {debounce, getWheelDeltaAsPixel} from './helper';
+import {createScrollTopChangedEvent, createScrollLeftChangedEvent} from './events';
 import {SUPPORTS_PASSIVE, ALLOWED_X_TOUCH_ACTIONS, ALLOWED_Y_TOUCH_ACTIONS} from './constants';
 
 /**
@@ -420,7 +421,7 @@ export default class PocScrollbar {
         // If this method was called with something else than a number, or scrolling is
         // completely disabled, just return the scroll top and do nothing else
         if (typeof aScrollTop !== 'number' || this._options.disableYScrolling) {
-            return this._container.scrollTop;
+            return this._scrollTop;
         }
 
         let newScrollTop = aScrollTop;
@@ -434,13 +435,20 @@ export default class PocScrollbar {
 
         // if the scroll top has changed
         if (this._scrollTop !== newScrollTop) {
-            // call the update trigger and save the scroll top value
-            const scrollTopUpdated = this._scrollView.scrollTopUpdated(newScrollTop, this._scrollTop);
+            // at this point we can assume not to get null, as it could only be null when
+            // this._options.disableYScrolling is true, which is checked before.
+            const targetElement = this._scrollView.getScrollElement(false);
+            let scrollTopChangedEvent = createScrollTopChangedEvent(targetElement, this._container, this._scrollTop, newScrollTop);
 
-            if (scrollTopUpdated) {
-                this._container.scrollTop = newScrollTop;
-                this._scrollTop = newScrollTop;
+            scrollTopChangedEvent = this._emitEvent('scrolltopchanged', scrollTopChangedEvent);
+
+            if (scrollTopChangedEvent.defaultPrevented === true) {
+                return this._scrollTop;
             }
+
+            this._scrollView.scrollTopUpdated(newScrollTop);
+            this._container.scrollTop = newScrollTop;
+            this._scrollTop = newScrollTop;
         }
 
         // finally simply return the scrollTop value
@@ -457,7 +465,7 @@ export default class PocScrollbar {
         // If this method was called with something else than a number, or scrolling is
         // completely disabled, just return the scroll top and do nothing else
         if (arguments.length === 0 || this._options.disableXScrolling) {
-            return this._container.scrollLeft;
+            return this._scrollLeft;
         }
 
         let newScrollLeft = aScrollLeft;
@@ -471,13 +479,21 @@ export default class PocScrollbar {
 
         // if scrollLeft has changed
         if (this._scrollLeft !== newScrollLeft) {
-            // call the update trigger and save set the scrollLeft value
-            const scrollLeftUpdated = this._scrollView.scrollLeftUpdated(newScrollLeft, this._scrollLeft);
+            // at this point we can assume not to get null, as it could only be null when
+            // this._options.disableXScrolling is true, which is checked before.
+            const targetElement = this._scrollView.getScrollElement(true);
+            let scrollLeftChangedEvent = createScrollLeftChangedEvent(targetElement, this._container, this._scrollLeft, newScrollLeft);
 
-            if (scrollLeftUpdated) {
-                this._container.scrollLeft = newScrollLeft;
-                this._scrollLeft = newScrollLeft;
+            scrollLeftChangedEvent = this._emitEvent('scrollleftchanged', scrollLeftChangedEvent);
+
+            if (scrollLeftChangedEvent.defaultPrevented === true) {
+                return this._scrollLeft;
             }
+
+            // call the update trigger and save set the scrollLeft value
+            this._scrollView.scrollLeftUpdated(newScrollLeft);
+            this._container.scrollLeft = newScrollLeft;
+            this._scrollLeft = newScrollLeft;
         }
 
         // finally return the scrollLeft value
