@@ -7,7 +7,7 @@ test/
 
 # files
 npm-debug.log
-index.html
+demo.html
 karma.config.js
 rollup.config.js
 yarn.lock
