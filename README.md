@@ -13,9 +13,13 @@ The poc-scrollbar is available via [npm](https://www.npmjs.com/package/poc-scrol
 
 ```sh
 npm install poc-scrollbar --save
+# or
 yarn add poc-scrollbar
 ```
+
 If you can't use it via npm, refer to the bottom of this document. There is a chapter called *Build the project*.
+
+The TypeScript typings are included, no additional dependency required.
 
 ## Basic API
 
