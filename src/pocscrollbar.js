@@ -1,4 +1,3 @@
-
 import {ScrollView} from './scrollview';
 import {debounce, getWheelDeltaAsPixel} from './helper';
 import {createScrollTopChangedEvent, createScrollLeftChangedEvent} from './events';
@@ -33,7 +32,7 @@ export default class PocScrollbar {
      * To guarantee this, the style is changed to position=relative if it's not already
      * relative or absolute.
      *
-     * @param {Element} aElement The element that should be scrollable
+     * @param {HTMLElement} aElement The element that should be scrollable
      * @param {PocScrollbarOptions} [aOptions = {}] The provided options. For details see README.md
      */
     constructor(aElement, aOptions = {}) {

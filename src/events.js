@@ -1,4 +1,3 @@
-
 /**
  * Creates a baseevent for the event listeners
  * @return {Object} The actual baseevent

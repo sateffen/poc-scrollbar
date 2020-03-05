@@ -1,4 +1,3 @@
-
 import {applyOptionsToScrollBarElement} from './helper';
 
 /**
@@ -39,7 +38,7 @@ export class ScrollView {
      * Generates an Element to use for the scrollbar
      *
      * @param {boolean} aIsX Whether the element is X or not
-     * @return {Element}
+     * @return {HTMLElement}
      */
     _setupElement(aIsX) {
         const element = document.createElement('div');

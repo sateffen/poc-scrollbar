@@ -8,6 +8,7 @@
   "module": "src/pocscrollbar.js",
   "jsnext:main": "src/pocscrollbar.js",
   "browser": "src/pocscrollbar.js",
+  "types": "src/pocscrollbar.d.ts",
   "scripts": {
     "prepare": "npm run build",
     "build": "rollup -c",
@@ -27,14 +28,14 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "eslint": "~6.5.1",
+    "eslint": "~6.8.0",
     "eslint-config-google": "~0.14.0",
     "jasmine-core": "~3.5.0",
-    "karma": "~4.3.0",
+    "karma": "~4.4.1",
     "karma-chrome-launcher": "~3.1.0",
-    "karma-jasmine": "~2.0.1",
-    "karma-rollup-preprocessor": "~7.0.2",
-    "rollup": "~1.22.0",
+    "karma-jasmine": "~3.1.1",
+    "karma-rollup-preprocessor": "~7.0.3",
+    "rollup": "~1.32.0",
     "rollup-plugin-buble": "~0.19.8"
   }
 }

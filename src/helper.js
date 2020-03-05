@@ -3,7 +3,7 @@ import {DOM_DELTA_LINE, DOM_DELTA_PAGE, DOM_DELTA_PIXEL, BROWSER_LINE_HEIGHT} fr
 /**
  * This applies the given options to the scrollbar elements
  *
- * @param {Element} aElement The scrollbar element to apply the options to
+ * @param {HTMLElement} aElement The scrollbar element to apply the options to
  * @param {string} aElementName The element name (xElement and yElement) to create the options read propertys from
  * @param {Object} aOptions The options to read from
  */
@@ -60,7 +60,7 @@ export function debounce(aCallback, aWaitTime) {
  * @param {number|undefined} aDeltaOption The possible PocScrollbar options value, that should be used instead of a calculated value
  * @param {number} aDeltaMode
  * @param {number} aDeltaValue
- * @param {Element} aScrollContainer
+ * @param {HTMLElement} aScrollContainer
  * @return {number} The calculated distance to scroll
  */
 export function getWheelDeltaAsPixel(aIsX, aDeltaOption, aDeltaMode, aDeltaValue, aScrollContainer) {
