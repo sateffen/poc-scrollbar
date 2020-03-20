@@ -35,7 +35,7 @@
     "karma-chrome-launcher": "~3.1.0",
     "karma-jasmine": "~3.1.1",
     "karma-rollup-preprocessor": "~7.0.3",
-    "rollup": "~1.32.0",
+    "rollup": "~2.1.0",
     "rollup-plugin-buble": "~0.19.8"
   }
 }
