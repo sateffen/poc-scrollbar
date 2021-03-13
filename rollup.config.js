@@ -1,5 +1,5 @@
 /* global require, module*/
-const buble = require('rollup-plugin-buble');
+const buble = require('@rollup/plugin-buble');
 const pkg = require('./package.json');
 
 module.exports = {
