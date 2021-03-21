@@ -189,7 +189,8 @@
         
         var simpleExampleInnerScrollbar = new window.PocScrollbar(simpleExampleInner, {
             xElementClass: ['scrollbar', 'horizontal'],
-            yElementClass: ['scrollbar', 'vertical']
+            yElementClass: ['scrollbar', 'vertical'],
+            yOverscrollBehaviour: 'none'
         });
         
         var advancedExampleScrollbar = window.scrollerInnerInstance = new window.PocScrollbar(advancedExample, {
