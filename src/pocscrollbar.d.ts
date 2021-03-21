@@ -9,6 +9,8 @@ export interface PocScrollbarOptions {
     yElementStyles?: Record<string, string>;
     xElementClass?: string | string[];
     yElementClass?: string | string[];
+    xOverscrollBehaviour?: 'auto' | 'none';
+    yOverscrollBehaviour?: 'auto' | 'none';
     xMinSize?: number;
     yMinSize?: number;
     wheelDeltaSize?: number;
