@@ -17,6 +17,8 @@ import {SUPPORTS_PASSIVE, ALLOWED_X_TOUCH_ACTIONS, ALLOWED_Y_TOUCH_ACTIONS} from
  * @property {Array.<String>|String} [aOptions.yElementClass=[]]
  * @property {number} [aOptions.xMinSize]
  * @property {number} [aOptions.yMinSize]
+ * @property {string} [aOptions.xOverscrollBehaviour]
+ * @property {string} [aOptions.yOverscrollBehaviour]
  * @property {number} [aOptions.wheelDeltaSize]
  */
 /**
@@ -153,7 +155,7 @@ export default class PocScrollbar {
 
             this.scrollLeft(this._container.scrollLeft + delta);
 
-            if (currentScrollLeft !== this._container.scrollLeft) {
+            if (currentScrollLeft !== this._container.scrollLeft || this._options.xOverscrollBehaviour === 'none') {
                 aEvent.preventDefault();
             }
         }
@@ -169,7 +171,7 @@ export default class PocScrollbar {
 
             this.scrollTop(this._container.scrollTop + delta);
 
-            if (currentScrollTop !== this._container.scrollTop) {
+            if (currentScrollTop !== this._container.scrollTop || this._options.yOverscrollBehaviour === 'none') {
                 aEvent.preventDefault();
             }
         }

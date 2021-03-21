@@ -96,6 +96,14 @@ There are some options, you can use. Pass them along as object to the PocScrollb
     * Type: Boolean
     * Description: Whether to disable scrolling in y directory.
     * Default: false
+* xOverscrollBehaviour
+    * Type: string
+    * Description: How to handle x overscrolling. If value is "none", scroll-chaining is disabled, otherwise scroll-chaining is enabled.
+    * Default: undefined
+* yOverscrollBehaviour
+    * Type: string
+    * Description: How to handle y overscrolling. If value is "none", scroll-chaining is disabled, otherwise scroll-chaining is enabled.
+    * Default: undefined
 * xElementStyles
     * Type: Object
     * Description: An object which contains styles, that should get applied to the x scroll element. This
