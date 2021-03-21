@@ -43,14 +43,20 @@ describe('Scrollbar Setup', () => {
         const startEvent = new MouseEvent('mousedown', {
             clientX: 0,
             clientY: 10,
+            bubbles: true,
+            cancelable: true,
         });
         const moveEvent = new MouseEvent('mousemove', {
             clientX: 10,
             clientY: 35,
+            bubbles: true,
+            cancelable: true,
         });
         const stopEvent = new MouseEvent('mouseup', {
             clientX: 10,
             clientY: 35,
+            bubbles: true,
+            cancelable: true,
         });
 
         window.addEventListener('error', windowErrorSpy);
@@ -76,6 +82,8 @@ describe('Scrollbar Setup', () => {
                     clientY: 50,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
         const moveEvent = new TouchEvent('touchmove', {
             which: 0,
@@ -87,6 +95,8 @@ describe('Scrollbar Setup', () => {
                     clientY: 0,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
         const stopEvent = new TouchEvent('touchend', {
             which: 0,
@@ -98,6 +108,8 @@ describe('Scrollbar Setup', () => {
                     clientY: 0,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
 
         window.addEventListener('error', windowErrorSpy);
@@ -123,6 +135,8 @@ describe('Scrollbar Setup', () => {
                     clientY: 50,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
         const moveEvent = new TouchEvent('touchmove', {
             which: 0,
@@ -134,6 +148,8 @@ describe('Scrollbar Setup', () => {
                     clientY: 0,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
         const stopEvent = new TouchEvent('touchend', {
             which: 0,
@@ -145,6 +161,8 @@ describe('Scrollbar Setup', () => {
                     clientY: 0,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
 
         window.addEventListener('error', windowErrorSpy);

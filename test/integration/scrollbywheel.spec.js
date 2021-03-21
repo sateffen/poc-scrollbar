@@ -41,6 +41,8 @@ describe('Scroll by wheel', () => {
         const event = new WheelEvent('wheel', {
             deltaX: 0,
             deltaY: 25,
+            bubbles: true,
+            cancelable: true,
         });
 
         parent.dispatchEvent(event);
@@ -54,6 +56,8 @@ describe('Scroll by wheel', () => {
             deltaX: 0,
             deltaY: 25,
             shiftKey: true,
+            bubbles: true,
+            cancelable: true,
         });
 
         parent.dispatchEvent(event);
@@ -68,6 +72,8 @@ describe('Scroll by wheel', () => {
         const event = new WheelEvent('wheel', {
             deltaX: 0,
             deltaY: 25,
+            bubbles: true,
+            cancelable: true,
         });
 
         parent.dispatchEvent(event);
@@ -83,6 +89,8 @@ describe('Scroll by wheel', () => {
             deltaX: 0,
             deltaY: 25,
             shiftKey: true,
+            bubbles: true,
+            cancelable: true,
         });
 
         parent.dispatchEvent(event);

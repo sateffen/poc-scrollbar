@@ -45,6 +45,8 @@ describe('Scroll by touch', () => {
                     clientY: 50,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
         const moveEvent = new TouchEvent('touchmove', {
             which: 0,
@@ -56,6 +58,8 @@ describe('Scroll by touch', () => {
                     clientY: 0,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
         const stopEvent = new TouchEvent('touchend', {
             which: 0,
@@ -67,6 +71,8 @@ describe('Scroll by touch', () => {
                     clientY: 0,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
 
         parent.dispatchEvent(startEvent);
@@ -93,6 +99,8 @@ describe('Scroll by touch', () => {
                     clientY: 35,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
         const moveEvent = new TouchEvent('touchmove', {
             touches: [
@@ -103,6 +111,8 @@ describe('Scroll by touch', () => {
                     clientY: 10,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
         const stopEvent = new TouchEvent('touchend', {
             touches: [
@@ -113,6 +123,8 @@ describe('Scroll by touch', () => {
                     clientY: 10,
                 }),
             ],
+            bubbles: true,
+            cancelable: true,
         });
 
         parent.dispatchEvent(startEvent);

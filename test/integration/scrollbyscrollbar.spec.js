@@ -46,14 +46,20 @@ describe('Scroll by scrollbar', () => {
                 const startEvent = new MouseEvent('mousedown', {
                     clientX: 0,
                     clientY: 10,
+                    bubbles: true,
+                    cancelable: true,
                 });
                 const moveEvent = new MouseEvent('mousemove', {
                     clientX: 10,
                     clientY: 35,
+                    bubbles: true,
+                    cancelable: true,
                 });
                 const stopEvent = new MouseEvent('mouseup', {
                     clientX: 10,
                     clientY: 35,
+                    bubbles: true,
+                    cancelable: true,
                 });
 
                 verticalScrollbar.dispatchEvent(startEvent);
@@ -68,14 +74,20 @@ describe('Scroll by scrollbar', () => {
                 const startEvent = new MouseEvent('mousedown', {
                     clientX: 10,
                     clientY: 0,
+                    bubbles: true,
+                    cancelable: true,
                 });
                 const moveEvent = new MouseEvent('mousemove', {
                     clientX: 35,
                     clientY: 10,
+                    bubbles: true,
+                    cancelable: true,
                 });
                 const stopEvent = new MouseEvent('mouseup', {
                     clientX: 35,
                     clientY: 10,
+                    bubbles: true,
+                    cancelable: true,
                 });
 
                 horizontalScrollbar.dispatchEvent(startEvent);
@@ -96,6 +108,8 @@ describe('Scroll by scrollbar', () => {
                             clientY: 10,
                         }),
                     ],
+                    bubbles: true,
+                    cancelable: true,
                 });
                 const moveEvent = new TouchEvent('touchmove', {
                     touches: [
@@ -106,6 +120,8 @@ describe('Scroll by scrollbar', () => {
                             clientY: 35,
                         }),
                     ],
+                    bubbles: true,
+                    cancelable: true,
                 });
                 const stopEvent = new TouchEvent('touchend', {
                     touches: [
@@ -116,6 +132,8 @@ describe('Scroll by scrollbar', () => {
                             clientY: 35,
                         }),
                     ],
+                    bubbles: true,
+                    cancelable: true,
                 });
 
                 verticalScrollbar.dispatchEvent(startEvent);
@@ -136,6 +154,8 @@ describe('Scroll by scrollbar', () => {
                             clientY: 0,
                         }),
                     ],
+                    bubbles: true,
+                    cancelable: true,
                 });
                 const moveEvent = new TouchEvent('touchmove', {
                     touches: [
@@ -146,6 +166,8 @@ describe('Scroll by scrollbar', () => {
                             clientY: 10,
                         }),
                     ],
+                    bubbles: true,
+                    cancelable: true,
                 });
                 const stopEvent = new TouchEvent('touchend', {
                     touches: [
@@ -156,6 +178,8 @@ describe('Scroll by scrollbar', () => {
                             clientY: 10,
                         }),
                     ],
+                    bubbles: true,
+                    cancelable: true,
                 });
 
                 horizontalScrollbar.dispatchEvent(startEvent);
