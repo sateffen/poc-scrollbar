@@ -5,7 +5,7 @@ dist/
 npm-debug.log
 
 # include
+!.github/
 !.gitignore
 !.eslintrc
 !.npmignore
-!.travis.yml
