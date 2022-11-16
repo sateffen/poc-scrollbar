@@ -1,5 +1,4 @@
 /* global require, module*/
-const buble = require('@rollup/plugin-buble');
 const pkg = require('./package.json');
 
 module.exports = {
@@ -10,7 +9,5 @@ module.exports = {
         name: 'PocScrollbar',
         file: 'dist/pocscrollbar.js',
     },
-    plugins: [
-        buble(),
-    ],
+    plugins: [],
 };
