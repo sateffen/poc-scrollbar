@@ -428,7 +428,7 @@ escape-string-regexp@^4.0.0:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz#14ba83a5d373e3d311e5afca29cf5bfad965bf34"
   integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
 
-eslint-config-google@~0.14.0:
+eslint-config-google@0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/eslint-config-google/-/eslint-config-google-0.14.0.tgz#4f5f8759ba6e11b424294a219dbfa18c508bcc1a"
   integrity sha512-WsbX4WbjuMvTdeVL6+J3rK1RGhCTqjsFjX7UMSMgZiyxxaNLkoJENbrGExzERFeoTpGw3F3FypTiWAP9ZXzkEw==
@@ -446,7 +446,7 @@ eslint-visitor-keys@^3.3.0, eslint-visitor-keys@^3.4.1:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.4.1.tgz#c22c48f48942d08ca824cc526211ae400478a994"
   integrity sha512-pZnmmLwYzf+kWaM/Qgrvpen51upAktaaiI01nsJD/Yr3lMOdNtq0cxkrrg16w64VtisN6okbs7Q8AfGqj4c9fA==
 
-eslint@~8.42.0:
+eslint@8.42.0:
   version "8.42.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-8.42.0.tgz#7bebdc3a55f9ed7167251fe7259f75219cade291"
   integrity sha512-ulg9Ms6E1WPf67PHaEY4/6E2tEn5/f7FXGzr3t9cBMugOmf1INYvuUwwh1aXQN4MfJ6a5K2iNwP3w4AColvI9A==
@@ -815,15 +815,15 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
+jasmine-core@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-5.0.0.tgz#84a200637f9ef92f6d0788e96bb4e67bb1316a81"
+  integrity sha512-BJLxZlSVyWPN/oyaS1IIvIjChghI9/xWsLAIJqL9J5Fz47CN3JNr8Lmik3S2S7QS2RxclYjvSVSXP7IR35PAmg==
+
 jasmine-core@^4.1.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-4.6.0.tgz#6884fc3d5b66bf293e422751eed6d6da217c38f5"
   integrity sha512-O236+gd0ZXS8YAjFx8xKaJ94/erqUliEkJTDedyE7iHvv4ZVqi+q+8acJxu05/WJDKm512EUNn809In37nWlAQ==
-
-jasmine-core@~5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-5.0.0.tgz#84a200637f9ef92f6d0788e96bb4e67bb1316a81"
-  integrity sha512-BJLxZlSVyWPN/oyaS1IIvIjChghI9/xWsLAIJqL9J5Fz47CN3JNr8Lmik3S2S7QS2RxclYjvSVSXP7IR35PAmg==
 
 js-yaml@^4.1.0:
   version "4.1.0"
@@ -849,21 +849,21 @@ jsonfile@^4.0.0:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-karma-chrome-launcher@~3.2.0:
+karma-chrome-launcher@3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/karma-chrome-launcher/-/karma-chrome-launcher-3.2.0.tgz#eb9c95024f2d6dfbb3748d3415ac9b381906b9a9"
   integrity sha512-rE9RkUPI7I9mAxByQWkGJFXfFD6lE4gC5nPuZdobf/QdTEJI6EU4yIay/cfU/xV4ZxlM5JiTv7zWYgA64NpS5Q==
   dependencies:
     which "^1.2.1"
 
-karma-jasmine@~5.1.0:
+karma-jasmine@5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-5.1.0.tgz#3af4558a6502fa16856a0f346ec2193d4b884b2f"
   integrity sha512-i/zQLFrfEpRyQoJF9fsCdTMOF5c2dK7C7OmsuKg2D0YSsuZSfQDiLuaiktbuio6F2wiCsZSnSnieIQ0ant/uzQ==
   dependencies:
     jasmine-core "^4.1.0"
 
-karma-rollup-preprocessor@~7.0.8:
+karma-rollup-preprocessor@7.0.8:
   version "7.0.8"
   resolved "https://registry.yarnpkg.com/karma-rollup-preprocessor/-/karma-rollup-preprocessor-7.0.8.tgz#5cf5ca22c815afce1ba876b56da81e81e989823e"
   integrity sha512-WiuBCS9qsatJuR17dghiTARBZ7LF+ml+eb7qJXhw7IbsdY0lTWELDRQC/93J9i6636CsAXVBL3VJF4WtaFLZzA==
@@ -871,7 +871,7 @@ karma-rollup-preprocessor@~7.0.8:
     chokidar "^3.3.1"
     debounce "^1.2.0"
 
-karma@~6.4.2:
+karma@6.4.2:
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/karma/-/karma-6.4.2.tgz#a983f874cee6f35990c4b2dcc3d274653714de8e"
   integrity sha512-C6SU/53LB31BEgRg+omznBEMY4SjHU3ricV6zBcAe1EeILKkeScr+fZXtaI5WyDbkVowJxxAI6h73NcFPmXolQ==
@@ -1173,10 +1173,10 @@ rimraf@^3.0.0, rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-rollup@~3.23.1:
-  version "3.23.1"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.23.1.tgz#a6e50cb86a17fc2e3248d8ec12ff8666992b0780"
-  integrity sha512-ybRdFVHOoljGEFILHLd2g/qateqUdjE6YS41WXq4p3C/WwD3xtWxV4FYWETA1u9TeXQc5K8L8zHE5d/scOvrOQ==
+rollup@3.24.0:
+  version "3.24.0"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.24.0.tgz#865dee1fe0bb528747b59914dfab25e6f480e370"
+  integrity sha512-OgraHOIg2YpHQTjl0/ymWfFNBEyPucB7lmhXrQUh38qNOegxLapSPFs9sNr0qKR75awW41D93XafoR2QfhBdUQ==
   optionalDependencies:
     fsevents "~2.3.2"
 
